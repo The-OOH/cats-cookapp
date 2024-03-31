@@ -10,4 +10,6 @@ import java.io.Serializable;
 @Value
 public class UserResponse implements Serializable {
     Long id;
+    String email;
+    String username;
 }

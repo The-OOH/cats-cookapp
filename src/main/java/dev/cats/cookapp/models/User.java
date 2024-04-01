@@ -23,6 +23,20 @@ public class User {
     @Column(name = "name", nullable = false)
     private String username;
 
+    public User() {
+    }
+
+    public User(String email, String username) {
+        this.email = email;
+        this.username = username;
+    }
+
+    public User(Long id, String email, String username) {
+        this.id = id;
+        this.email = email;
+        this.username = username;
+    }
+
     @OneToMany(mappedBy = "created_by")
     private Set<Recipe> recipes = new HashSet<>();
 

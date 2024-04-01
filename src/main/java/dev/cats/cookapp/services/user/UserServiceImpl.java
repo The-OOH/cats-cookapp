@@ -1,5 +1,6 @@
 package dev.cats.cookapp.services.user;
 
+import dev.cats.cookapp.dto.request.UserRequest;
 import dev.cats.cookapp.dto.response.UserResponse;
 import dev.cats.cookapp.mappers.UserMapper;
 import dev.cats.cookapp.repositories.UserRepository;
@@ -22,6 +23,17 @@ public class UserServiceImpl implements UserService{
     @Override
     public Optional<UserResponse> getUser(String email) {
         return userRepository.findByEmail(email).map(userMapper::toDto);
+    }
+
+    @Override
+    public UserResponse createUser(UserRequest userRequest) {
+        userRequest.setId(null);
+        return userMapper.toDto(userRepository.save(userMapper.toEntity(userRequest)));
+    }
+
+    @Override
+    public UserResponse updateUser(UserRequest userRequest) {
+        return userMapper.toDto(userRepository.save(userMapper.toEntity(userRequest)));
     }
 
     @Override

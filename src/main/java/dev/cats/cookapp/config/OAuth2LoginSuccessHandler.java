@@ -1,5 +1,6 @@
 package dev.cats.cookapp.config;
 
+import dev.cats.cookapp.dto.request.UserRequest;
 import dev.cats.cookapp.services.user.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,13 +37,15 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         Map<String, Object> attributes = ((DefaultOAuth2User) authentication.getPrincipal()).getAttributes();
         String email = attributes.getOrDefault("email", "").toString();
         userService.getUser(email)
-                .ifPresentOrElse(student -> {
-                    authenticateUser(attributes, "ROLE_USER", oAuth2AuthenticationToken);
-                }, () -> {
-                    handleUserNotFound(attributes, email, oAuth2AuthenticationToken);
-                });
+                .ifPresentOrElse(user -> authenticateUser(attributes, "ROLE_USER", oAuth2AuthenticationToken),
+                        () -> registerNewUser(attributes, email, oAuth2AuthenticationToken));
 
         redirectToFrontend(request, response);
+    }
+
+    private void registerNewUser(Map<String, Object> attributes, String email, OAuth2AuthenticationToken oAuth2AuthenticationToken) {
+        userService.createUser(new UserRequest(null, email, attributes.getOrDefault("name", "").toString()));
+        authenticateUser(attributes, "ROLE_USER", oAuth2AuthenticationToken);
     }
 
     private void authenticateUser(Map<String, Object> attributes,
@@ -52,10 +55,6 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         Authentication newAuth = new OAuth2AuthenticationToken(newUser, List.of(new SimpleGrantedAuthority(role)),
                 oAuth2AuthenticationToken.getAuthorizedClientRegistrationId());
         SecurityContextHolder.getContext().setAuthentication(newAuth);
-    }
-
-    private void handleUserNotFound(Map<String, Object> attributes, String email, OAuth2AuthenticationToken oAuth2AuthenticationToken) {
-
     }
 
     private void redirectToFrontend(HttpServletRequest request, HttpServletResponse response) throws IOException,

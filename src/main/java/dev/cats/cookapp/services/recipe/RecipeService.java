@@ -1,9 +1,8 @@
 package dev.cats.cookapp.services.recipe;
 
 import dev.cats.cookapp.dto.response.RecipeResponse;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface RecipeService {
-    List<RecipeResponse> getRecipes();
+    Page<RecipeResponse> getRecipes(int page, int size);
 }

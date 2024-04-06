@@ -3,16 +3,7 @@ package dev.cats.cookapp.models;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-/*
-* TABLE recipe_products {
-  recipe_product_id INT [pk, unique, increment]
-  recipe_id INT [ref: > recipes.recipe_id]
-  product_id INT [ref: > products.product_id]
 
-  original text // original name with units included (probably)
-  amount double
-  unit_id int
-}*/
 @Getter
 @Setter
 @Entity

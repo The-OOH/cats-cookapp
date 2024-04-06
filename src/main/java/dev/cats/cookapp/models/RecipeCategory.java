@@ -20,7 +20,7 @@ public class RecipeCategory {
     @Column(name = "name", nullable = false, length = 128, unique = true)
     private String name;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "categories")
     private Set<Recipe> recipes = new HashSet<>();
 
     @ManyToOne

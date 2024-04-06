@@ -16,6 +16,7 @@ import java.util.Set;
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long recipe_id;
 
     @ManyToOne
@@ -70,6 +71,9 @@ public class Recipe {
     private String summary;
 
     @ManyToMany
+    @JoinTable(name = "category_to_recipe",
+            joinColumns = @JoinColumn(name = "recipe_id"),
+            inverseJoinColumns = @JoinColumn(name = "recipe_category_id"))
     private List<RecipeCategory> categories = new ArrayList<>();
 
     private Boolean cheap;

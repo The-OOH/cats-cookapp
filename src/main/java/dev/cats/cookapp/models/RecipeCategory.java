@@ -10,7 +10,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "recipe_category")
+@Table(name = "categories")
 public class RecipeCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class RecipeCategory {
     private Set<Recipe> recipes = new HashSet<>();
 
     @ManyToOne
-    @JoinColumn(name = "recipe_category_type_id")
+    @JoinColumn(name = "category_type_id")
     private RecipeCategoryType recipeCategoryType;
 
 }

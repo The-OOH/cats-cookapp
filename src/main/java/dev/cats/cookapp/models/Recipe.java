@@ -17,10 +17,10 @@ public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long recipe_id;
+    private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "created_by_id")
+    @JoinColumn(name = "created_by")
     private User created_by;
 
     @OneToMany(mappedBy = "recipe")
@@ -52,7 +52,7 @@ public class Recipe {
 
     @Basic(optional = false)
     @Column(nullable = false)
-    private Integer spoonacularId;
+    private Long spoonacularId;
 
     @Basic(optional = false)
     @Column(nullable = false)
@@ -73,7 +73,7 @@ public class Recipe {
     @ManyToMany
     @JoinTable(name = "category_to_recipe",
             joinColumns = @JoinColumn(name = "recipe_id"),
-            inverseJoinColumns = @JoinColumn(name = "recipe_category_id"))
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<RecipeCategory> categories = new ArrayList<>();
 
     private Boolean cheap;
@@ -84,6 +84,6 @@ public class Recipe {
 
     @Basic(optional = false)
     @Column(nullable = false)
-    private Integer spoonacularScore;
+    private Double spoonacularScore;
 
 }

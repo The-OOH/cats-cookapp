@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "recipe_ingredient")
+@Table(name = "recipe_ingredients")
 public class RecipeIngredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class RecipeIngredient {
     private Unit unit;
 
     @ManyToOne
-    @JoinColumn(name = "recipe_recipe_id")
+    @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
     @ManyToOne

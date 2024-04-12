@@ -11,7 +11,7 @@ import java.util.Set;
  */
 @Value
 public class RecipeResponse implements Serializable {
-    Long recipe_id;
+    Long id;
     UserResponse created_by;
     Set<RecipeIngredientResponse> products;
     Boolean vegetarian;
@@ -20,7 +20,7 @@ public class RecipeResponse implements Serializable {
     Boolean dairyFree;
     String title;
     Integer pricePerServing;
-    Integer spoonacularId;
+    Long spoonacularId;
     Integer readyInMinutes;
     Integer servings;
     String image;
@@ -28,5 +28,5 @@ public class RecipeResponse implements Serializable {
     List<RecipeCategoryResponse> categories;
     Boolean cheap;
     Integer healthScore;
-    Integer spoonacularScore;
+    Double spoonacularScore;
 }

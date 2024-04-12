@@ -17,7 +17,7 @@ Table units {
 @Getter
 @Setter
 @Entity
-@Table(name = "unit")
+@Table(name = "units")
 public class Unit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

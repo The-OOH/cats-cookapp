@@ -10,7 +10,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "recipe_category_type")
+@Table(name = "category_types")
 public class RecipeCategoryType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

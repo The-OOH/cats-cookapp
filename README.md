@@ -17,3 +17,6 @@ This project is built with Spring Framework and requires Java Development Kit (J
     mvn install
     ```
    or right-click on the project in your pom.xml file and select `Maven` > `Reload Project`.
+
+## DB Schema
+![img.png](img.png)

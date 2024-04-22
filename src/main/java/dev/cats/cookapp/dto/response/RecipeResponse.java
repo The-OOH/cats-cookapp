@@ -14,19 +14,13 @@ public class RecipeResponse implements Serializable {
     Long id;
     UserResponse created_by;
     Set<RecipeIngredientResponse> products;
-    Boolean vegetarian;
-    Boolean vegan;
-    Boolean glutenFree;
-    Boolean dairyFree;
     String title;
     Integer pricePerServing;
-    Long spoonacularId;
     Integer readyInMinutes;
     Integer servings;
     String image;
     String summary;
     List<RecipeCategoryResponse> categories;
-    Boolean cheap;
     Integer healthScore;
     Double spoonacularScore;
 }

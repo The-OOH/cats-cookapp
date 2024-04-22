@@ -24,22 +24,6 @@ public class Recipe {
     private Set<RecipeIngredient> products = new HashSet<>();
 
     @Basic(optional = false)
-    @Column(nullable = false)
-    private Boolean vegetarian;
-
-    @Basic(optional = false)
-    @Column(nullable = false)
-    private Boolean vegan;
-
-    @Basic(optional = false)
-    @Column(nullable = false)
-    private Boolean glutenFree;
-
-    @Basic(optional = false)
-    @Column(nullable = false)
-    private Boolean dairyFree;
-
-    @Basic(optional = false)
     @Column(nullable = false, length = 128)
     private String title;
 
@@ -72,8 +56,6 @@ public class Recipe {
             joinColumns = @JoinColumn(name = "recipe_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<RecipeCategory> categories = new HashSet<>();
-
-    private Boolean cheap;
 
     @Basic(optional = false)
     @Column(nullable = false)

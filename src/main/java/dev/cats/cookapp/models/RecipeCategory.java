@@ -21,7 +21,7 @@ public class RecipeCategory {
     @Column(name = "name", nullable = false, length = 128, unique = true)
     private String name;
 
-    @Column(name = "image", nullable = false)
+    @Column(name = "image")
     private String image;
 
     @ManyToMany(mappedBy = "categories")

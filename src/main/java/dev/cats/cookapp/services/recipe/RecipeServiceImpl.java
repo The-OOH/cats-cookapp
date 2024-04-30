@@ -2,13 +2,18 @@ package dev.cats.cookapp.services.recipe;
 
 import dev.cats.cookapp.dto.response.RecipeListResponse;
 import dev.cats.cookapp.dto.response.RecipeResponse;
+import dev.cats.cookapp.mappers.RecipeCategoryMapper;
 import dev.cats.cookapp.mappers.RecipeMapper;
+import dev.cats.cookapp.models.RecipeCategory;
 import dev.cats.cookapp.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -17,19 +22,28 @@ public class RecipeServiceImpl implements RecipeService {
     private final RecipeRepository recipeRepository;
     private final RecipeMapper recipeMapper;
     @Override
-    public Page<RecipeListResponse> getRecipes(int page, int size) {
+    public Page<RecipeListResponse> getRecipes(int page, int size, Long userId) {
         var pageRequest = PageRequest.of(page, size);
         var pageOfIds = recipeRepository.findAllIds(pageRequest);
-        var recipes = recipeRepository.findAllByIdIn(pageOfIds.getContent());
-        var recipeResponses = recipes.stream()
-                .map(recipeMapper::toListDto)
-                .toList();
-        return new PageImpl<>(recipeResponses, pageRequest, pageOfIds.getTotalElements());
+        var recipes = recipeRepository.findAllByIdIn(pageOfIds.getContent(), userId);
+        Set<RecipeListResponse> recipeListResponses = recipes.stream()
+                .map(objects -> {
+                    var recipe = (dev.cats.cookapp.models.Recipe) objects[0];
+                    var isSaved = (Boolean) objects[1];
+                    Set<RecipeCategory> categories = recipe.getCategories();
+                    return new RecipeListResponse(recipe.getId(), recipe.getTitle(), recipe.getPricePerServing(),
+                            recipe.getReadyInMinutes(), recipe.getServings(), recipe.getImage(),
+                            isSaved, categories);
+                })
+                .collect(Collectors.toSet());
+        return new PageImpl<>(recipeListResponses.stream().toList(), pageRequest, pageOfIds.getTotalElements());
     }
 
     @Override
     public RecipeResponse getRecipe(Long id) {
         var recipe = recipeRepository.findById(id).orElseThrow();
-        return recipeMapper.toDto(recipe);
+        var recipeResult = recipeMapper.toDto(recipe);
+        recipeResult.setIsSaved(recipe.getFavoriteRecipes().size() > 0);
+        return recipeResult;
     }
 }

@@ -2,9 +2,12 @@ package dev.cats.cookapp.controllers;
 
 import dev.cats.cookapp.dto.response.RecipeListResponse;
 import dev.cats.cookapp.dto.response.RecipeResponse;
+import dev.cats.cookapp.models.User;
+import dev.cats.cookapp.services.TokenExtractService;
 import dev.cats.cookapp.services.recipe.RecipeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -12,11 +15,18 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class RecipeController {
     private final RecipeService recipeService;
+    private final TokenExtractService tokenExtractService;
 
     @GetMapping
     public Page<RecipeListResponse> getRecipes(@RequestParam(required = false, defaultValue = "0") int page,
                                                @RequestParam(required = false, defaultValue = "100") int size) {
-        return recipeService.getRecipes(page, size);
+        var isPresent = tokenExtractService.extractToken(SecurityContextHolder.getContext().getAuthentication())
+                .isPresent();
+        if(isPresent) {
+            User user = tokenExtractService.extractToken(SecurityContextHolder.getContext().getAuthentication()).get();
+            return recipeService.getRecipes(page, size, user.getId());
+        }
+        return recipeService.getRecipes(page, size, (long) -1);
     }
 
     @GetMapping("/{id}")

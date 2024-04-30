@@ -13,4 +13,5 @@ public interface RecipeCategoryMapper {
     @Mapping(source = "recipeCategoryType.name", target = "type")
     RecipeCategoryResponse toDto(RecipeCategory recipeCategory);
 
+
 }

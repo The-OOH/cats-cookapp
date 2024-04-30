@@ -5,6 +5,6 @@ import dev.cats.cookapp.dto.response.RecipeResponse;
 import org.springframework.data.domain.Page;
 
 public interface RecipeService {
-    Page<RecipeListResponse> getRecipes(int page, int size);
+    Page<RecipeListResponse> getRecipes(int page, int size, Long userId);
     RecipeResponse getRecipe(Long id);
 }

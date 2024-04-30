@@ -27,7 +27,7 @@ public class RecipeCategory {
     @ManyToMany(mappedBy = "categories")
     private Set<Recipe> recipes = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_type_id")
     private RecipeCategoryType recipeCategoryType;
 

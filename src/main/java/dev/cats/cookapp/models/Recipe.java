@@ -68,4 +68,7 @@ public class Recipe {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe")
     private List<RecipeStep> steps = new ArrayList<>();
 
+    @OneToMany(mappedBy = "recipe")
+    private Set<FavoriteRecipes> favoriteRecipes = new HashSet<>();
+
 }

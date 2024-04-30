@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
@@ -17,8 +18,9 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class JwtUtil {
     private final SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    // The token is valid for 1 hour
-    private final long accessTokenValidity = 60*60*1000;
+    // The token is valid for 24 hour
+    @Value("${jwt.accessTokenValidity}")
+    private long accessTokenValidity;
     private final String TOKEN_HEADER = "Authorization";
     private final String TOKEN_PREFIX = "Bearer ";
 

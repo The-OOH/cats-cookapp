@@ -4,6 +4,6 @@ import lombok.Value;
 
 @Value
 public class UserTokenDto {
-    String login;
+    String email;
     String token;
 }

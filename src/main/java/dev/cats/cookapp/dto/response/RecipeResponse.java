@@ -1,6 +1,6 @@
 package dev.cats.cookapp.dto.response;
 
-import lombok.Value;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -9,7 +9,10 @@ import java.util.Set;
 /**
  * DTO for {@link dev.cats.cookapp.models.Recipe}
  */
-@Value
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
 public class RecipeResponse implements Serializable {
     Long id;
     UserResponse created_by;
@@ -20,5 +23,6 @@ public class RecipeResponse implements Serializable {
     Integer servings;
     String image;
     List<RecipeCategoryResponse> categories;
+    Boolean isSaved;
     List<RecipeStepResponse> steps;
 }

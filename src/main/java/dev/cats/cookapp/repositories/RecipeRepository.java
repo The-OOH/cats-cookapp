@@ -6,17 +6,22 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
-    @EntityGraph(attributePaths = {"created_by", "products", "categories", "products.unit", "products.product",
-            "categories.recipeCategoryType"})
-    List<Recipe> findAllByIdIn(List<Long> ids);
 
-    @EntityGraph(attributePaths = {"created_by", "products", "categories", "products.unit", "products.product",
-            "categories.recipeCategoryType" , "steps"})
+    @Query("SELECT r, (CASE WHEN fav.id IS NOT NULL THEN true ELSE false END) AS isSaved " +
+            "FROM Recipe r " +
+            "LEFT JOIN r.favoriteRecipes fav ON fav.user.id = :userId " +
+            "LEFT JOIN FETCH r.categories cat " +
+            "WHERE r.id IN :ids")
+    List<Object[]> findAllByIdIn(@Param("ids") List<Long> ids, @Param("userId") Long userId);
+
+    @EntityGraph(attributePaths = {"created_by", "products", "categories", "steps",  "favoriteRecipes",  "products.unit", "products.product",
+            "categories.recipeCategoryType"})
     Optional<Recipe> findById(Long id);
 
     @Query("SELECT r.id FROM Recipe r")

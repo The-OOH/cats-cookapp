@@ -19,7 +19,6 @@ public class RecipeResponse implements Serializable {
     Integer time;
     Integer servings;
     String image;
-    String summary;
     List<RecipeCategoryResponse> categories;
     List<RecipeStepResponse> steps;
 }

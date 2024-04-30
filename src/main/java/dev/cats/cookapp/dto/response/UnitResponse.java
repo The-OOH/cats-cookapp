@@ -11,5 +11,4 @@ import java.io.Serializable;
 public class UnitResponse implements Serializable {
     Long id;
     String name;
-    Boolean isMetric;
 }

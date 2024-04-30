@@ -3,9 +3,7 @@ package dev.cats.cookapp.dto.response;
 import lombok.Value;
 
 @Value
-public class ProductResponse {
+public class RecipeStepResponse {
     Long id;
-    String aisle;
-    String name;
-
+    String description;
 }

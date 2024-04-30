@@ -10,7 +10,7 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface RecipeCategoryMapper {
 
-    @Mapping(source = "recipeCategoryType.name", target = "recipeCategoryTypeName")
+    @Mapping(source = "recipeCategoryType.name", target = "type")
     RecipeCategoryResponse toDto(RecipeCategory recipeCategory);
 
 }

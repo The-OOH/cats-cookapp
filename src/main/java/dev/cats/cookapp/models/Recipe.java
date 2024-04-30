@@ -65,4 +65,7 @@ public class Recipe {
     @Column(nullable = false)
     private Double spoonacularScore;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe")
+    private List<RecipeStep> steps = new ArrayList<>();
+
 }

@@ -12,5 +12,5 @@ public class RecipeCategoryResponse implements Serializable {
     Long id;
     String name;
     String image;
-    String recipeCategoryTypeName;
+    String type;
 }

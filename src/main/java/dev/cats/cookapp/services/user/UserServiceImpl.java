@@ -3,6 +3,7 @@ package dev.cats.cookapp.services.user;
 import dev.cats.cookapp.dto.request.UserRequest;
 import dev.cats.cookapp.dto.response.UserResponse;
 import dev.cats.cookapp.mappers.UserMapper;
+import dev.cats.cookapp.models.User;
 import dev.cats.cookapp.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,11 @@ public class UserServiceImpl implements UserService{
     @Override
     public Optional<UserResponse> getUser(String email) {
         return userRepository.findByEmail(email).map(userMapper::toDto);
+    }
+
+    @Override
+    public Optional<User> getUserModel(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Override

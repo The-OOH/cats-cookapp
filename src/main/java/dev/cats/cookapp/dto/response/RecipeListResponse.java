@@ -2,6 +2,7 @@ package dev.cats.cookapp.dto.response;
 
 import dev.cats.cookapp.models.RecipeCategory;
 import lombok.Value;
+import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -10,6 +11,7 @@ import java.util.Set;
  * DTO for {@link dev.cats.cookapp.models.Recipe}
  */
 @Value
+@FieldDefaults(makeFinal = true)
 public class RecipeListResponse implements Serializable {
     Long id;
     String title;

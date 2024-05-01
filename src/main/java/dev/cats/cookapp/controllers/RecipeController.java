@@ -33,4 +33,9 @@ public class RecipeController {
     public RecipeResponse getRecipe(@PathVariable Long id) {
         return recipeService.getRecipe(id);
     }
+
+//    @PostMapping
+//    public RecipeResponse addRecipe(@ResponseBody RecipeRequest recipe){
+//
+//    }
 }

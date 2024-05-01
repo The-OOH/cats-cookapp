@@ -13,14 +13,14 @@ import java.util.Optional;
 
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
-    @Query("SELECT r, (CASE WHEN fav.id IS NOT NULL THEN true ELSE false END) AS isSaved " +
+    @Query("SELECT r, (CASE WHEN ul.id IS NOT NULL THEN true ELSE false END) AS isInList " +
             "FROM Recipe r " +
-            "LEFT JOIN r.favoriteRecipes fav ON fav.user.id = :userId " +
+            "LEFT JOIN r.lists ul ON ul.user.id = :userId " +
             "LEFT JOIN FETCH r.categories cat " +
             "WHERE r.id IN :ids")
     List<Object[]> findAllByIdIn(@Param("ids") List<Long> ids, @Param("userId") Long userId);
 
-    @EntityGraph(attributePaths = {"created_by", "products", "categories", "steps",  "favoriteRecipes",  "products.unit", "products.product",
+    @EntityGraph(attributePaths = {"created_by", "products", "categories", "steps",  "lists",  "products.unit", "products.product",
             "categories.recipeCategoryType"})
     Optional<Recipe> findById(Long id);
 

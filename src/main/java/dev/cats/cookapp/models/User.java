@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,6 +26,9 @@ public class User {
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @Column
+    private Timestamp created_at = new Timestamp(System.currentTimeMillis());
 
     @OneToMany(mappedBy = "user")
     private Set<FavoriteRecipes> favoriteRecipes = new HashSet<>();

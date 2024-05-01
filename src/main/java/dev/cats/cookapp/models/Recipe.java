@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.util.*;
 
 @Getter
@@ -19,6 +20,12 @@ public class Recipe {
     @ManyToOne
     @JoinColumn(name = "created_by")
     private User created_by;
+
+    @Column
+    private Timestamp created_at = new Timestamp(System.currentTimeMillis());
+
+    @Column
+    private Integer calories;
 
     @OneToMany(mappedBy = "recipe")
     private Set<RecipeIngredient> products = new HashSet<>();
@@ -70,5 +77,8 @@ public class Recipe {
 
     @OneToMany(mappedBy = "recipe")
     private Set<FavoriteRecipes> favoriteRecipes = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "recipes")
+    private Set<UserList> lists = new HashSet<>();
 
 }

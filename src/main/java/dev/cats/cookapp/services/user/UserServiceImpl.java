@@ -6,6 +6,7 @@ import dev.cats.cookapp.mappers.UserMapper;
 import dev.cats.cookapp.models.User;
 import dev.cats.cookapp.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,6 +16,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public Optional<UserResponse> getUser(Long id) {
@@ -34,6 +36,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserResponse createUser(UserRequest userRequest) {
         userRequest.setId(null);
+        userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         return userMapper.toDto(userRepository.save(userMapper.toEntity(userRequest)));
     }
 

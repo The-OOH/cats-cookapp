@@ -27,6 +27,9 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "role", nullable = false)
+    private String role = "USER";
+
     @Column
     private Timestamp created_at = new Timestamp(System.currentTimeMillis());
 

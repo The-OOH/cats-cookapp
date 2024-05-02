@@ -53,6 +53,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers( "/**", "/login/**", "/webjars/**", "/search/**").permitAll()
+                            .requestMatchers("/login/me").authenticated()
                             .anyRequest().authenticated();
                 })
                 .sessionManagement(sessionManagement ->

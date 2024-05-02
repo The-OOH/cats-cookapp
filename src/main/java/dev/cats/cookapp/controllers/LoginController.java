@@ -1,6 +1,7 @@
 package dev.cats.cookapp.controllers;
 
 import dev.cats.cookapp.dto.request.UserRequest;
+import dev.cats.cookapp.dto.response.UserResponse;
 import dev.cats.cookapp.dto.response.UserTokenDto;
 import dev.cats.cookapp.models.User;
 import dev.cats.cookapp.services.JwtUtil;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -45,5 +47,12 @@ public class LoginController {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found")), "USER");
 
         return ResponseEntity.ok(new UserTokenDto(userDto.getEmail(), token));
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> getCredential(){
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        var user = userService.getUser(auth.getName()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return ResponseEntity.ok(user);
     }
 }

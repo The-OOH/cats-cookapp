@@ -5,6 +5,7 @@ import dev.cats.cookapp.dto.response.UserTokenDto;
 import dev.cats.cookapp.models.User;
 import dev.cats.cookapp.services.JwtUtil;
 import dev.cats.cookapp.services.user.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,7 +23,7 @@ public class LoginController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("/sign-in")
-    public ResponseEntity<UserTokenDto> login(@RequestBody UserRequest userDto) {
+    public ResponseEntity<UserTokenDto> login(@RequestBody @Valid UserRequest userDto) {
         Authentication authentication =
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken
                         (userDto.getEmail(), userDto.getPassword()));

@@ -5,6 +5,7 @@ import dev.cats.cookapp.services.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -18,5 +19,10 @@ public class ProductController {
     @GetMapping
     public List<ProductResponse> getProducts(){
         return productService.getProducts();
+    }
+
+    @GetMapping("/search")
+    public List<ProductResponse> searchProducts(@RequestParam String searchTerm){
+        return productService.searchProducts(searchTerm);
     }
 }

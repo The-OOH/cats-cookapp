@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface ProductService {
     List<ProductResponse> getProducts();
+    List<ProductResponse> searchProducts(String searchTerm);
 }

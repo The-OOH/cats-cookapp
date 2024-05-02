@@ -27,8 +27,8 @@ public class Unit {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "is_metric", nullable = false)
-    private Boolean isMetric;
+    @Column(name = "is_metric")
+    private Boolean isMetric = true;
 
     @OneToMany(mappedBy = "unit")
     private Set<RecipeIngredient> recipeIngredients = new HashSet<>();

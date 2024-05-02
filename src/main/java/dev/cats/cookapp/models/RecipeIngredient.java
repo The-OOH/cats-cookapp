@@ -14,7 +14,7 @@ public class RecipeIngredient {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "original", nullable = false)
+    @Column(name = "original")
     private String original;
 
     @Column(name = "amount", nullable = false)

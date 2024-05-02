@@ -19,10 +19,10 @@ public class Recipe {
 
     @ManyToOne
     @JoinColumn(name = "created_by")
-    private User created_by;
+    private User createdBy;
 
     @Column
-    private Timestamp created_at = new Timestamp(System.currentTimeMillis());
+    private Timestamp createdAt = new Timestamp(System.currentTimeMillis());
 
     @Column
     private Integer calories;
@@ -38,8 +38,6 @@ public class Recipe {
     @Column(nullable = false)
     private Integer pricePerServing;
 
-    @Basic(optional = false)
-    @Column(nullable = false)
     private Long spoonacularId;
 
     @Basic(optional = false)
@@ -50,12 +48,10 @@ public class Recipe {
     @Column(nullable = false)
     private Integer servings;
 
-    @Basic(optional = false)
-    @Column(nullable = false, length = 128)
+    @Column(length = 128)
     private String image;
 
-    @Basic(optional = false)
-    @Column(nullable = false, length = 512)
+    @Column(length = 512)
     private String summary;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -64,12 +60,8 @@ public class Recipe {
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<RecipeCategory> categories = new HashSet<>();
 
-    @Basic(optional = false)
-    @Column(nullable = false)
     private Integer healthScore;
 
-    @Basic(optional = false)
-    @Column(nullable = false)
     private Double spoonacularScore;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe")

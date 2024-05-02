@@ -53,7 +53,7 @@ public class User {
         this.password = password;
     }
 
-    @OneToMany(mappedBy = "created_by")
+    @OneToMany(mappedBy = "createdBy")
     private Set<Recipe> recipes = new HashSet<>();
 
 }

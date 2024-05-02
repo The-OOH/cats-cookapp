@@ -1,9 +1,11 @@
 package dev.cats.cookapp.services.recipe;
 
+import dev.cats.cookapp.dto.request.RecipeProductRequest;
+import dev.cats.cookapp.dto.request.RecipeRequest;
 import dev.cats.cookapp.dto.response.RecipeListResponse;
 import dev.cats.cookapp.dto.response.RecipeResponse;
 import dev.cats.cookapp.mappers.RecipeMapper;
-import dev.cats.cookapp.models.RecipeCategory;
+import dev.cats.cookapp.models.*;
 import dev.cats.cookapp.repositories.*;
 import dev.cats.cookapp.services.TokenExtractService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -21,8 +25,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RecipeServiceImpl implements RecipeService {
     private final RecipeRepository recipeRepository;
+    private final RecipeCategoryRepository recipeCategoryRepository;
     private final RecipeMapper recipeMapper;
     private final TokenExtractService tokenExtractService;
+    private final RecipeIngredientRepository recipeIngredientRepository;
+    private final UnitRepository unitRepository;
+    private final RecipeStepRepository recipeStepRepository;
+    private final ProductRepository productRepository;
+
     @Override
     public Page<RecipeListResponse> getRecipes(int page, int size, Long userId) {
         var pageRequest = PageRequest.of(page, size);
@@ -52,5 +62,59 @@ public class RecipeServiceImpl implements RecipeService {
             userList.getUser().getId().equals(user.getId()));
         recipeResult.setIsSaved(isSavedForUser);
         return recipeResult;
+    }
+
+    @Override
+    public RecipeResponse addRecipe(RecipeRequest recipe) {
+        var categories = recipeCategoryRepository.findAllByNameIn(recipe.getCategories());
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        var user = tokenExtractService.extractToken(auth).orElseThrow();
+        var recipeEntity = recipeMapper.toEntity(recipe);
+        recipeEntity.setCategories(new HashSet<>(categories));
+        recipeEntity.setCreatedBy(user);
+        recipeEntity.setCreatedAt(new java.sql.Timestamp(System.currentTimeMillis()));
+        recipeRepository.save(recipeEntity);
+
+        var recipeSteps = saveSteps(recipe.getSteps(), recipeEntity);
+        recipeStepRepository.saveAll(recipeSteps);
+        recipeEntity.setSteps(recipeSteps);
+
+        var recipeIngredients = recipe.getProducts();
+        List<RecipeIngredient> recipeIngredientEntities = saveIngredients(recipeIngredients, recipeEntity);
+        recipeIngredientRepository.saveAll(recipeIngredientEntities);
+        recipeEntity.setProducts(new HashSet<>(recipeIngredientEntities));
+
+        return recipeMapper.toDto(recipeEntity);
+    }
+
+    private List<RecipeStep> saveSteps(List<String> steps, Recipe recipe) {
+        return steps.stream()
+                .map(step -> {
+                    var stepEntity = new RecipeStep();
+                    stepEntity.setDescription(step);
+                    stepEntity.setRecipe(recipe);
+                    return stepEntity;
+                })
+                .toList();
+    }
+
+    private List<RecipeIngredient> saveIngredients(List<RecipeProductRequest> products, Recipe recipe) {
+        return products.stream()
+                .map(ingredient -> {
+                    var ingredientEntity = new RecipeIngredient();
+                    ingredientEntity.setAmount(ingredient.getAmount());
+                    var product = new Product();
+                    if(ingredient.getProductId() != null) {
+                        product = productRepository.findById(ingredient.getProductId()).orElseThrow();
+                    } else {
+                        product.setName(ingredient.getCustomName());
+                        productRepository.save(product);
+                    }
+                    ingredientEntity.setProduct(product);
+                    ingredientEntity.setUnit(unitRepository.findById(ingredient.getUnitId()).orElseThrow());
+                    ingredientEntity.setRecipe(recipe);
+                    return ingredientEntity;
+                })
+                .toList();
     }
 }

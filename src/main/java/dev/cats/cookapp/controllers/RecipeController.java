@@ -1,5 +1,6 @@
 package dev.cats.cookapp.controllers;
 
+import dev.cats.cookapp.dto.request.RecipeRequest;
 import dev.cats.cookapp.dto.response.RecipeListResponse;
 import dev.cats.cookapp.dto.response.RecipeResponse;
 import dev.cats.cookapp.models.User;
@@ -7,6 +8,7 @@ import dev.cats.cookapp.services.TokenExtractService;
 import dev.cats.cookapp.services.recipe.RecipeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,12 +32,12 @@ public class RecipeController {
     }
 
     @GetMapping("/{id}")
-    public RecipeResponse getRecipe(@PathVariable Long id) {
-        return recipeService.getRecipe(id);
+    public ResponseEntity<RecipeResponse> getRecipe(@PathVariable Long id) {
+        return ResponseEntity.ok().body(recipeService.getRecipe(id));
     }
 
-//    @PostMapping
-//    public RecipeResponse addRecipe(@ResponseBody RecipeRequest recipe){
-//
-//    }
+    @PostMapping
+    public ResponseEntity<RecipeResponse> addRecipe(@RequestBody RecipeRequest recipe){
+        return ResponseEntity.ok().body(recipeService.addRecipe(recipe));
+    }
 }

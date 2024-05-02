@@ -20,7 +20,7 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
             "WHERE r.id IN :ids")
     List<Object[]> findAllByIdIn(@Param("ids") List<Long> ids, @Param("userId") Long userId);
 
-    @EntityGraph(attributePaths = {"created_by", "products", "categories", "steps",  "lists",  "products.unit", "products.product",
+    @EntityGraph(attributePaths = {"createdBy", "products", "categories", "steps",  "lists",  "products.unit", "products.product",
             "categories.recipeCategoryType"})
     Optional<Recipe> findById(Long id);
 

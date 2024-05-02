@@ -17,10 +17,10 @@ public class Product {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "aisle", nullable = false)
+    @Column(name = "aisle")
     private String aisle;
 
-    @Column(name = "image", nullable = false)
+    @Column(name = "image")
     private String image;
 
     @Column(name = "name", nullable = false)

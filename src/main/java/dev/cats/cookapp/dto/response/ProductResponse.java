@@ -6,6 +6,7 @@ import lombok.Value;
 public class ProductResponse {
     Long id;
     String aisle;
+    String image;
     String name;
 
 }

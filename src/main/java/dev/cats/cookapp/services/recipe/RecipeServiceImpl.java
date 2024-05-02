@@ -73,6 +73,31 @@ public class RecipeServiceImpl implements RecipeService {
         recipeEntity.setCategories(new HashSet<>(categories));
         recipeEntity.setCreatedBy(user);
         recipeEntity.setCreatedAt(new java.sql.Timestamp(System.currentTimeMillis()));
+        return getRecipeResponse(recipe, recipeEntity);
+    }
+
+    @Override
+    public RecipeResponse updateRecipe(Long id, RecipeRequest recipe) {
+        var categories = recipeCategoryRepository.findAllByNameIn(recipe.getCategories());
+        var recipeEntity = recipeRepository.findById(id).orElseThrow();
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        var user = tokenExtractService.extractToken(auth).orElseThrow();
+        if(recipeEntity.getCreatedBy() == null) {
+            recipeEntity.setCreatedBy(user);
+        }
+        if(!recipeEntity.getCreatedBy().getId().equals(user.getId())) {
+            throw new RuntimeException("You can't update this recipe");
+        }
+        recipeEntity.setTitle(recipe.getTitle());
+        recipeEntity.setPricePerServing(recipe.getPrice());
+        recipeEntity.setReadyInMinutes(recipe.getTime());
+        recipeEntity.setServings(recipe.getServings());
+        recipeEntity.setImage(recipe.getImage());
+        recipeEntity.setCategories(new HashSet<>(categories));
+        return getRecipeResponse(recipe, recipeEntity);
+    }
+
+    private RecipeResponse getRecipeResponse(RecipeRequest recipe, Recipe recipeEntity) {
         recipeRepository.save(recipeEntity);
 
         var recipeSteps = saveSteps(recipe.getSteps(), recipeEntity);

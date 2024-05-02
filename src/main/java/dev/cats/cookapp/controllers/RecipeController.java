@@ -40,4 +40,9 @@ public class RecipeController {
     public ResponseEntity<RecipeResponse> addRecipe(@RequestBody RecipeRequest recipe){
         return ResponseEntity.ok().body(recipeService.addRecipe(recipe));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<RecipeResponse> updateRecipe(@PathVariable Long id, @RequestBody RecipeRequest recipe){
+        return ResponseEntity.ok().body(recipeService.updateRecipe(id, recipe));
+    }
 }

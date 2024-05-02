@@ -9,4 +9,5 @@ public interface RecipeService {
     Page<RecipeListResponse> getRecipes(int page, int size, Long userId);
     RecipeResponse getRecipe(Long id);
     RecipeResponse addRecipe(RecipeRequest recipe);
+    RecipeResponse updateRecipe(Long id, RecipeRequest recipe);
 }

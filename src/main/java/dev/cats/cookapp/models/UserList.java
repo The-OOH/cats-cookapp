@@ -31,4 +31,12 @@ public class UserList {
     )
     private Set<Recipe> recipes = new HashSet<>();
 
+    public UserList() {
+    }
+
+    public UserList(String name, User user) {
+        this.name = name;
+        this.user = user;
+    }
+
 }

@@ -8,7 +8,7 @@ import org.mapstruct.*;
 
 
 @Mapper(componentModel = "spring", uses = RecipeCategoryMapper.class)
-public interface RecipeMapper{
+public interface RecipeMapper {
 
     @Mapping(source = "readyInMinutes", target = "time")
     @Mapping(source = "pricePerServing", target = "price")
@@ -18,7 +18,7 @@ public interface RecipeMapper{
     @Mapping(source = "readyInMinutes", target = "time")
     @Mapping(source = "pricePerServing", target = "price")
     RecipeListResponse toListDto(Recipe recipe);
-    
+
     @InheritInverseConfiguration
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
@@ -29,4 +29,9 @@ public interface RecipeMapper{
     @Mapping(target = "readyInMinutes", source = "time")
     @Mapping(target = "pricePerServing", source = "price")
     Recipe toEntity(RecipeRequest recipeRequest);
+
+    Recipe toEntity(RecipeListResponse recipeListResponse);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    Recipe partialUpdate(RecipeListResponse recipeListResponse, @MappingTarget Recipe recipe);
 }

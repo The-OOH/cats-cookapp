@@ -36,6 +36,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<FavoriteRecipes> favoriteRecipes = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<UserList> userLists = new HashSet<>();
+
     public User() {
     }
 

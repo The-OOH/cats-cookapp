@@ -7,10 +7,8 @@ import dev.cats.cookapp.models.User;
 import java.util.Optional;
 
 public interface UserService {
-    Optional<UserResponse> getUser(Long id);
     Optional<UserResponse> getUser(String email);
+    Optional<User> getCurrentUser();
     Optional<User> getUserModel(String email);
     UserResponse createUser(UserRequest userRequest);
-    UserResponse updateUser(UserRequest userRequest);
-    void deleteUser(Long id);
 }

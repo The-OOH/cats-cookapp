@@ -7,6 +7,7 @@ import dev.cats.cookapp.repositories.ProductRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.hibernate.search.mapper.orm.Search;
 import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,8 @@ public class ProductServiceImpl implements ProductService{
     private final ProductRepository productRepository;
     private final EntityManager entityManager;
     private final ProductMapper productMapper;
+    @Value("${product.search.result.limit}")
+    private Integer searchResultLimit;
 
     public List<ProductResponse> getProducts() {
         return productRepository.findAll().stream()
@@ -38,7 +41,7 @@ public class ProductServiceImpl implements ProductService{
 
         List<Product> products = searchSession.search(Product.class)
                 .where(f -> f.match().fields("name").matching(searchTerm).fuzzy())
-                .fetchHits(20);  // fetch a reasonable number of hits
+                .fetchHits(searchResultLimit);
 
         return products.stream()
                 .map(productMapper::toDto)

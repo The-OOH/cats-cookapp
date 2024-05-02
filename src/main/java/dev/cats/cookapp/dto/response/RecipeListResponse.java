@@ -20,14 +20,17 @@ public class RecipeListResponse implements Serializable {
     Integer servings;
     String image;
     Boolean isSaved;
+    Integer calories;
     Set<RecipeCategoryResponse> categories;
 
     public RecipeListResponse(Long id, String title, Integer price, Integer time, Integer servings,
-                              String image, Boolean isSaved, Set<RecipeCategory> categories) {
+                              String image, Boolean isSaved, Integer calories,
+                              Set<RecipeCategory> categories) {
         this.id = id;
         this.title = title;
         this.price = price;
         this.time = time;
+        this.calories = calories;
         this.servings = servings;
         this.image = image;
         this.isSaved = isSaved;

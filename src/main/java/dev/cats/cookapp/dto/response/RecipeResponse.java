@@ -24,5 +24,6 @@ public class RecipeResponse implements Serializable {
     String image;
     List<RecipeCategoryResponse> categories;
     Boolean isSaved;
+    Integer calories;
     List<RecipeStepResponse> steps;
 }

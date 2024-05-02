@@ -45,7 +45,7 @@ public class RecipeServiceImpl implements RecipeService {
                     Set<RecipeCategory> categories = recipe.getCategories();
                     return new RecipeListResponse(recipe.getId(), recipe.getTitle(), recipe.getPricePerServing(),
                             recipe.getReadyInMinutes(), recipe.getServings(), recipe.getImage(),
-                            isSaved, categories);
+                            isSaved,recipe.getCalories(), categories);
                 })
                 .collect(Collectors.toSet());
         return new PageImpl<>(recipeListResponses.stream().toList(),

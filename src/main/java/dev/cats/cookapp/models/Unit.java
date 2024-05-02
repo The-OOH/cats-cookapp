@@ -7,13 +7,6 @@ import lombok.Setter;
 import java.util.HashSet;
 import java.util.Set;
 
-/*
-*
-Table units {
-  unit_id INT [pk, unique, increment]
-  name text
-  isMetric boolean
-}*/
 @Getter
 @Setter
 @Entity
@@ -29,6 +22,9 @@ public class Unit {
 
     @Column(name = "is_metric")
     private Boolean isMetric = true;
+
+    @Column(name = "is_important")
+    private Boolean isImportant = false;
 
     @OneToMany(mappedBy = "unit")
     private Set<RecipeIngredient> recipeIngredients = new HashSet<>();

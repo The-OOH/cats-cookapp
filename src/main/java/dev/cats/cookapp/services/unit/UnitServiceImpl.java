@@ -21,4 +21,10 @@ public class UnitServiceImpl implements UnitService{
                 .collect(Collectors.toList());
     }
 
+    public List<UnitResponse> getImportantUnits() {
+        return unitRepository.findAllByIsImportantTrue().stream()
+                .map(unitMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
 }

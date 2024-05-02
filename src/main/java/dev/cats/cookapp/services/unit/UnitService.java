@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface UnitService {
     List<UnitResponse> getUnits();
+    List<UnitResponse> getImportantUnits();
 }

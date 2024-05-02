@@ -19,4 +19,9 @@ public class UnitController {
     public List<UnitResponse> getUnits(){
         return unitService.getUnits();
     }
+
+    @GetMapping("/important")
+    public List<UnitResponse> getImportantUnits(){
+        return unitService.getImportantUnits();
+    }
 }

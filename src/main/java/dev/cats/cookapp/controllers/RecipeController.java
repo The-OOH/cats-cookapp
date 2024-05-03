@@ -28,7 +28,19 @@ public class RecipeController {
             User user = tokenExtractService.extractToken(SecurityContextHolder.getContext().getAuthentication()).get();
             return recipeService.getRecipes(page, size, user.getId());
         }
-        return recipeService.getRecipes(page, size, (long) -1);
+        return recipeService.getRecipes(page, size, null);
+    }
+
+    @GetMapping("/my")
+    public Page<RecipeListResponse> getMyRecipes(@RequestParam(required = false, defaultValue = "0") int page,
+                                               @RequestParam(required = false, defaultValue = "100") int size) {
+        var isPresent = tokenExtractService.extractToken(SecurityContextHolder.getContext().getAuthentication())
+                .isPresent();
+        if(isPresent) {
+            User user = tokenExtractService.extractToken(SecurityContextHolder.getContext().getAuthentication()).get();
+            return recipeService.getMyRecipes(page, size, user.getId());
+        }
+        return recipeService.getMyRecipes(page, size, null);
     }
 
     @GetMapping("/{id}")

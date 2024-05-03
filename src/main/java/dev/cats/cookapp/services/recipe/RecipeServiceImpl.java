@@ -37,6 +37,18 @@ public class RecipeServiceImpl implements RecipeService {
     public Page<RecipeListResponse> getRecipes(int page, int size, Long userId) {
         var pageRequest = PageRequest.of(page, size);
         var pageOfIds = recipeRepository.findAllIds(pageRequest);
+
+        return getRecipes(pageOfIds, userId);
+    }
+
+    @Override
+    public Page<RecipeListResponse> getMyRecipes(int page, int size, Long userId) {
+        var pageOfIds = recipeRepository.findAllIdsByUserId(PageRequest.of(page, size), userId);
+
+        return getRecipes(pageOfIds, userId);
+    }
+
+    private Page<RecipeListResponse> getRecipes(Page<Long> pageOfIds, Long userId){
         var recipes = recipeRepository.findAllByIdIn(pageOfIds.getContent(), userId);
         Set<RecipeListResponse> recipeListResponses = recipes.stream()
                 .map(objects -> {
@@ -49,7 +61,7 @@ public class RecipeServiceImpl implements RecipeService {
                 })
                 .collect(Collectors.toSet());
         return new PageImpl<>(recipeListResponses.stream().toList(),
-                pageRequest, pageOfIds.getTotalElements());
+                pageOfIds.getPageable(), pageOfIds.getTotalElements());
     }
 
     @Override

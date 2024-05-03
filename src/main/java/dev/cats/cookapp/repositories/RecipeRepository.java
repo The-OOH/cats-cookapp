@@ -8,6 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,4 +29,10 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
     @Query("SELECT r.id FROM Recipe r")
     Page<Long> findAllIds(Pageable pageable);
+
+    @Query("SELECT COUNT(r) FROM Recipe r WHERE r.createdAt BETWEEN :startDate AND :endDate")
+    Integer countRecipesInSeason(@Param("startDate") Timestamp startDate, @Param("endDate") Timestamp endDate);
+
+    @Query("SELECT COUNT(r) FROM Recipe r WHERE MONTH(r.createdAt) = :month")
+    Integer countRecipesInMonth(@Param("month") Timestamp month);
 }

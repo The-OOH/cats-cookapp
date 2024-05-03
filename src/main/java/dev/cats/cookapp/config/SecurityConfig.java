@@ -52,8 +52,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers( "/**", "/login/**", "/webjars/**", "/search/**").permitAll()
+                    auth.requestMatchers( "/login/**", "/webjars/**", "/search/**").permitAll()
                             .requestMatchers("/login/me").authenticated()
+                            .requestMatchers("/admin/**").hasRole("ADMIN")
                             .anyRequest().authenticated();
                 })
                 .sessionManagement(sessionManagement ->

@@ -23,21 +23,15 @@ public class RecipeController {
 
     @GetMapping
     public Page<RecipeListResponse> getRecipes(@RequestParam(required = false, defaultValue = "0") int page,
-                                               @RequestParam(required = false, defaultValue = "100") int size) {
+                                               @RequestParam(required = false, defaultValue = "100") int size,
+                                               @RequestParam(required = false) List<String> categories) {
         var isPresent = tokenExtractService.extractToken(SecurityContextHolder.getContext().getAuthentication())
                 .isPresent();
-        if(isPresent) {
+        if (isPresent) {
             User user = tokenExtractService.extractToken(SecurityContextHolder.getContext().getAuthentication()).get();
-            return recipeService.getRecipes(page, size, user.getId());
+            return recipeService.getRecipes(page, size, categories, user.getId());
         }
-        return recipeService.getRecipes(page, size, null);
-    }
-
-    @GetMapping("/category")
-    public Page<RecipeListResponse> getRecipesByCategory(@RequestParam List<String> categories,
-                                                         @RequestParam(required = false, defaultValue = "0") int page,
-                                                         @RequestParam(required = false, defaultValue = "100") int size) {
-        return recipeService.getRecipesByCategory(page, size, categories);
+        return recipeService.getRecipes(page, size, categories, null);
     }
 
     @GetMapping("/my")

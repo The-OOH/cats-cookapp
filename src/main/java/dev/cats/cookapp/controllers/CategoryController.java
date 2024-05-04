@@ -19,4 +19,9 @@ public class CategoryController {
     public List<RecipeCategoryResponse> getCategories(){
         return categoryService.getCategories();
     }
+
+    @GetMapping("/important")
+    public List<RecipeCategoryResponse> getImportantCategories(){
+        return categoryService.getImportantCategories();
+    }
 }

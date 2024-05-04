@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,10 +35,14 @@ public class RecipeServiceImpl implements RecipeService {
     private final ProductRepository productRepository;
 
     @Override
-    public Page<RecipeListResponse> getRecipes(int page, int size, Long userId) {
+    public Page<RecipeListResponse> getRecipes(int page, int size, List<String> categoryNames, Long userId) {
         var pageRequest = PageRequest.of(page, size);
-        var pageOfIds = recipeRepository.findAllIds(pageRequest);
-
+        Page<Long> pageOfIds;
+        if(categoryNames == null || categoryNames.isEmpty() ) {
+            pageOfIds = recipeRepository.findAllIds(pageRequest);
+        } else {
+            pageOfIds = recipeRepository.findAllByCategories(pageRequest, categoryNames);
+        }
         return getRecipes(pageOfIds, userId);
     }
 
@@ -60,8 +65,9 @@ public class RecipeServiceImpl implements RecipeService {
                             isSaved,recipe.getCalories(), categories);
                 })
                 .collect(Collectors.toSet());
-        return new PageImpl<>(recipeListResponses.stream().toList(),
-                pageOfIds.getPageable(), pageOfIds.getTotalElements());
+        var recipesList = new java.util.ArrayList<>(recipeListResponses.stream().toList());
+        recipesList.sort(Comparator.comparing(RecipeListResponse::getId));
+        return new PageImpl<>(recipesList, pageOfIds.getPageable(), pageOfIds.getTotalElements());
     }
 
     @Override

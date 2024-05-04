@@ -17,7 +17,7 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     @Query("SELECT r, (CASE WHEN ul.id IS NOT NULL THEN true ELSE false END) AS isInList " +
             "FROM Recipe r " +
             "LEFT JOIN r.lists ul ON ul.user.id = :userId " +
-            "LEFT JOIN FETCH r.categories cat " +
+            "LEFT JOIN FETCH r.categories cat LEFT JOIN FETCH cat.recipeCategoryType " +
             "WHERE r.id IN :ids")
     List<Object[]> findAllByIdIn(@Param("ids") List<Long> ids, @Param("userId") Long userId);
 
@@ -27,6 +27,9 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
     @Query("SELECT r.id FROM Recipe r")
     Page<Long> findAllIds(Pageable pageable);
+
+    @Query("SELECT r.id FROM Recipe r JOIN r.categories c WHERE c.name IN :categoryNames")
+    Page<Long> findAllByCategories(Pageable pageable, @Param("categoryNames") List<String> categoryNames);
 
     @Query("SELECT r.id FROM Recipe r WHERE r.createdBy.id = :userId")
     Page<Long> findAllIdsByUserId(Pageable pageable, @Param("userId") Long userId);

@@ -31,6 +31,9 @@ public class RecipeCategory {
     @JoinColumn(name = "category_type_id")
     private RecipeCategoryType recipeCategoryType;
 
+    @Column(name = "is_important", nullable = false)
+    private Boolean isImportant;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

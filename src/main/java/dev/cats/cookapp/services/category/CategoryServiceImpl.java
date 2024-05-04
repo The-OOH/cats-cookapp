@@ -21,4 +21,9 @@ public class CategoryServiceImpl implements CategoryService {
                 .collect(Collectors.toList());
     }
 
+    public List<RecipeCategoryResponse> getImportantCategories() {
+        return categoryRepository.findAllByIsImportantTrue().stream()
+                .map(recipeCategoryMapper::toDto)
+                .collect(Collectors.toList());
+    }
 }

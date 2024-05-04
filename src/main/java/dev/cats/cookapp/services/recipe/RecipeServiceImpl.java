@@ -109,6 +109,13 @@ public class RecipeServiceImpl implements RecipeService {
         return getRecipeResponse(recipe, recipeEntity);
     }
 
+    @Override
+    public Page<RecipeListResponse> getRecipesByCategory(int page, int size, List<String> categoryNames) {
+        var pageRequest = PageRequest.of(page, size);
+        var recipesPage = recipeRepository.findByCategoryNames(categoryNames, pageRequest);
+        return recipesPage.map(recipeMapper::toListDto);
+    }
+
     private RecipeResponse getRecipeResponse(RecipeRequest recipe, Recipe recipeEntity) {
         recipeRepository.save(recipeEntity);
 

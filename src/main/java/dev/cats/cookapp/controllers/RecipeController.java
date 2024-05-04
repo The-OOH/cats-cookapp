@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/recipes")
 @RequiredArgsConstructor
@@ -31,6 +33,13 @@ public class RecipeController {
         return recipeService.getRecipes(page, size, null);
     }
 
+    @GetMapping("/category")
+    public Page<RecipeListResponse> getRecipesByCategory(@RequestParam List<String> categories,
+                                                         @RequestParam(required = false, defaultValue = "0") int page,
+                                                         @RequestParam(required = false, defaultValue = "100") int size) {
+        return recipeService.getRecipesByCategory(page, size, categories);
+    }
+
     @GetMapping("/my")
     public Page<RecipeListResponse> getMyRecipes(@RequestParam(required = false, defaultValue = "0") int page,
                                                @RequestParam(required = false, defaultValue = "100") int size) {
@@ -47,8 +56,6 @@ public class RecipeController {
     public ResponseEntity<RecipeResponse> getRecipe(@PathVariable Long id) {
         return ResponseEntity.ok().body(recipeService.getRecipe(id));
     }
-
-    
 
     @PostMapping
     public ResponseEntity<RecipeResponse> addRecipe(@RequestBody RecipeRequest recipe){

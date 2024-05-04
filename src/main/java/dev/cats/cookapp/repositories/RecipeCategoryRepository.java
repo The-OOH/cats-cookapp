@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface RecipeCategoryRepository extends JpaRepository<RecipeCategory, Long> {
     List<RecipeCategory> findAllByNameIn(List<String> names);
+    List<RecipeCategory> findAllByIsImportantTrue();
 }

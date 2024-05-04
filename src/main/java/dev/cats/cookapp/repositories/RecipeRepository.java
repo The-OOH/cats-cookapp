@@ -36,4 +36,7 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
     @Query("SELECT COUNT(r) FROM Recipe r WHERE MONTH(r.createdAt) = :month")
     Integer countRecipesInMonth(@Param("month") Timestamp month);
+
+    @Query("SELECT r FROM Recipe r JOIN r.categories c WHERE c.name IN :categoryNames")
+    Page<Recipe> findByCategoryNames(@Param("categoryNames") List<String> categoryNames, Pageable pageable);
 }

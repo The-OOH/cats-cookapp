@@ -40,4 +40,3 @@ public class CollectionRecipe {
         this.id = new CollectionRecipeKey(coll.getId(), rec.getId());
     }
 }
-

@@ -1,20 +1,42 @@
 #
 # Project build (Multi-Stage)
 # --------------------------------
-#
-# We use a Maven image to build the project with Java
-# We will call this sub-environment "build"
-# Copy all the contents of the repository
-# Run the mvn clean package command (It will generate a JAR file for deployment)
 FROM maven:3.9.6-eclipse-temurin-21 AS build
+
+# (Optional) allow customizing which JAR to pick up
+ARG JAR_NAME=target/microservice-0.0.1-SNAPSHOT.jar
+
 COPY . .
 RUN mvn clean package
 
-# We use an Openjdk image
-# We expose the port that our component will use to listen to requests
-# We copy from "build" the generated JAR (the generation path is the same as we would see locally) and we move and rename it in destination as app.jar
-# We mark the starting point of the image with the command "java -jar app.jar" that will execute our component.
+# ────────────────────────────────────────────────────────────────────────────────
 FROM openjdk:21
+
+# Build-time args for wiring into runtime ENV
+ARG DB_URL
+ARG DB_USER
+ARG DB_PASS
+ARG CLERK_SECRET_KEY
+ARG CLOUDFLARE_ACCESS_KEY
+ARG CLOUDFLARE_SECRET_KEY
+ARG CLOUDFLARE_ACCOUNT_ID
+ARG CLOUDFLARE_BUCKET_NAME
+ARG CLOUDFLARE_PUBLIC_URL
+
+# Set runtime environment variables (with blank defaults)
+ENV DB_URL=${DB_URL:-""} \
+    DB_USER=${DB_USER:-""} \
+    DB_PASS=${DB_PASS:-""} \
+    CLERK_SECRET_KEY=${CLERK_SECRET_KEY:-""} \
+    CLOUDFLARE_ACCESS_KEY=${CLOUDFLARE_ACCESS_KEY:-""} \
+    CLOUDFLARE_SECRET_KEY=${CLOUDFLARE_SECRET_KEY:-""} \
+    CLOUDFLARE_ACCOUNT_ID=${CLOUDFLARE_ACCOUNT_ID:-""} \
+    CLOUDFLARE_BUCKET_NAME=${CLOUDFLARE_BUCKET_NAME:-""} \
+    CLOUDFLARE_PUBLIC_URL=${CLOUDFLARE_PUBLIC_URL:-""}
+
 EXPOSE 8080
-COPY --from=build /target/microservice-0.0.1-SNAPSHOT.jar app.jar
+
+# Copy the built JAR (using the ARG if you overrode it)
+COPY --from=build /${JAR_NAME} app.jar
+
 ENTRYPOINT ["java", "-jar", "/app.jar"]

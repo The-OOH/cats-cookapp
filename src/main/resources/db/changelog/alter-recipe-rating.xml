@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+      http://www.liquibase.org/xml/ns/dbchangelog
+      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.21.xsd">
+
+    <changeSet id="20250526-1-alter-recipe-rating" author="Oleksandr Martsin">
+        <comment>Change recipe_rating.rating from INTEGER to NUMERIC</comment>
+        <modifyDataType
+                tableName="recipe_rating"
+                columnName="rating"
+                newDataType="NUMERIC"/>
+    </changeSet>
+</databaseChangeLog>

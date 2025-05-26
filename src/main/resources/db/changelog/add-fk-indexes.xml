@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+      http://www.liquibase.org/xml/ns/dbchangelog
+      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.21.xsd">
+
+    <changeSet id="add-fk-indexes-20250525" author="Oleksandr Martsin">
+        <createIndex indexName="idx_categories_type_id" tableName="categories">
+            <column name="type_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_collection_recipes_collection_id" tableName="collection_recipes">
+            <column name="collection_id"/>
+        </createIndex>
+        <createIndex indexName="idx_collection_recipes_recipe_id" tableName="collection_recipes">
+            <column name="recipe_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_external_recipe_rating_recipe_id" tableName="external_recipe_rating">
+            <column name="recipe_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_recipe_categories_recipe_id" tableName="recipe_categories">
+            <column name="recipe_id"/>
+        </createIndex>
+        <createIndex indexName="idx_recipe_categories_category_id" tableName="recipe_categories">
+            <column name="category_id"/>
+        </createIndex>
+        <createIndex indexName="idx_recipe_ingredients_recipe_id" tableName="recipe_ingredients">
+            <column name="recipe_id"/>
+        </createIndex>
+        <createIndex indexName="idx_recipe_ingredients_ingredient_id" tableName="recipe_ingredients">
+            <column name="ingredient_id"/>
+        </createIndex>
+        <createIndex indexName="idx_recipe_ingredients_unit_id" tableName="recipe_ingredients">
+            <column name="unit_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_recipe_nutritions_recipe_id" tableName="recipe_nutritions">
+            <column name="recipe_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_recipe_rating_recipe_id" tableName="recipe_rating">
+            <column name="recipe_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_recipe_steps_recipe_id" tableName="recipe_steps">
+            <column name="recipe_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_user_cooking_stats_recipe_id" tableName="user_cooking_stats">
+            <column name="recipe_id"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

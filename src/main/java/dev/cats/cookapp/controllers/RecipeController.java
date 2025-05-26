@@ -1,63 +1,43 @@
 package dev.cats.cookapp.controllers;
 
-import dev.cats.cookapp.dto.request.RecipeRequest;
-import dev.cats.cookapp.dto.response.RecipeListResponse;
-import dev.cats.cookapp.dto.response.RecipeResponse;
-import dev.cats.cookapp.models.User;
-import dev.cats.cookapp.services.TokenExtractService;
-import dev.cats.cookapp.services.recipe.RecipeService;
+import dev.cats.cookapp.dtos.request.recipe.RecipeRequest;
+import dev.cats.cookapp.dtos.response.recipe.RecipeResponse;
+import dev.cats.cookapp.services.RecipeAPIService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
+import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/recipes")
 @RequiredArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class RecipeController {
-    private final RecipeService recipeService;
-    private final TokenExtractService tokenExtractService;
-
-    @GetMapping
-    public Page<RecipeListResponse> getRecipes(@RequestParam(required = false, defaultValue = "0") int page,
-                                               @RequestParam(required = false, defaultValue = "100") int size,
-                                               @RequestParam(required = false) List<String> categories) {
-        var isPresent = tokenExtractService.extractToken(SecurityContextHolder.getContext().getAuthentication())
-                .isPresent();
-        if (isPresent) {
-            User user = tokenExtractService.extractToken(SecurityContextHolder.getContext().getAuthentication()).get();
-            return recipeService.getRecipes(page, size, categories, user.getId());
-        }
-        return recipeService.getRecipes(page, size, categories, null);
-    }
-
-    @GetMapping("/my")
-    public Page<RecipeListResponse> getMyRecipes(@RequestParam(required = false, defaultValue = "0") int page,
-                                               @RequestParam(required = false, defaultValue = "100") int size) {
-        var isPresent = tokenExtractService.extractToken(SecurityContextHolder.getContext().getAuthentication())
-                .isPresent();
-        if(isPresent) {
-            User user = tokenExtractService.extractToken(SecurityContextHolder.getContext().getAuthentication()).get();
-            return recipeService.getMyRecipes(page, size, user.getId());
-        }
-        return recipeService.getMyRecipes(page, size, null);
-    }
+    RecipeAPIService recipeAPIService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<RecipeResponse> getRecipe(@PathVariable Long id) {
-        return ResponseEntity.ok().body(recipeService.getRecipe(id));
+    public RecipeResponse getRecipe(@PathVariable("id") Long id) {
+        return recipeAPIService.getRecipe(id);
     }
 
-    @PostMapping
-    public ResponseEntity<RecipeResponse> addRecipe(@RequestBody RecipeRequest recipe){
-        return ResponseEntity.ok().body(recipeService.addRecipe(recipe));
+    @PostMapping("/{userId}")
+    public RecipeResponse createRecipe(@RequestBody RecipeRequest recipeRequest, @PathVariable("userId") String userId) {
+        return recipeAPIService.saveRecipe(recipeRequest, userId);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<RecipeResponse> updateRecipe(@PathVariable Long id, @RequestBody RecipeRequest recipe){
-        return ResponseEntity.ok().body(recipeService.updateRecipe(id, recipe));
+    @PutMapping("/{id}/{userId}")
+    public RecipeResponse updateRecipe(@RequestBody RecipeRequest recipeRequest, @PathVariable("id") Long id, @PathVariable("userId") String userId) {
+        if (recipeRequest.getId() == null) {
+            throw new IllegalArgumentException("Recipe ID must be provided");
+        }
+        else {
+            recipeRequest.setId(id);
+        }
+        return recipeAPIService.saveRecipe(recipeRequest, userId);
+    }
+
+    @DeleteMapping("/{id}/{userId}")
+    public void deleteRecipe(@PathVariable("id") Long id, @PathVariable("userId") String userId) {
+        recipeAPIService.deleteRecipe(id, userId);
     }
 }

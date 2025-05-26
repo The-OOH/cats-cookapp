@@ -1,37 +1,35 @@
 package dev.cats.cookapp.mappers;
 
-import dev.cats.cookapp.dto.request.RecipeRequest;
-import dev.cats.cookapp.dto.response.RecipeListResponse;
-import dev.cats.cookapp.dto.response.RecipeResponse;
-import dev.cats.cookapp.models.Recipe;
-import org.mapstruct.*;
+import dev.cats.cookapp.dtos.response.recipe.RecipeCollectionResponse;
+import dev.cats.cookapp.dtos.response.recipe.RecipeInListResponse;
+import dev.cats.cookapp.models.recipe.Recipe;
+import dev.cats.cookapp.dtos.request.recipe.RecipeRequest;
+import dev.cats.cookapp.dtos.response.recipe.RecipeResponse;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-
-@Mapper(componentModel = "spring", uses = RecipeCategoryMapper.class)
+@Mapper(componentModel = "spring", uses = {CategoryMapper.class, IngredientMapper.class, StepMapper.class, UnitMapper.class, NutritionMapper.class})
 public interface RecipeMapper {
+    @Mapping(target = "author", ignore = true)
+    @Mapping(target = "duration", source = "durationTotal")
+    @Mapping(target = "nutritions", source = "nutrition")
+    @Mapping(target = "sourceUrl", source = "externalSourceUrl")
+    @Mapping(target = "rating", source = "finalRating")
+    @Mapping(target = "slug", source = "title", qualifiedByName = "toKebabCase")
+    RecipeResponse toResponse(Recipe recipe);
 
-    @Mapping(source = "readyInMinutes", target = "time")
-    @Mapping(source = "pricePerServing", target = "price")
-    @Mapping(source = "createdBy", target = "created_by")
-    RecipeResponse toDto(Recipe recipe);
-
-    @Mapping(source = "readyInMinutes", target = "time")
-    @Mapping(source = "pricePerServing", target = "price")
-    RecipeListResponse toListDto(Recipe recipe);
-
-    @InheritInverseConfiguration
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = "externalSourceUrl", ignore = true)
+    @Mapping(target = "finalRating", ignore = true)
+    @Mapping(target = "durationTotal", source = "duration")
+    @Mapping(target = "nutrition", ignore = true)
+    @Mapping(target = "ingredients", ignore = true)
     @Mapping(target = "categories", ignore = true)
-    @Mapping(target = "products", ignore = true)
-    @Mapping(target = "steps", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "readyInMinutes", source = "time")
-    @Mapping(target = "pricePerServing", source = "price")
     Recipe toEntity(RecipeRequest recipeRequest);
 
-    Recipe toEntity(RecipeListResponse recipeListResponse);
+    RecipeCollectionResponse toCollectionResponse(Recipe recipe);
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Recipe partialUpdate(RecipeListResponse recipeListResponse, @MappingTarget Recipe recipe);
+    @Mapping(target = "duration", source = "durationTotal")
+    @Mapping(target = "rating", source = "finalRating")
+    @Mapping(target = "slug", source = "title", qualifiedByName = "toKebabCase")
+    RecipeInListResponse toInListResponse(Recipe recipe);
 }

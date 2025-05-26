@@ -37,6 +37,6 @@ ENV DB_URL=${DB_URL:-""} \
 EXPOSE 8080
 
 # Copy the built JAR (using the ARG if you overrode it)
-COPY --from=build /${JAR_NAME} app.jar
+COPY --from=build /target/*.jar app.jar
 
 ENTRYPOINT ["java", "-jar", "/app.jar"]

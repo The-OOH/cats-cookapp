@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+      http://www.liquibase.org/xml/ns/dbchangelog
+      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.21.xsd">
+
+    <changeSet id="initial-schema" author="Oleksandr Martsin">
+
+        <createTable tableName="categories">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="TEXT"/>
+            <column name="type_id" type="BIGINT"/>
+            <column name="image_url" type="TEXT"/>
+        </createTable>
+
+        <createTable tableName="category_types">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="TEXT"/>
+        </createTable>
+
+        <createTable tableName="collections">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="TEXT"/>
+            <column name="name" type="TEXT"/>
+            <column name="description" type="TEXT"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="NOW()"/>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="NOW()"/>
+        </createTable>
+
+        <createTable tableName="collection_recipes">
+            <column name="collection_id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="collection_recipes_pk"/>
+            </column>
+            <column name="recipe_id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="added_at" type="TIMESTAMP" defaultValueComputed="NOW()"/>
+        </createTable>
+
+        <createTable tableName="external_recipe_rating">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="recipe_id" type="BIGINT"/>
+            <column name="external_source_url" type="TEXT"/>
+            <column name="rating" type="NUMERIC"/>
+            <column name="count" type="INTEGER"/>
+        </createTable>
+
+        <createTable tableName="ingredients">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="TEXT"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="NOW()"/>
+        </createTable>
+
+        <createTable tableName="recipe_categories">
+            <column name="recipe_id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="recipe_categories_pk"/>
+            </column>
+            <column name="category_id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="recipe_ingredients">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="recipe_id" type="BIGINT"/>
+            <column name="ingredient_id" type="BIGINT"/>
+            <column name="unit_id" type="BIGINT"/>
+            <column name="amount" type="NUMERIC"/>
+        </createTable>
+
+        <createTable tableName="recipe_nutritions">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="recipe_id" type="BIGINT"/>
+            <column name="calories" type="INTEGER"/>
+            <column name="fat" type="NUMERIC"/>
+            <column name="protein" type="NUMERIC"/>
+            <column name="carbohydrate" type="NUMERIC"/>
+        </createTable>
+
+        <createTable tableName="recipe_rating">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="recipe_id" type="BIGINT"/>
+            <column name="user_id" type="TEXT"/>
+            <column name="rating" type="INTEGER"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="NOW()"/>
+        </createTable>
+
+        <createTable tableName="recipe_steps">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="recipe_id" type="BIGINT"/>
+            <column name="step_number" type="INTEGER"/>
+            <column name="description" type="TEXT"/>
+        </createTable>
+
+        <createTable tableName="recipes">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="TEXT"/>
+            <column name="description" type="TEXT"/>
+            <column name="source" type="TEXT"/>
+            <column name="duration_total" type="INTEGER"/>
+            <column name="difficulty" type="TEXT"/>
+            <column name="main_image_url" type="TEXT"/>
+            <column name="author_id" type="TEXT"/>
+            <column name="servings" type="INTEGER"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="NOW()"/>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="NOW()"/>
+            <column name="is_public" type="BOOLEAN"/>
+            <column name="external_source_url" type="TEXT"/>
+        </createTable>
+
+        <createTable tableName="units">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="TEXT"/>
+            <column name="abbreviation" type="TEXT"/>
+            <column name="type" type="TEXT"/>
+        </createTable>
+
+        <createTable tableName="user_cooking_stats">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="TEXT"/>
+            <column name="recipe_id" type="BIGINT"/>
+            <column name="cooked_date" type="TIMESTAMP"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="categories"
+                                 baseColumnNames="type_id"
+                                 referencedTableName="category_types"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_categories_type"/>
+
+        <addForeignKeyConstraint baseTableName="collection_recipes"
+                                 baseColumnNames="collection_id"
+                                 referencedTableName="collections"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_colrecipes_collection"/>
+
+        <addForeignKeyConstraint baseTableName="collection_recipes"
+                                 baseColumnNames="recipe_id"
+                                 referencedTableName="recipes"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_colrecipes_recipe"/>
+
+        <addForeignKeyConstraint baseTableName="external_recipe_rating"
+                                 baseColumnNames="recipe_id"
+                                 referencedTableName="recipes"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_ext_rating_recipe"/>
+
+        <addForeignKeyConstraint baseTableName="recipe_categories"
+                                 baseColumnNames="recipe_id"
+                                 referencedTableName="recipes"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_recipecat_recipe"/>
+
+        <addForeignKeyConstraint baseTableName="recipe_categories"
+                                 baseColumnNames="category_id"
+                                 referencedTableName="categories"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_recipecat_category"/>
+
+        <addForeignKeyConstraint baseTableName="recipe_ingredients"
+                                 baseColumnNames="recipe_id"
+                                 referencedTableName="recipes"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_recipeing_recipe"/>
+
+        <addForeignKeyConstraint baseTableName="recipe_ingredients"
+                                 baseColumnNames="ingredient_id"
+                                 referencedTableName="ingredients"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_recipeing_ingredient"/>
+
+        <addForeignKeyConstraint baseTableName="recipe_ingredients"
+                                 baseColumnNames="unit_id"
+                                 referencedTableName="units"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_recipeing_unit"/>
+
+        <addForeignKeyConstraint baseTableName="recipe_nutritions"
+                                 baseColumnNames="recipe_id"
+                                 referencedTableName="recipes"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_nutrition_recipe"/>
+
+        <addForeignKeyConstraint baseTableName="recipe_rating"
+                                 baseColumnNames="recipe_id"
+                                 referencedTableName="recipes"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_rating_recipe"/>
+
+        <addForeignKeyConstraint baseTableName="recipe_steps"
+                                 baseColumnNames="recipe_id"
+                                 referencedTableName="recipes"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_steps_recipe"/>
+
+        <addForeignKeyConstraint baseTableName="user_cooking_stats"
+                                 baseColumnNames="recipe_id"
+                                 referencedTableName="recipes"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_stats_recipe"/>
+
+    </changeSet>
+
+</databaseChangeLog>

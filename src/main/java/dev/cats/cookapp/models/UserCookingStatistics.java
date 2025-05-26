@@ -1,5 +1,6 @@
 package dev.cats.cookapp.models;
 
+import dev.cats.cookapp.models.recipe.Recipe;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +8,7 @@ import lombok.Setter;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "statistics")
+@Table(name = "user_cooking_stats")
 @Getter
 @Setter
 public class UserCookingStatistics {
@@ -15,14 +16,14 @@ public class UserCookingStatistics {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Basic(optional = false)
+    @Column(nullable = false)
+    private String userId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
-    @Column(name = "cooked_at")
+    @Column(name = "cooked_date")
     private Timestamp cookedAt;
 }

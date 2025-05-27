@@ -7,7 +7,7 @@ RUN mvn dependency:go-offline -B
 COPY src ./src
 RUN mvn clean package -DskipTests -B
 
-FROM openjdk:21-jdk-slim AS runtime
+FROM eclipse-temurin:21-jdk-alpine AS runtime
 WORKDIR /app
 
 # Copy the fat JAR from the build stage

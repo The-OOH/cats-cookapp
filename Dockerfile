@@ -15,4 +15,13 @@ COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENV JVM_INIT_PERCENT=25.0
+ENV JVM_MAX_PERCENT=50.0
+
+ENTRYPOINT ["sh","-c",
+  "exec java \
+    -XX:+UseContainerSupport \
+    -XX:InitialRAMPercentage=${JVM_INIT_PERCENT} \
+    -XX:MaxRAMPercentage=${JVM_MAX_PERCENT} \
+    -jar app.jar"
+]

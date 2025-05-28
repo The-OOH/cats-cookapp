@@ -1,5 +1,6 @@
 package dev.cats.cookapp.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,9 +18,11 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<Map<String, String>> handleException(NoSuchElementException e) {
+        log.error("NoSuchElementException: {}", e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 Map.of("message", e.getMessage())
         );
@@ -27,6 +30,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Map<String, String>> handleException(ConstraintViolationException e) {
+        log.error("ConstraintViolationException: {}", e.getMessage());
         return ResponseEntity.badRequest().body(
                 Map.of("message", e.getMessage())
         );
@@ -34,6 +38,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, String>> handleException(IllegalArgumentException e) {
+        log.error("IllegalArgumentException: {}", e.getMessage());
         return ResponseEntity.badRequest().body(
                 Map.of("message", e.getMessage())
         );
@@ -41,6 +46,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>>handleValidationErrors(MethodArgumentNotValidException ex) {
+        log.error("MethodArgumentNotValidException: {}", ex.getMessage());
         Map<String, String> errors = new HashMap<>();
 
         Map<String, List<String>> fieldErrors = ex.getBindingResult().getFieldErrors()
@@ -65,6 +71,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleException(Exception e) {
+        log.error("Exception: {}", e.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                 Map.of("message", e.getMessage())
         );

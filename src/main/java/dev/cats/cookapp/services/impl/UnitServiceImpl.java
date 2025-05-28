@@ -20,9 +20,10 @@ public class UnitServiceImpl implements UnitService {
 
     @Override
     public List<UnitResponse> getUnitsByName(String name) {
-        return unitRepository.findTop10ByNameIgnoreCaseContaining(name)
-                .stream()
-                .map(unitMapper::toResponse)
-                .toList();
+        var matches = unitRepository.findTop10ByNameIgnoreCaseContaining(name);
+        if (matches.isEmpty()) {
+            matches = unitRepository.findAll();
+        }
+        return matches.stream().map(unitMapper::toResponse).toList();
     }
 }

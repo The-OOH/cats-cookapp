@@ -90,11 +90,6 @@
 			<artifactId>core</artifactId>
 			<version>1.204.0</version>
 		</dependency>
-		<dependency>
-			<groupId>com.github.blagerweij</groupId>
-			<artifactId>liquibase-sessionlock</artifactId>
-			<version>1.6.9</version>
-		</dependency>
 	</dependencies>
 
 	<build>

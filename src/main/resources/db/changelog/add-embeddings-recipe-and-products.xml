@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+       http://www.liquibase.org/xml/ns/dbchangelog
+       https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.21.xsd">
+
+    <changeSet id="1748710746-1" author="Oleksandr Martsin">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="ingredients" columnName="embedding"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="ingredients">
+            <column name="embedding" type="vector(1536)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1748710746-2" author="Oleksandr Martsin">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="recipes" columnName="embedding"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="recipes">
+            <column name="embedding" type="vector(1536)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1748710746-3" author="Oleksandr Martsin">
+        <sql>
+            CREATE INDEX IF NOT EXISTS idx_ingredients_embedding_hnsw
+                ON ingredients
+                USING hnsw (embedding vector_l2_ops);
+        </sql>
+    </changeSet>
+
+    <changeSet id="1748710746-4" author="Oleksandr Martsin">
+        <sql>
+            CREATE INDEX IF NOT EXISTS idx_recipes_embedding_hnsw
+                ON recipes
+                USING hnsw (embedding vector_l2_ops);
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

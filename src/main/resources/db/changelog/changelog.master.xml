@@ -8,4 +8,5 @@
     <include file="/db/changelog/add-fk-indexes.xml"/>
     <include file="db/changelog/alter-recipe-rating.xml"/>
     <include file="db/changelog/preferences-new-tables.xml"/>
+    <include file="db/changelog/add-embeddings-recipe-and-products.xml"/>
 </databaseChangeLog>

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.21.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1748693736372-1"
+               author="Oleksandr Martsin">
+        <createTable tableName="user_interactions">
+            <column autoIncrement="true"
+                    name="id"
+                    type="BIGINT">
+                <constraints nullable="false"
+                             primaryKey="true"
+                             primaryKeyName="user_interactions_pkey"/>
+            </column>
+            <column name="user_id"
+                    type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="recipe_id"
+                    type="BIGINT"/>
+            <column name="interaction_type"
+                    type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="interaction_value"
+                    type="INT"/>
+            <column defaultValueComputed="now()"
+                    name="created_at"
+                    type="timestamp"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1748693736372-2"
+               author="Oleksandr Martsin">
+        <createTable tableName="user_preferences">
+            <column autoIncrement="true"
+                    name="id"
+                    type="BIGINT">
+                <constraints nullable="false"
+                             primaryKey="true"
+                             primaryKeyName="user_preferences_pkey"/>
+            </column>
+            <column name="user_id"
+                    type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="preference_type"
+                    type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category_id"
+                    type="BIGINT"/>
+            <column name="ingredient_id"
+                    type="BIGINT"/>
+            <column defaultValueBoolean="true"
+                    name="selected"
+                    type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="1.0"
+                    name="weight"
+                    type="NUMBER(5, 2)"/>
+            <column defaultValueComputed="now()"
+                    name="created_at"
+                    type="timestamp"/>
+            <column defaultValueComputed="now()"
+                    name="updated_at"
+                    type="timestamp"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1748693736372-3"
+               author="Oleksandr Martsin">
+        <createTable tableName="user_taste_profiles">
+            <column autoIncrement="true"
+                    name="id"
+                    type="BIGINT">
+                <constraints nullable="false"
+                             primaryKey="true"
+                             primaryKeyName="user_taste_profiles_pkey"/>
+            </column>
+            <column name="user_id"
+                    type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category_weights"
+                    type="CLOB"/>
+            <column name="ingredient_preferences"
+                    type="CLOB"/>
+            <column name="cuisine_preferences"
+                    type="CLOB"/>
+            <column name="difficulty_preference"
+                    type="CLOB"/>
+            <column name="avg_cooking_time_preference"
+                    type="INT"/>
+            <column defaultValueComputed="now()"
+                    name="last_updated"
+                    type="timestamp"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1748693736372-4"
+               author="Oleksandr Martsin">
+        <addUniqueConstraint columnNames="user_id, category_id, preference_type"
+                             constraintName="unique_user_category_preference"
+                             tableName="user_preferences"/>
+    </changeSet>
+    <changeSet id="1748693736372-5"
+               author="Oleksandr Martsin">
+        <addUniqueConstraint columnNames="user_id, ingredient_id, preference_type"
+                             constraintName="unique_user_ingredient_preference"
+                             tableName="user_preferences"/>
+    </changeSet>
+    <changeSet id="1748693736372-6"
+               author="Oleksandr Martsin">
+        <addUniqueConstraint columnNames="user_id"
+                             constraintName="user_taste_profiles_user_id_unique"
+                             tableName="user_taste_profiles"/>
+    </changeSet>
+    <changeSet id="1748693736372-7"
+               author="Oleksandr Martsin">
+        <createIndex indexName="idx_recipe_rating_composite"
+                     tableName="recipe_rating">
+            <column name="recipe_id"/>
+            <column name="rating"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1748693736372-8"
+               author="Oleksandr Martsin">
+        <createIndex indexName="idx_recipes_composite"
+                     tableName="recipes">
+            <column name="difficulty"/>
+            <column name="duration_total"/>
+            <column name="is_public"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1748693736372-9"
+               author="Oleksandr Martsin">
+        <createIndex indexName="idx_recipes_difficulty"
+                     tableName="recipes">
+            <column name="difficulty"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1748693736372-10"
+               author="Oleksandr Martsin">
+        <createIndex indexName="idx_recipes_duration"
+                     tableName="recipes">
+            <column name="duration_total"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1748693736372-11"
+               author="Oleksandr Martsin">
+        <createIndex indexName="idx_recipes_public"
+                     tableName="recipes">
+            <column name="is_public"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1748693736372-12"
+               author="Oleksandr Martsin">
+        <createIndex indexName="idx_user_interactions_composite"
+                     tableName="user_interactions">
+            <column name="user_id"/>
+            <column name="interaction_type"/>
+            <column defaultValueComputed="now()"
+                    name="created_at"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1748693736372-13"
+               author="Oleksandr Martsin">
+        <createIndex indexName="idx_user_interactions_user_id"
+                     tableName="user_interactions">
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1748693736372-14"
+               author="Oleksandr Martsin">
+        <createIndex indexName="idx_user_preferences_composite"
+                     tableName="user_preferences">
+            <column name="user_id"/>
+            <column name="preference_type"/>
+            <column defaultValueBoolean="true"
+                    name="selected"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1748693736372-15"
+               author="Oleksandr Martsin">
+        <createIndex indexName="idx_user_preferences_user_id"
+                     tableName="user_preferences">
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1748693736372-16"
+               author="Oleksandr Martsin">
+        <addForeignKeyConstraint baseColumnNames="recipe_id"
+                                 baseTableName="user_interactions"
+                                 constraintName="user_interactions_recipe_id_recipes_id_fk"
+                                 onDelete="NO ACTION"
+                                 referencedColumnNames="id"
+                                 referencedTableName="recipes"/>
+    </changeSet>
+
+</databaseChangeLog>

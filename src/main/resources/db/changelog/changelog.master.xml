@@ -7,4 +7,5 @@
     <include file="/db/changelog/init-changelog.xml"/>
     <include file="/db/changelog/add-fk-indexes.xml"/>
     <include file="db/changelog/alter-recipe-rating.xml"/>
+    <include file="db/changelog/preferences-new-tables.xml"/>
 </databaseChangeLog>

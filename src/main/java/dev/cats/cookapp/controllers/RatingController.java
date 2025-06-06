@@ -15,16 +15,16 @@ import org.springframework.web.bind.annotation.*;
 public class RatingController {
     private final RatingService ratingService;
 
-    @PostMapping("/{userId}")
+    @PostMapping
     public ResponseEntity<RecipeResponse> rateRecipe(@PathVariable("recipeId") Long recipeId,
-                                                     @PathVariable("userId") String userId,
+                                                     @RequestHeader("x-user-id") String userId,
                                                      @RequestParam("rating") Double rating) {
         return ResponseEntity.ok(ratingService.rateRecipe(recipeId, rating, userId));
     }
 
-    @PutMapping("/{userId}")
+    @PutMapping
     public ResponseEntity<RecipeResponse> changeRating(@PathVariable("recipeId") Long recipeId,
-                                                      @PathVariable("userId") String userId,
+                                                       @RequestHeader("x-user-id") String userId,
                                                       @RequestParam("rating") Double rating) {
         return ResponseEntity.ok(ratingService.changeRating(recipeId, rating, userId));
     }

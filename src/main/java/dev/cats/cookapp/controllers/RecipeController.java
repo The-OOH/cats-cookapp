@@ -20,13 +20,13 @@ public class RecipeController {
         return recipeAPIService.getRecipe(id);
     }
 
-    @PostMapping("/{userId}")
-    public RecipeResponse createRecipe(@RequestBody RecipeRequest recipeRequest, @PathVariable("userId") String userId) {
+    @PostMapping
+    public RecipeResponse createRecipe(@RequestBody RecipeRequest recipeRequest, @RequestHeader("x-user-id") String userId) {
         return recipeAPIService.saveRecipe(recipeRequest, userId);
     }
 
-    @PutMapping("/{id}/{userId}")
-    public RecipeResponse updateRecipe(@RequestBody RecipeRequest recipeRequest, @PathVariable("id") Long id, @PathVariable("userId") String userId) {
+    @PutMapping("/{id}")
+    public RecipeResponse updateRecipe(@RequestBody RecipeRequest recipeRequest, @PathVariable("id") Long id, @RequestHeader("x-user-id") String userId) {
         if (recipeRequest.getId() == null) {
             throw new IllegalArgumentException("Recipe ID must be provided");
         }
@@ -36,8 +36,8 @@ public class RecipeController {
         return recipeAPIService.saveRecipe(recipeRequest, userId);
     }
 
-    @DeleteMapping("/{id}/{userId}")
-    public void deleteRecipe(@PathVariable("id") Long id, @PathVariable("userId") String userId) {
+    @DeleteMapping("/{id}")
+    public void deleteRecipe(@PathVariable("id") Long id, @RequestHeader("x-user-id") String userId) {
         recipeAPIService.deleteRecipe(id, userId);
     }
 }

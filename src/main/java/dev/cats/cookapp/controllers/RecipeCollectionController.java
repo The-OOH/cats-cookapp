@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/recipes/collection/{userId}")
+@RequestMapping("/recipes/collection")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class RecipeCollectionController {
@@ -21,7 +21,7 @@ public class RecipeCollectionController {
 
     @GetMapping
     public ResponseEntity<CollectionListResponse> getCollections(
-            @PathVariable String userId
+            @RequestHeader("x-user-id") String userId
     ) {
         CollectionListResponse resp = recipeCollectionService.getCollections(userId);
         return ResponseEntity.ok(resp);
@@ -29,7 +29,7 @@ public class RecipeCollectionController {
 
     @PostMapping
     public ResponseEntity<FullCollectionResponse> addCollection(
-            @PathVariable String userId,
+            @RequestHeader("x-user-id") String userId,
             @Valid @RequestBody CollectionRequest request
     ) {
         var created = recipeCollectionService.addCollection(userId, request);
@@ -40,7 +40,7 @@ public class RecipeCollectionController {
 
     @GetMapping("/{collectionId}")
     public ResponseEntity<FullCollectionResponse> getCollectionById(
-            @PathVariable String userId,
+            @RequestHeader("x-user-id") String userId,
             @PathVariable Long collectionId
     ) {
         var resp = recipeCollectionService.getCollectionById(userId, collectionId);
@@ -49,7 +49,7 @@ public class RecipeCollectionController {
 
     @PutMapping("/{collectionId}")
     public ResponseEntity<FullCollectionResponse> updateCollection(
-            @PathVariable String userId,
+            @RequestHeader("x-user-id") String userId,
             @PathVariable Long collectionId,
             @Valid @RequestBody CollectionRequest request
     ) {
@@ -60,7 +60,7 @@ public class RecipeCollectionController {
 
     @DeleteMapping("/{collectionId}")
     public ResponseEntity<Void> deleteCollection(
-            @PathVariable String userId,
+            @RequestHeader("x-user-id") String userId,
             @PathVariable Long collectionId
     ) {
         recipeCollectionService.deleteCollection(userId, collectionId);
@@ -69,7 +69,7 @@ public class RecipeCollectionController {
 
     @PostMapping("/{collectionId}/recipe")
     public ResponseEntity<FullCollectionResponse> addRecipeToCollection(
-            @PathVariable String userId,
+            @RequestHeader("x-user-id") String userId,
             @PathVariable Long collectionId,
             @RequestParam("recipeId") Long recipeId
     ) {
@@ -79,7 +79,7 @@ public class RecipeCollectionController {
 
     @DeleteMapping("/{collectionId}/recipe/{recipeId}")
     public ResponseEntity<FullCollectionResponse> removeRecipeFromCollection(
-            @PathVariable String userId,
+            @RequestHeader("x-user-id") String userId,
             @PathVariable Long collectionId,
             @PathVariable Long recipeId
     ) {

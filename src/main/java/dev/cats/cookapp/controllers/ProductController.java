@@ -18,8 +18,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class ProductController {
-    ProductService productService;
 
+    ProductService productService;
 
     @GetMapping
     public ResponseEntity<List<ProductSuggestionResponse>> getIngredientsByName(

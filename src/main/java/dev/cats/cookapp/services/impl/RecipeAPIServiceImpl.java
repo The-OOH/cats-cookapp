@@ -2,6 +2,7 @@ package dev.cats.cookapp.services.impl;
 
 import dev.cats.cookapp.dtos.request.recipe.RecipeIngredientRequest;
 import dev.cats.cookapp.dtos.request.recipe.RecipeRequest;
+import dev.cats.cookapp.dtos.response.recipe.RecipeInListResponse;
 import dev.cats.cookapp.dtos.response.recipe.RecipeResponse;
 import dev.cats.cookapp.mappers.RecipeMapper;
 import dev.cats.cookapp.models.recipe.Product;
@@ -20,6 +21,8 @@ import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -43,6 +46,12 @@ public class RecipeAPIServiceImpl implements RecipeAPIService {
         var recipeResponse = recipeMapper.toResponse(recipe);
         recipeResponse.setAuthor(clerkService.getUserDetailsById(recipe.getAuthorId()).orElse(null));
         return recipeResponse;
+    }
+
+    @Override
+    public Page<RecipeInListResponse> getRecipesByUserId(String userId, Pageable pageable) {
+        Page<Recipe> recipes = recipeService.findAllByAuthorId(userId, pageable);
+        return recipes.map(recipeMapper::toInListResponse);
     }
 
     @Transactional

@@ -1,11 +1,14 @@
 package dev.cats.cookapp.controllers;
 
 import dev.cats.cookapp.dtos.request.recipe.RecipeRequest;
+import dev.cats.cookapp.dtos.response.recipe.RecipeInListResponse;
 import dev.cats.cookapp.dtos.response.recipe.RecipeResponse;
 import dev.cats.cookapp.services.RecipeAPIService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,6 +21,13 @@ public class RecipeController {
     @GetMapping("/{id}")
     public RecipeResponse getRecipe(@PathVariable("id") Long id) {
         return recipeAPIService.getRecipe(id);
+    }
+
+    @GetMapping("/my")
+    public Page<RecipeInListResponse> getMyRecipes(@RequestHeader("x-user-id") String userId,
+                                                   @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                   @RequestParam(name = "size", defaultValue = "10") Integer size) {
+        return recipeAPIService.getRecipesByUserId(userId, PageRequest.of(page, size));
     }
 
     @PostMapping

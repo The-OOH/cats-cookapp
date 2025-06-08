@@ -17,7 +17,7 @@ public class Unit {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "abbreviation", nullable = false, unique = true)
+    @Column(name = "name_plural", nullable = false, unique = true)
     private String abbreviation;
 
     @Column(name = "type", nullable = false)

@@ -43,8 +43,7 @@ public class ClerkService {
                 return Optional.empty();
             }
         } catch (ClerkErrors e) {
-            throw new RuntimeException("Clerk API error: "
-                    + e.getMessage(), e);
+            return Optional.empty();
         } catch (Exception e) {
             throw new RuntimeException("Error while getting user name by id: "
                     + e.getMessage(), e);

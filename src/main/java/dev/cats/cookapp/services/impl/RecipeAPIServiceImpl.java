@@ -2,6 +2,7 @@ package dev.cats.cookapp.services.impl;
 
 import dev.cats.cookapp.dtos.request.recipe.RecipeIngredientRequest;
 import dev.cats.cookapp.dtos.request.recipe.RecipeRequest;
+import dev.cats.cookapp.dtos.response.PageResponse;
 import dev.cats.cookapp.dtos.response.recipe.RecipeInListResponse;
 import dev.cats.cookapp.dtos.response.recipe.RecipeResponse;
 import dev.cats.cookapp.mappers.RecipeMapper;
@@ -49,9 +50,9 @@ public class RecipeAPIServiceImpl implements RecipeAPIService {
     }
 
     @Override
-    public Page<RecipeInListResponse> getRecipesByUserId(String userId, Pageable pageable) {
+    public PageResponse<RecipeInListResponse> getRecipesByUserId(String userId, Pageable pageable) {
         Page<Recipe> recipes = recipeService.findAllByAuthorId(userId, pageable);
-        return recipes.map(recipeMapper::toInListResponse);
+        return PageResponse.from(recipes.map(recipeMapper::toInListResponse));
     }
 
     @Transactional

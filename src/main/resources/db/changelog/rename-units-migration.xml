@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.21.xsd"
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
-    <changeSet id="1749419087334-1" author="used">
+    <changeSet id="1749419087334-1" author="Oleksandr Martsin">
         <renameColumn tableName="units" newColumnName="name_plural" oldColumnName="abbreviation"/>
     </changeSet>
 

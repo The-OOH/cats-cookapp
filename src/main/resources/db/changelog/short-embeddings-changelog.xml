@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.21.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1749461420704-1"
+               author="Oleksandr Martsin">
+        <addColumn tableName="ingredients">
+            <column name="embedding_384"
+                    type="vector(384)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="1749461420704-2"
+               author="Oleksandr Martsin">
+        <addColumn tableName="recipes">
+            <column defaultValueNumeric="0.0"
+                    name="popularity_score"
+                    type="numeric(10, 2)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="1749461420704-3"
+               author="Oleksandr Martsin">
+        <createIndex indexName="ingredients_embedding_384_idx"
+                     tableName="ingredients">
+            <column name="embedding_384"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

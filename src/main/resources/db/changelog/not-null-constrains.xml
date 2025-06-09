@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+           http://www.liquibase.org/xml/ns/dbchangelog
+           http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.21.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+
+    <changeSet id="1749461941-1" author="Oleksandr Martsin">
+        <!-- units.name NOT NULL -->
+        <addNotNullConstraint
+                tableName="units"
+                columnName="name"
+                columnDataType="TEXT"/>
+
+        <!-- ingredients.name NOT NULL -->
+        <addNotNullConstraint
+                tableName="ingredients"
+                columnName="name"
+                columnDataType="TEXT"/>
+
+        <!-- categories.name NOT NULL -->
+        <addNotNullConstraint
+                tableName="categories"
+                columnName="name"
+                columnDataType="TEXT"/>
+
+        <!-- recipes.title NOT NULL -->
+        <addNotNullConstraint
+                tableName="recipes"
+                columnName="title"
+                columnDataType="TEXT"/>
+
+        <!-- recipes.source NOT NULL -->
+        <addNotNullConstraint
+                tableName="recipes"
+                columnName="source"
+                columnDataType="TEXT"/>
+
+        <!-- recipes.duration_total NOT NULL -->
+        <addNotNullConstraint
+                tableName="recipes"
+                columnName="duration_total"
+                columnDataType="INT"/>
+
+        <!-- recipes.difficulty NOT NULL -->
+        <addNotNullConstraint
+                tableName="recipes"
+                columnName="difficulty"
+                columnDataType="TEXT"/>
+
+        <!-- recipes.servings NOT NULL -->
+        <addNotNullConstraint
+                tableName="recipes"
+                columnName="servings"
+                columnDataType="INT"/>
+
+        <!-- recipes.popularity_score NOT NULL -->
+        <addNotNullConstraint
+                tableName="recipes"
+                columnName="popularity_score"
+                columnDataType="NUMBER(10, 2)"/>
+
+        <!-- recipe_steps.step_number NOT NULL -->
+        <addNotNullConstraint
+                tableName="recipe_steps"
+                columnName="step_number"
+                columnDataType="INT"/>
+    </changeSet>
+
+</databaseChangeLog>

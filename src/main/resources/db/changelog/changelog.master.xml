@@ -10,4 +10,7 @@
     <include file="db/changelog/preferences-new-tables.xml"/>
     <include file="db/changelog/add-embeddings-recipe-and-products.xml"/>
     <include file="/db/changelog/rename-units-migration.xml"/>
+    <include file="/db/changelog/add-push-tokens-changelog.xml"/>
+    <include file="/db/changelog/short-embeddings-changelog.xml"/>
+    <include file="/db/changelog/not-null-constrains.xml"/>
 </databaseChangeLog>

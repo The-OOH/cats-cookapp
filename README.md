@@ -20,4 +20,4 @@ This project is built with Spring Framework and requires Java Development Kit (J
 
 ## DB Schema
 
-![img.png](img.png)
+![img.png](img.png) 

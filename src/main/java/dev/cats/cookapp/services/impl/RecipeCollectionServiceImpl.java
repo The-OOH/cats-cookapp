@@ -1,6 +1,7 @@
 package dev.cats.cookapp.services.impl;
 
 import dev.cats.cookapp.dtos.request.CollectionRequest;
+import dev.cats.cookapp.dtos.response.CollectionListPreviewResponse;
 import dev.cats.cookapp.dtos.response.collection.CollectionListResponse;
 import dev.cats.cookapp.dtos.response.collection.CollectionResponse;
 import dev.cats.cookapp.dtos.response.collection.FullCollectionResponse;
@@ -59,6 +60,18 @@ public class RecipeCollectionServiceImpl implements RecipeCollectionService {
         return collectionsMapper.toListResponse(dtos);
     }
 
+
+    @Override
+    public CollectionListPreviewResponse getCollectionsPreview(String userId) {
+        List<RecipesCollection> collections = collectionRepository.findAllByUserId(userId);
+        List<CollectionListPreviewResponse.CollectionPreviewResponse> dtos = collections.stream()
+                .map(coll -> new CollectionListPreviewResponse.CollectionPreviewResponse(
+                        coll.getId(),
+                        coll.getName()
+                ))
+                .toList();
+        return new CollectionListPreviewResponse(dtos);
+    }
 
     @Override
     public FullCollectionResponse getCollectionById(String userId, Long collectionId) {

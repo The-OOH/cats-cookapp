@@ -1,6 +1,7 @@
 package dev.cats.cookapp.controllers;
 
 import dev.cats.cookapp.dtos.request.CollectionRequest;
+import dev.cats.cookapp.dtos.response.CollectionListPreviewResponse;
 import dev.cats.cookapp.dtos.response.collection.CollectionListResponse;
 import dev.cats.cookapp.dtos.response.collection.FullCollectionResponse;
 import dev.cats.cookapp.services.RecipeCollectionService;
@@ -23,8 +24,14 @@ public class RecipeCollectionController {
     public ResponseEntity<CollectionListResponse> getCollections(
             @RequestHeader("x-user-id") String userId
     ) {
-        CollectionListResponse resp = recipeCollectionService.getCollections(userId);
-        return ResponseEntity.ok(resp);
+        return ResponseEntity.ok(recipeCollectionService.getCollections(userId));
+    }
+
+    @GetMapping("/preview")
+    public ResponseEntity<CollectionListPreviewResponse> getCollectionsPreview(
+            @RequestHeader("x-user-id") String userId
+    ) {
+        return ResponseEntity.ok(recipeCollectionService.getCollectionsPreview(userId));
     }
 
     @PostMapping

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.21.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1749928101-1" author="Oleksandr Martsin">
+
+        <createTable tableName="jobs">
+            <column name="id" type="text">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="status" type="text">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="user_id" type="text"/>
+
+            <column name="job_title" type="text"/>
+
+            <column name="recipe_id" type="bigint"/>
+            <column name="error"      type="text"/>
+
+            <column name="created_at" type="timestamp"
+                    defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="updated_at" type="timestamp"
+                    defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                constraintName="jobs_recipe_fk"
+                baseTableName="jobs"
+                baseColumnNames="recipe_id"
+                referencedTableName="recipes"
+                referencedColumnNames="id"
+                deferrable="false" initiallyDeferred="false"/>
+    </changeSet>
+
+    <changeSet id="1749928101-2" author="Oleksandr Martsin">
+        <sql>
+            ALTER TABLE "categories"
+                ADD COLUMN "embedding" vector(384);
+
+            CREATE INDEX categories_embedding_hnsw_idx
+                ON "categories"
+                USING hnsw (embedding vector_l2_ops);
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

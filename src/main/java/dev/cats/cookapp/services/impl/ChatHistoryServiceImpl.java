@@ -1,5 +1,6 @@
 package dev.cats.cookapp.services.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.cats.cookapp.dtos.response.chat.*;
 import dev.cats.cookapp.models.chat.Chat;
@@ -7,7 +8,9 @@ import dev.cats.cookapp.repositories.ChatsRepository;
 import dev.cats.cookapp.services.ChatHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.memory.repository.jdbc.JdbcChatMemoryRepository;
+import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.Message;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -21,6 +24,9 @@ public class ChatHistoryServiceImpl implements ChatHistoryService {
     private final ChatsRepository chatsRepository;
     private final JdbcChatMemoryRepository memoryRepository;
     private final ObjectMapper mapper;
+
+    @Value("${chat.default-assistant-message}")
+    private String DEFAULT_ASSISTANT_MESSAGE;
 
     public List<ChatHistoryInList> getByUserId(final String userId) {
         final var chats = this.chatsRepository.findByUserId(userId);
@@ -54,6 +60,20 @@ public class ChatHistoryServiceImpl implements ChatHistoryService {
                 .build();
     }
 
+    public ChatCompletionResponse getInitialChat(final String userId) throws AccessDeniedException {
+        Chat chat = new Chat(UUID.randomUUID().toString(), userId);
+        this.chatsRepository.save(chat);
+
+        try {
+            var content = Map.of("message", DEFAULT_ASSISTANT_MESSAGE, "messageType", "TEXT");
+            memoryRepository.saveAll(chat.getConversationId(),
+                    List.of(new AssistantMessage(this.mapper.writeValueAsString(content))));
+        }
+        catch (final JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        return getByConversationId(userId, chat.getConversationId());
+    }
 
     private ChatMessage toChatMessage(final Message message) {
         Object content;

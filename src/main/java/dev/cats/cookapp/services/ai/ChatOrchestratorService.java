@@ -67,7 +67,7 @@ public class ChatOrchestratorService {
                 .toolContext(Map.of("userId", userId))
                 .build();
 
-        chatMemory.add(chatId, this.toAiMessage(req.getUserMessage()));
+        chatMemory.add(chatId, this.toUserAiMessage(req.getRequest()));
         Prompt promptWithMemory = this.getPrompt(chatMemory.get(chatId), chatOptions);
 
         ChatResponse chatResponse = this.chatBuilder.build()
@@ -128,7 +128,7 @@ public class ChatOrchestratorService {
                 .toolContext(Map.of("userId", userId))
                 .build();
 
-        chatMemory.add(chatId, this.toAiMessage(req.getUserMessage()));
+        chatMemory.add(chatId, this.toUserAiMessage(req.getRequest()));
 
         final ChatClient client = this.chatBuilder.build();
 
@@ -212,15 +212,8 @@ public class ChatOrchestratorService {
                 .build();
     }
 
-    private Message toAiMessage(final ChatMessage msg) {
-        if (ChatMessageRole.USER == msg.role()) {
-            return new UserMessage(msg.content().toString());
-        }
-        if (ChatMessageRole.ASSISTANT == msg.role()) {
-            return new AssistantMessage(msg.content().toString());
-        } else {
-            throw new IllegalStateException("Unsupported message type: " + msg.getClass());
-        }
+    private Message toUserAiMessage(final String userMessage) {
+        return new UserMessage(userMessage);
     }
 
     public ChatMessage toChatText(final ChatResponse cr) {

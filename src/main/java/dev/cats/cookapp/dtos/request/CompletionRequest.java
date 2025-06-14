@@ -1,6 +1,5 @@
 package dev.cats.cookapp.dtos.request;
 
-import dev.cats.cookapp.dtos.response.chat.ChatMessage;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -14,5 +13,5 @@ public class CompletionRequest {
     @NotNull
     private String chatId;
     @NotNull
-    private ChatMessage userMessage;
+    private String request;
 }

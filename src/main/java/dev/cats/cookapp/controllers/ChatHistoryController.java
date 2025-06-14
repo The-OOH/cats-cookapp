@@ -27,4 +27,9 @@ public class ChatHistoryController {
                                          @PathVariable final String chatId) throws AccessDeniedException {
         return this.chatHistoryService.getByConversationId(userId, chatId);
     }
+
+    @GetMapping("/initial")
+    public ChatCompletionResponse initial(@RequestHeader("x-user-id") final String userId) throws AccessDeniedException {
+        return this.chatHistoryService.getInitialChat(userId);
+    }
 }

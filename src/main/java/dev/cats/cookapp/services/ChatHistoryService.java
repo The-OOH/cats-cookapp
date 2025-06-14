@@ -10,4 +10,6 @@ public interface ChatHistoryService {
     List<ChatHistoryInList> getByUserId(String userId);
 
     ChatCompletionResponse getByConversationId(String userId, String chatId) throws AccessDeniedException;
+
+    ChatCompletionResponse getInitialChat(String userId) throws AccessDeniedException;
 }

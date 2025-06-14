@@ -61,7 +61,15 @@ public class ChatHistoryServiceImpl implements ChatHistoryService {
     }
 
     public ChatCompletionResponse getInitialChat(final String userId) throws AccessDeniedException {
-        Chat chat = new Chat(UUID.randomUUID().toString(), userId);
+        var chat = createInitialChat(userId, null);
+        return getByConversationId(userId, chat.getConversationId());
+    }
+
+    public Chat createInitialChat(final String userId, String chatId) {
+        if (chatId == null || chatId.isEmpty()) {
+            chatId = UUID.randomUUID().toString();
+        }
+        Chat chat = new Chat(chatId, userId);
         this.chatsRepository.save(chat);
 
         try {
@@ -72,7 +80,7 @@ public class ChatHistoryServiceImpl implements ChatHistoryService {
         catch (final JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        return getByConversationId(userId, chat.getConversationId());
+        return chat;
     }
 
     private ChatMessage toChatMessage(final Message message) {

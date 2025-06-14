@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.cats.cookapp.config.chatbot.AiChatbotConfig;
 import dev.cats.cookapp.dtos.response.chat.ChatMessage;
-import dev.cats.cookapp.repositories.ChatsRepository;
+import dev.cats.cookapp.services.ChatHistoryService;
 import dev.cats.cookapp.services.ai.tools.*;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,6 @@ import reactor.core.publisher.Flux;
 import dev.cats.cookapp.dtos.request.CompletionRequest;
 import dev.cats.cookapp.dtos.response.chat.ChatCompletionResponse;
 import dev.cats.cookapp.dtos.response.chat.ChatMessageRole;
-import dev.cats.cookapp.models.chat.Chat;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -40,10 +39,10 @@ public class ChatOrchestratorService {
     private static final int WINDOW = 20;
     AiChatbotConfig aiChatbotConfig;
     JdbcChatMemoryRepository memoryRepo;
-    ChatsRepository chatsRepository;
     ObjectMapper mapper;
-    List<ToolCallback> callbackBeans;
+    ChatHistoryService chatHistoryService;
 
+    List<ToolCallback> callbackBeans;
     RecipeDetailsTool recipeDetailsTool;
     AIRecipeGenerationTool aIRecipeGenerationTool;
     ImageRecipeGenerationTool imageRecipeGenerationTool;
@@ -54,9 +53,7 @@ public class ChatOrchestratorService {
 
 
     public ChatCompletionResponse complete(final CompletionRequest req, final String userId) {
-        final String chatId = Optional.ofNullable(req.getChatId())
-                .orElseGet(() -> UUID.randomUUID().toString());
-        this.chatsRepository.save(new Chat(chatId, userId));
+        var chatId = this.chatHistoryService.createInitialChat(userId, req.getChatId()).getConversationId();
 
         final ChatMemory chatMemory = this.memory();
         final var toolCallbacks = this.getCallbackBeans();
@@ -114,9 +111,7 @@ public class ChatOrchestratorService {
     }
 
     public Flux<ChatCompletionResponse> stream(final CompletionRequest req, final String userId) {
-        final String chatId = Optional.ofNullable(req.getChatId())
-                .orElseGet(() -> UUID.randomUUID().toString());
-        this.chatsRepository.save(new Chat(chatId, userId));
+        var chatId = this.chatHistoryService.createInitialChat(userId, req.getChatId()).getConversationId();
 
         final ChatMemory chatMemory = this.memory();
 

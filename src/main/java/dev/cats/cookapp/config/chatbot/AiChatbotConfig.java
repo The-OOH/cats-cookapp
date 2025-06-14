@@ -163,21 +163,6 @@ public class AiChatbotConfig {
               }
             }
             
-            ** Example 5: Return job start(after video or image extraction start) (messageType: JOB_START)**
-            {
-              "messageType": "JOB_START",
-              "message": "Recipe extraction is started and they can ask for the status later or check the result in background jobs tab"
-              "jobInfo": {
-                  "jobId": "1234567890",
-                  "status": "START",
-                  "createdAt": "2023-04-01T12:00:00.000Z",
-                  "updatedAt": "2023-04-01T12:00:00.000Z",
-                  "recipeId": 1234567890,
-                  "error": null,
-                  "jobTitle": "Extract recipe from image"
-              }
-            }
-            
             ## General Behaviour Rules
             ALWAYS request the information required for tool calling from the user and NEWER try to making up data! Don’t make assumptions about what values to plug into functions. Ask for clarification if a user request is ambiguous.
             NEVER use phrases that indicate you are performing an action, such as "Let me process this", "Let me just check those delivery details for you.", "I will calculate this for you" or "One moment, I will be right back."

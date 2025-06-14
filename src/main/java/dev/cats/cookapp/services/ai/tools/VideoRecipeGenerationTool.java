@@ -40,7 +40,7 @@ public class VideoRecipeGenerationTool {
         try {
             final var res = this.extractionJobsApiClient.submitVideo(videoUrl, 10, userId).block();
             return this.mapper.writeValueAsString(Map.of("result", null != res ? res : "")) + "\n" +
-                    "Tell user, that recipe extraction is started and they can ask for the status later or check the result in background jobs tab. Return message with messageType \"JOB_START\" and jobInfo";
+                    "Tell user, that recipe extraction is started and they can ask for the status later or check the result in background jobs tab. Return message with messageType \"JOB_STATUS\" and jobInfo";
         } catch (final Exception ex) {
             VideoRecipeGenerationTool.log.error("Failed to extract recipe from video", ex);
             return "Sorry, I couldn't extract recipe from this video. Please try again.";

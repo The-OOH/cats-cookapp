@@ -13,9 +13,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CollectionRecipeKey implements Serializable {
-    @Column(name="collection_id")
+    @Column(name = "collection_id")
     private Long collectionId;
 
-    @Column(name="recipe_id")
+    @Column(name = "recipe_id")
     private Long recipeId;
 }

@@ -55,11 +55,11 @@ public class Recipe {
     @Column(nullable = false)
     private Integer servings;
 
-    @Column(name="created_at", updatable = false, nullable = false)
+    @Column(name = "created_at", updatable = false, nullable = false)
     @CreationTimestamp
     private Timestamp createdAt;
 
-    @Column(name="updated_at", nullable = false)
+    @Column(name = "updated_at", nullable = false)
     private Timestamp updatedAt = new Timestamp(System.currentTimeMillis());
 
     @Basic(optional = false)

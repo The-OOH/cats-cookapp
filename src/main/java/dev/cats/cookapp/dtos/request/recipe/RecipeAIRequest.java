@@ -16,7 +16,7 @@ public class RecipeAIRequest {
 
     private String description;
 
-    private RecipeSource source  = RecipeSource.AI;
+    private RecipeSource source = RecipeSource.AI;
 
     @NotNull
     private Integer duration;

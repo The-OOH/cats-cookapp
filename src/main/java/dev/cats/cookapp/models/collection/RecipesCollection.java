@@ -36,7 +36,7 @@ public class RecipesCollection {
     @Column(nullable = false)
     private String description;
 
-    @Column(name="created_at", updatable = false, nullable = false)
+    @Column(name = "created_at", updatable = false, nullable = false)
     @CreationTimestamp
     private Timestamp createdAt;
 

@@ -18,14 +18,14 @@ import java.util.Objects;
 public class CheckJobStatusTool {
 
     private final ExtractionJobsApiClient extractionJobsApiClient;
-    private final ObjectMapper            mapper;
+    private final ObjectMapper mapper;
 
     @Tool(
-            name        = "check_job_status",
+            name = "check_job_status",
             description = """
-            Use when you need to check the status of a background job.
-            Returns a JSON object with background job information or the result of the extraction.
-            """
+                    Use when you need to check the status of a background job.
+                    Returns a JSON object with background job information or the result of the extraction.
+                    """
     )
     public String generateRecipeFromImage(
             @ToolParam(description = "Background job id", required = true) final
@@ -40,8 +40,7 @@ public class CheckJobStatusTool {
             final var res = this.extractionJobsApiClient.getJobStatus(jobId, userId).block();
             return this.mapper.writeValueAsString(Map.of("result", null != res ? res : "")) + "\n" +
                     "Based on this result provide user information about the recipe extraction. If recipeId is present, ALWAYS IMMEDIATELY use 'recipe_details' tool to get generated recipe details and provide user with the recipe.";
-        }
-        catch (final Exception ex) {
+        } catch (final Exception ex) {
             CheckJobStatusTool.log.error("Failed to get job status", ex);
             return "Sorry, I couldn't get job status. Please try again.";
         }

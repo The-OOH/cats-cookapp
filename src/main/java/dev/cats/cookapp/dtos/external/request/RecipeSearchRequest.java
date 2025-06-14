@@ -18,7 +18,10 @@ public record RecipeSearchRequest(
         List<String> diets,
         IngredientIds ingredients) {
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public record TimeRange(Integer min, Integer max) {}
+    public record TimeRange(Integer min, Integer max) {
+    }
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public record IngredientIds(List<Integer> includeIds, List<Integer> excludeIds) {}
+    public record IngredientIds(List<Integer> includeIds, List<Integer> excludeIds) {
+    }
 }

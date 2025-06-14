@@ -1,3 +1,4 @@
 package dev.cats.cookapp.dtos.external.response;
 
-public record FiltersPayload(Boolean success, Filters data) {}
+public record FiltersPayload(Boolean success, Filters data) {
+}

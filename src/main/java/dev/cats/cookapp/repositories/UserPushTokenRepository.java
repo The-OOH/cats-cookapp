@@ -13,11 +13,11 @@ public interface UserPushTokenRepository extends JpaRepository<UserPushToken, Lo
     @Transactional
     @Query(
             value = """
-        INSERT INTO push_tokens (user_id, token, type, platform)
-        VALUES (:userId, :token, :type, :platform)
-        ON CONFLICT (user_id, token)
-        DO UPDATE SET updated_at = NOW()
-        """,
+                    INSERT INTO push_tokens (user_id, token, type, platform)
+                    VALUES (:userId, :token, :type, :platform)
+                    ON CONFLICT (user_id, token)
+                    DO UPDATE SET updated_at = NOW()
+                    """,
             nativeQuery = true
     )
     int upsert(

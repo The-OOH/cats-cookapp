@@ -30,23 +30,23 @@ import java.util.*;
 @Slf4j
 public class AIRecipeGenerationTool {
 
-    private final ChatClient.Builder   chatBuilder;
-    private final IngredientApiClient  ingredientApiClient;
+    private final ChatClient.Builder chatBuilder;
+    private final IngredientApiClient ingredientApiClient;
     private final PreferencesApiClient preferencesApiClient;
-    private final CategoryService      categoryService;
-    private final UnitService          unitService;
-    private final RecipeAPIService     recipeService;
-    private final Validator            validator;
-    private final ObjectMapper         mapper;
+    private final CategoryService categoryService;
+    private final UnitService unitService;
+    private final RecipeAPIService recipeService;
+    private final Validator validator;
+    private final ObjectMapper mapper;
 
     @Tool(
-            name        = "generate_recipe",
+            name = "generate_recipe",
             description = """
-            Use when you need to create a **new recipe** given dish name(name, description or both), \
-            cooking time, difficulty, ingredient list and user preferences. NEVER use this tool when user want to extract recipe from IMAGE(imageUrl) or VIDEO(videoUrl).
-            Also use this tool when user want to structure their text recipe.
-            Returns a recipe JSON object.
-            """
+                    Use when you need to create a **new recipe** given dish name(name, description or both), \
+                    cooking time, difficulty, ingredient list and user preferences. NEVER use this tool when user want to extract recipe from IMAGE(imageUrl) or VIDEO(videoUrl).
+                    Also use this tool when user want to structure their text recipe.
+                    Returns a recipe JSON object.
+                    """
     )
     public String generateRecipe(
             @ToolParam(description = "Comma-separated ingredient names. This list should contain all the ingredients " +
@@ -128,8 +128,8 @@ public class AIRecipeGenerationTool {
         }
 
         final Map<String, Object> wrapper = Map.of(
-                "recipeId",    savedRecipe.getId(),
-                "recipe",      savedRecipe
+                "recipeId", savedRecipe.getId(),
+                "recipe", savedRecipe
         );
         return "Use the following JSON to generate a recipe with messageType \"RECIPE_DETAILS\":\n" + this.mapper.writeValueAsString(wrapper);
     }
@@ -144,73 +144,73 @@ public class AIRecipeGenerationTool {
             final List<UnitResponse> unitIds
     ) throws Exception {
 
-        final String ingJson  = this.mapper.writeValueAsString(ingDetails);
+        final String ingJson = this.mapper.writeValueAsString(ingDetails);
         final String prefJson = this.mapper.writeValueAsString(prefs);
-        final String catJson  = this.mapper.writeValueAsString(categories);
+        final String catJson = this.mapper.writeValueAsString(categories);
         final String unitJson = this.mapper.writeValueAsString(unitIds);
 
         return """
-            ## Core Instructions
-            You are a culinary AI. Generate a *valid* JSON object that matches the example schema.
-            Use ONLY ids that exist in the supplied ingredient / category / unit lists.
-            It is MANDATORY to use ONLY the supplied ingredients, categories, and units.
-            
-            **Parameters:**
-            - Dish: %s
-            - Total time (min): %d
-            - Difficulty: %s
-            
-            **Data Sources:**
-            - Available ingredients JSON: %s
-            - User preferences JSON: %s
-            - Category lookup: %s
-            - Unit IDs (metric preferred): %s
-            
-            **Return nothing else, just the JSON.**
-            
-            ## Enhanced Context
-            Adopt the role of an expert chef and culinary writer with a deep understanding of global cuisines. You will create a detailed food recipe that caters to specific dietary preferences or cuisines based on user input. Your recipe should be easy to follow, include detailed instructions, and focus on maximizing flavor and creativity while considering the dietary or cuisine-specific needs.
-            
-            ## Goal
-            Generate a food recipe that aligns with the input provided, including all necessary steps, ingredients, and cooking techniques. The recipe should be structured for ease of understanding and execution, regardless of the reader's culinary expertise.
-            
-            ## Response Guidelines
-            Follow this step-by-step approach:
-            
-            1. **Core Elements**: Identify the main ingredient and its role in the dish
-            2. **Ingredient Categories**: Organize ingredients by type (fresh produce, spices, oils, proteins, etc.)
-            3. **Detailed Instructions**: Provide step-by-step preparation methods, cooking techniques, and timing
-            4. **Dietary Adaptations**: Highlight tips for dietary restrictions (gluten-free, vegan, low-carb)
-            5. **Complementary Pairings**: Suggest sides or accompaniments
-            6. **Equipment & Substitutions**: Mention necessary tools and offer alternatives
-            7. **Precise Measurements**: Ensure accuracy in quantities and timing
-            8. **Presentation Ideas**: Include plating suggestions for visual appeal
-            
-            ## JSON Schema
-            ```json
-            {
-              "title": "text",
-              "description": "text",
-              "source": "AI", // ALWAYS AI
-              "difficulty": "easy", // easy, medium, hard
-              "duration": 30, // total cooking time in minutes
-              "servings": 2, // number of servings
-              "categories": [1, 2], // category ids
-              "ingredients": [
-                 {"productId": 11, "measurements": {"unitId": 4, "amount": 100}}
-              ],
-              "steps": [{"stepNumber": 1, "description": "text"}]
-            }
-            ```
-            
-            ## Quality Requirements
-            - Use simple, approachable language suitable for a wide audience
-            - Include helpful tips for ingredient substitutions
-            - Encourage creativity with variations for different tastes
-            - Structure content clearly with logical flow
-            - Focus on maximizing flavor while respecting dietary constraints
-            - Provide precise measurements and timing guidance
-            """.formatted(
+                ## Core Instructions
+                You are a culinary AI. Generate a *valid* JSON object that matches the example schema.
+                Use ONLY ids that exist in the supplied ingredient / category / unit lists.
+                It is MANDATORY to use ONLY the supplied ingredients, categories, and units.
+                
+                **Parameters:**
+                - Dish: %s
+                - Total time (min): %d
+                - Difficulty: %s
+                
+                **Data Sources:**
+                - Available ingredients JSON: %s
+                - User preferences JSON: %s
+                - Category lookup: %s
+                - Unit IDs (metric preferred): %s
+                
+                **Return nothing else, just the JSON.**
+                
+                ## Enhanced Context
+                Adopt the role of an expert chef and culinary writer with a deep understanding of global cuisines. You will create a detailed food recipe that caters to specific dietary preferences or cuisines based on user input. Your recipe should be easy to follow, include detailed instructions, and focus on maximizing flavor and creativity while considering the dietary or cuisine-specific needs.
+                
+                ## Goal
+                Generate a food recipe that aligns with the input provided, including all necessary steps, ingredients, and cooking techniques. The recipe should be structured for ease of understanding and execution, regardless of the reader's culinary expertise.
+                
+                ## Response Guidelines
+                Follow this step-by-step approach:
+                
+                1. **Core Elements**: Identify the main ingredient and its role in the dish
+                2. **Ingredient Categories**: Organize ingredients by type (fresh produce, spices, oils, proteins, etc.)
+                3. **Detailed Instructions**: Provide step-by-step preparation methods, cooking techniques, and timing
+                4. **Dietary Adaptations**: Highlight tips for dietary restrictions (gluten-free, vegan, low-carb)
+                5. **Complementary Pairings**: Suggest sides or accompaniments
+                6. **Equipment & Substitutions**: Mention necessary tools and offer alternatives
+                7. **Precise Measurements**: Ensure accuracy in quantities and timing
+                8. **Presentation Ideas**: Include plating suggestions for visual appeal
+                
+                ## JSON Schema
+                ```json
+                {
+                  "title": "text",
+                  "description": "text",
+                  "source": "AI", // ALWAYS AI
+                  "difficulty": "easy", // easy, medium, hard
+                  "duration": 30, // total cooking time in minutes
+                  "servings": 2, // number of servings
+                  "categories": [1, 2], // category ids
+                  "ingredients": [
+                     {"productId": 11, "measurements": {"unitId": 4, "amount": 100}}
+                  ],
+                  "steps": [{"stepNumber": 1, "description": "text"}]
+                }
+                ```
+                
+                ## Quality Requirements
+                - Use simple, approachable language suitable for a wide audience
+                - Include helpful tips for ingredient substitutions
+                - Encourage creativity with variations for different tastes
+                - Structure content clearly with logical flow
+                - Focus on maximizing flavor while respecting dietary constraints
+                - Provide precise measurements and timing guidance
+                """.formatted(
                 dish, cookingTime, difficulty,
                 ingJson, prefJson, catJson, unitJson
         );

@@ -39,8 +39,7 @@ public class RecipeController {
     public RecipeResponse updateRecipe(@RequestBody final RecipeRequest recipeRequest, @PathVariable("id") final Long id, @RequestHeader("x-user-id") final String userId) {
         if (null == recipeRequest.getId()) {
             throw new IllegalArgumentException("Recipe ID must be provided");
-        }
-        else {
+        } else {
             recipeRequest.setId(id);
         }
         return this.recipeAPIService.saveRecipe(recipeRequest, userId);

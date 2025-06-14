@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface ChatHistoryService {
     List<ChatHistoryInList> getByUserId(String userId);
+
     ChatCompletionResponse getByConversationId(String userId, String chatId) throws AccessDeniedException;
 }

@@ -13,15 +13,14 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Slf4j
 public class RecipeDetailsTool {
-    private final IngredientApiClient api;
     private final ObjectMapper mapper;
     private final RecipeAPIService recipeAPIService;
 
     @Tool(
-        name        = "recipe_details",
-        description = """
-            Call in cases when you need to get recipe details recipe id to tell user more about it.
-            """)
+            name = "recipe_details",
+            description = """
+                    Call in cases when you need to get recipe details recipe id to tell user more about it.
+                    """)
     public String getRecipeDetails(
             @ToolParam(
                     description = "Recipe identifier. You can get it from 'search_recipes' tool",

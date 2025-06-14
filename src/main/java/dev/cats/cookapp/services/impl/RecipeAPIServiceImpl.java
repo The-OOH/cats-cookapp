@@ -76,9 +76,9 @@ public class RecipeAPIServiceImpl implements RecipeAPIService {
             throw new IllegalArgumentException("One or more unit IDs are invalid");
         }
 
-        final Map<Long,Product> productMap = products.stream()
+        final Map<Long, Product> productMap = products.stream()
                 .collect(Collectors.toMap(Product::getId, p -> p));
-        final Map<Long,Unit> unitMap = units.stream()
+        final Map<Long, Unit> unitMap = units.stream()
                 .collect(Collectors.toMap(Unit::getId, u -> u));
 
         final Set<RecipeIngredient> ingredients = new HashSet<>();

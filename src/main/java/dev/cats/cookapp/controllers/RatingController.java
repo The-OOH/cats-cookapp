@@ -25,7 +25,7 @@ public class RatingController {
     @PutMapping
     public ResponseEntity<RecipeResponse> changeRating(@PathVariable("recipeId") final Long recipeId,
                                                        @RequestHeader("x-user-id") final String userId,
-                                                      @RequestParam("rating") final Double rating) {
+                                                       @RequestParam("rating") final Double rating) {
         return ResponseEntity.ok(this.ratingService.changeRating(recipeId, rating, userId));
     }
 }

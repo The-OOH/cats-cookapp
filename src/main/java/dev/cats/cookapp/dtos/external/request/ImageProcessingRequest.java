@@ -1,3 +1,4 @@
 package dev.cats.cookapp.dtos.external.request;
 
-public record ImageProcessingRequest(String url) { }
+public record ImageProcessingRequest(String url) {
+}

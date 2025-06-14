@@ -194,7 +194,7 @@ public class ChatOrchestratorService {
 
         return client.prompt(prompt)
                 .system(this.aiChatbotConfig.getMainPrompt(userId))
-                .toolCallbacks(((ToolCallingChatOptions)opts).getToolCallbacks())
+                .toolCallbacks(((ToolCallingChatOptions) opts).getToolCallbacks())
                 .stream()
                 .chatResponse()
                 .filter(cr -> {
@@ -218,8 +218,7 @@ public class ChatOrchestratorService {
         }
         if (ChatMessageRole.ASSISTANT == msg.role()) {
             return new AssistantMessage(msg.content().toString());
-        }
-        else {
+        } else {
             throw new IllegalStateException("Unsupported message type: " + msg.getClass());
         }
     }
@@ -232,7 +231,7 @@ public class ChatOrchestratorService {
                     .build();
         }
         final String raw = cr.getResult().getOutput().getText();
-        Map<String,Object> content;
+        Map<String, Object> content;
 
         try {
             content = this.mapper.readValue(raw.trim(), Map.class);

@@ -36,8 +36,12 @@ class UnitServiceImplTest {
     void getUnitsByName_nonEmptyMatches_returnsMapped() {
         // Arrange
         final String query = "cup";
-        final Unit u1 = new Unit(); u1.setId(1L); u1.setName("cup"); u1.setAbbreviation("c"); u1.setType(UnitMeasurementType.imperial);
-        final UnitResponse r1 = new UnitResponse(1L, new NameResponse("cup","cups",UnitMeasurementType.imperial));
+        final Unit u1 = new Unit();
+        u1.setId(1L);
+        u1.setName("cup");
+        u1.setAbbreviation("c");
+        u1.setType(UnitMeasurementType.imperial);
+        final UnitResponse r1 = new UnitResponse(1L, new NameResponse("cup", "cups", UnitMeasurementType.imperial));
 
         when(this.unitRepository.findTop10ByNameIgnoreCaseContaining(query)).thenReturn(List.of(u1));
         when(this.unitMapper.toResponse(u1)).thenReturn(r1);
@@ -57,10 +61,18 @@ class UnitServiceImplTest {
     void getUnitsByName_emptyMatches_returnsAllMapped() {
         // Arrange
         final String query = "xyz";
-        final Unit u2 = new Unit(); u2.setId(2L); u2.setName("teaspoon"); u2.setAbbreviation("tsp"); u2.setType(UnitMeasurementType.metric);
-        final Unit u3 = new Unit(); u3.setId(3L); u3.setName("tablespoon"); u3.setAbbreviation("tbsp"); u3.setType(UnitMeasurementType.metric);
-        final UnitResponse r2 = new UnitResponse(2L, new NameResponse("teaspoon","teaspoons",UnitMeasurementType.metric));
-        final UnitResponse r3 = new UnitResponse(3L, new NameResponse("tablespoon","tablespoons",UnitMeasurementType.metric));
+        final Unit u2 = new Unit();
+        u2.setId(2L);
+        u2.setName("teaspoon");
+        u2.setAbbreviation("tsp");
+        u2.setType(UnitMeasurementType.metric);
+        final Unit u3 = new Unit();
+        u3.setId(3L);
+        u3.setName("tablespoon");
+        u3.setAbbreviation("tbsp");
+        u3.setType(UnitMeasurementType.metric);
+        final UnitResponse r2 = new UnitResponse(2L, new NameResponse("teaspoon", "teaspoons", UnitMeasurementType.metric));
+        final UnitResponse r3 = new UnitResponse(3L, new NameResponse("tablespoon", "tablespoons", UnitMeasurementType.metric));
 
         when(this.unitRepository.findTop10ByNameIgnoreCaseContaining(query)).thenReturn(Collections.emptyList());
         when(this.unitRepository.findAll()).thenReturn(List.of(u2, u3));

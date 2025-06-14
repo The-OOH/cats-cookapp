@@ -118,7 +118,8 @@ class RecipeCollectionServiceImplTest {
         req.setName("Coll");
         req.setDescription("Desc");
         req.setRecipeIds(List.of(3L));
-        final Recipe r = new Recipe(); r.setId(3L);
+        final Recipe r = new Recipe();
+        r.setId(3L);
         when(this.recipeRepository.findAllById(List.of(3L))).thenReturn(List.of(r));
         final RecipesCollection toSave = new RecipesCollection();
         final FullCollectionResponse expected = new FullCollectionResponse();
@@ -185,8 +186,11 @@ class RecipeCollectionServiceImplTest {
         req.setName("NM");
         req.setDescription("DM");
         req.setRecipeIds(List.of(9L));
-        final RecipesCollection existing = new RecipesCollection(); existing.setUserId("u4"); existing.setId(8L);
-        final Recipe r = new Recipe(); r.setId(9L);
+        final RecipesCollection existing = new RecipesCollection();
+        existing.setUserId("u4");
+        existing.setId(8L);
+        final Recipe r = new Recipe();
+        r.setId(9L);
         when(this.collectionRepository.findByUserIdAndId("u4", 8L)).thenReturn(Optional.of(existing));
         when(this.recipeRepository.findAllById(List.of(9L))).thenReturn(List.of(r));
         final RecipesCollection saved = new RecipesCollection();
@@ -247,8 +251,11 @@ class RecipeCollectionServiceImplTest {
     @Test
     @DisplayName("addRecipeToCollection persists and returns mapper response")
     void addRecipeToCollection_valid_savesAndReturns() {
-        final RecipesCollection coll = new RecipesCollection(); coll.setUserId("u9"); coll.setId(14L);
-        final Recipe r = new Recipe(); r.setId(40L);
+        final RecipesCollection coll = new RecipesCollection();
+        coll.setUserId("u9");
+        coll.setId(14L);
+        final Recipe r = new Recipe();
+        r.setId(40L);
         when(this.collectionRepository.findByUserIdAndId("u9", 14L)).thenReturn(Optional.of(coll));
         when(this.recipeRepository.findById(40L)).thenReturn(Optional.of(r));
         final RecipesCollection saved = new RecipesCollection();
@@ -276,8 +283,11 @@ class RecipeCollectionServiceImplTest {
     @Test
     @DisplayName("removeRecipeFromCollection persists and returns mapper response")
     void removeRecipeFromCollection_valid_savesAndReturns() {
-        final RecipesCollection coll = new RecipesCollection(); coll.setUserId("u10"); coll.setId(16L);
-        final Recipe r = new Recipe(); r.setId(50L);
+        final RecipesCollection coll = new RecipesCollection();
+        coll.setUserId("u10");
+        coll.setId(16L);
+        final Recipe r = new Recipe();
+        r.setId(50L);
         coll.addRecipe(r);
         when(this.collectionRepository.findByUserIdAndId("u10", 16L)).thenReturn(Optional.of(coll));
         when(this.recipeRepository.getReferenceById(50L)).thenReturn(r);

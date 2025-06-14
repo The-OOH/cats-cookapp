@@ -17,15 +17,15 @@ import java.util.*;
 public class ImageRecipeGenerationTool {
 
     private final ExtractionJobsApiClient extractionJobsApiClient;
-    private final ObjectMapper            mapper;
+    private final ObjectMapper mapper;
 
     @Tool(
-            name        = "extract_recipe_from_image",
+            name = "extract_recipe_from_image",
             description = """
-            ALWAYS Use when you need to extract a recipe from an image of text recipe.
-            ALWAYS Use this tool when user provide image url.
-            Returns a JSON object with background job information or the result of the extraction.
-            """
+                    ALWAYS Use when you need to extract a recipe from an image of text recipe.
+                    ALWAYS Use this tool when user provide image url.
+                    Returns a JSON object with background job information or the result of the extraction.
+                    """
     )
     public String generateRecipeFromImage(
             @ToolParam(description = "Image url", required = true) final
@@ -41,8 +41,7 @@ public class ImageRecipeGenerationTool {
             final var res = this.extractionJobsApiClient.submitImage(imageUrl, userId).block();
             return this.mapper.writeValueAsString(Map.of("result", null != res ? res : "")) + "\n" +
                     "Tell user, that recipe extraction is started and they can ask for the status later or check the result in background jobs tab.Return message with messageType \"JOB_START\" and jobInfo";
-        }
-        catch (final Exception ex) {
+        } catch (final Exception ex) {
             ImageRecipeGenerationTool.log.error("Failed to extract recipe from image", ex);
             return "Sorry, I couldn't extract recipe from this image. Please try again.";
         }

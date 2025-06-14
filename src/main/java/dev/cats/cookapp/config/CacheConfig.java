@@ -18,9 +18,9 @@ public class CacheConfig {
         mgr.setAsyncCacheMode(true);
         mgr.setAllowNullValues(false);
         mgr.setCaffeine(
-            Caffeine.newBuilder()
-                    .expireAfterWrite(Duration.ofHours(1))
-                    .maximumSize(10_000)
+                Caffeine.newBuilder()
+                        .expireAfterWrite(Duration.ofHours(1))
+                        .maximumSize(10_000)
         );
         return mgr;
     }

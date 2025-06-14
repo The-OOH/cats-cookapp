@@ -19,7 +19,7 @@ public class UserPushTokenServiceImpl implements UserPushTokenService {
 
     @Override
     public SavePushTokenResponse savePushToken(final String userId, final PushTokenRequest request) {
-        if(this.clerkService.getUserDetailsById(userId).isEmpty()) {
+        if (this.clerkService.getUserDetailsById(userId).isEmpty()) {
             return new SavePushTokenResponse(false, "User not found");
         }
 

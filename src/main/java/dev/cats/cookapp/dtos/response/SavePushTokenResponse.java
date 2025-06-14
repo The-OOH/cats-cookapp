@@ -1,4 +1,4 @@
 package dev.cats.cookapp.dtos.response;
 
-public record SavePushTokenResponse (Boolean success, String message) {
+public record SavePushTokenResponse(Boolean success, String message) {
 }

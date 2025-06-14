@@ -12,5 +12,6 @@ public record JobCreationResponse(
             String status,
             String message,
             String jobTitle
-    ) { }
+    ) {
+    }
 }

@@ -15,5 +15,6 @@ public record JobStatusResponse(
             Integer recipeId,
             String error,
             String jobTitle
-    ) { }
+    ) {
+    }
 }

@@ -7,4 +7,5 @@ public record IngredientSearchRequest(
         int page,
         int limit,
         boolean useSemanticSearch,
-        double semanticThreshold) {}
+        double semanticThreshold) {
+}

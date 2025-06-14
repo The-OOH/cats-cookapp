@@ -29,7 +29,7 @@ public class RecipeRating {
     @Column(name = "rating", nullable = false)
     private Double rating;
 
-    @Column(name="created_at", updatable = false, nullable = false)
+    @Column(name = "created_at", updatable = false, nullable = false)
     @CreationTimestamp
     private Timestamp createdAt;
 }

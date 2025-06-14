@@ -27,16 +27,16 @@ public class RecipeToolConfig {
         final FiltersPayload f = this.api.getFilters().block();
 
         final Map<String, Object> schema = Map.of(
-            "type", "object",
-            "properties", Map.of(
-                    "searchQuery", Map.of("type", "string", "description", "User's search request in 1 sentence. For example: Chicken soup with chicken, potatoes, carrots, onion, celery, garlic, tomatoes, and spices. If user ask to create a recipe based on ingredients, use this field with list of ingredients by comma separated. For example: Chicken, potatoes, carrots, onion, celery, garlic, tomatoes, spices."),
-                "excludeIngredientIds", Map.of("type", "array",
-                                               "items", Map.of("type", "integer", "description", "Ingredient IDs to exclude from the search. Use this field ONLY for exclusions by user allergic to ingredients. Based on result of 'search_ingredients' tool")),
-                "difficulties", Map.of("type", "array", "items", Map.of("type", "string", "enum", f.data().difficulties(), "description", "Difficulty levels to include in the search. Based on user's request and ONLY in range of available difficulties. If not provided, use all available difficulties. If provided 'medium' for example, it will return recipes with 'easy' and 'medium' difficulties")),
-                "maxCookingTime", Map.of("type", "integer", "description", "Maximum cooking time in minutes. If not provided, use 1 as default value", "minimum", 1),
-                "minCookingTime", Map.of("type", "integer", "description", "Minimum cooking time in minutes. If not provided, use 1000 as default value", "minimum", 1)
-            ),
-            "required", List.of("searchQuery", "maxCookingTime", "difficulties")
+                "type", "object",
+                "properties", Map.of(
+                        "searchQuery", Map.of("type", "string", "description", "User's search request in 1 sentence. For example: Chicken soup with chicken, potatoes, carrots, onion, celery, garlic, tomatoes, and spices. If user ask to create a recipe based on ingredients, use this field with list of ingredients by comma separated. For example: Chicken, potatoes, carrots, onion, celery, garlic, tomatoes, spices."),
+                        "excludeIngredientIds", Map.of("type", "array",
+                                "items", Map.of("type", "integer", "description", "Ingredient IDs to exclude from the search. Use this field ONLY for exclusions by user allergic to ingredients. Based on result of 'search_ingredients' tool")),
+                        "difficulties", Map.of("type", "array", "items", Map.of("type", "string", "enum", f.data().difficulties(), "description", "Difficulty levels to include in the search. Based on user's request and ONLY in range of available difficulties. If not provided, use all available difficulties. If provided 'medium' for example, it will return recipes with 'easy' and 'medium' difficulties")),
+                        "maxCookingTime", Map.of("type", "integer", "description", "Maximum cooking time in minutes. If not provided, use 1 as default value", "minimum", 1),
+                        "minCookingTime", Map.of("type", "integer", "description", "Minimum cooking time in minutes. If not provided, use 1000 as default value", "minimum", 1)
+                ),
+                "required", List.of("searchQuery", "maxCookingTime", "difficulties")
         );
 
         final Method method = RecipeSearchTool.class.getMethod(

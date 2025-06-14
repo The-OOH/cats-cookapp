@@ -31,11 +31,16 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class RecipeAPIServiceImplTest {
 
-    @Mock private RecipeService recipeService;
-    @Mock private CategoryRepository categoryRepository;
-    @Mock private UnitRepository unitRepository;
-    @Mock private ProductRepository productRepository;
-    @Mock private RecipeMapper recipeMapper;
+    @Mock
+    private RecipeService recipeService;
+    @Mock
+    private CategoryRepository categoryRepository;
+    @Mock
+    private UnitRepository unitRepository;
+    @Mock
+    private ProductRepository productRepository;
+    @Mock
+    private RecipeMapper recipeMapper;
 
     private StubClerkService clerkService;
     private RecipeAPIServiceImpl apiService;
@@ -137,11 +142,16 @@ class RecipeAPIServiceImplTest {
         dto.setCategories(Collections.singletonList(1L));
         dto.setSteps(Collections.emptyList());
 
-        final Product p = new Product(); p.setId(1L);
-        final Unit u = new Unit(); u.setId(1L);
-        final RecipeCategory cat = new RecipeCategory(); cat.setId(1L);
-        final Recipe entity = new Recipe(); entity.setSteps(Collections.emptySet());
-        final Recipe savedEntity = new Recipe(); savedEntity.setSteps(Collections.emptySet());
+        final Product p = new Product();
+        p.setId(1L);
+        final Unit u = new Unit();
+        u.setId(1L);
+        final RecipeCategory cat = new RecipeCategory();
+        cat.setId(1L);
+        final Recipe entity = new Recipe();
+        entity.setSteps(Collections.emptySet());
+        final Recipe savedEntity = new Recipe();
+        savedEntity.setSteps(Collections.emptySet());
         final RecipeResponse mapped = new RecipeResponse();
         final UserDetails details = UserDetails.builder().id("userX").name("Bob").build();
 
@@ -180,7 +190,8 @@ class RecipeAPIServiceImplTest {
     @Test
     @DisplayName("deleteRecipe should delegate when user is author")
     void deleteRecipe_author_delegates() {
-        final Recipe r = new Recipe(); r.setAuthorId("me");
+        final Recipe r = new Recipe();
+        r.setAuthorId("me");
         when(this.recipeService.getRecipe(8L)).thenReturn(r);
 
         this.apiService.deleteRecipe(8L, "me");
@@ -192,9 +203,12 @@ class RecipeAPIServiceImplTest {
      */
     private static class StubClerkService extends ClerkService {
         private Optional<UserDetails> details = Optional.empty();
-        @Override public Optional<UserDetails> getUserDetailsById(final String id) {
+
+        @Override
+        public Optional<UserDetails> getUserDetailsById(final String id) {
             return this.details;
         }
+
         public void setDetails(final Optional<UserDetails> details) {
             this.details = details;
         }

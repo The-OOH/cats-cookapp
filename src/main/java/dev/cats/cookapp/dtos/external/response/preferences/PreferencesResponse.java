@@ -6,6 +6,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class PreferencesResponse {
-    private boolean            success;
+    private boolean success;
     private PreferencesPayload data;
 }

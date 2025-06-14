@@ -8,8 +8,8 @@ import org.springframework.cache.annotation.EnableCaching;
 @EnableCaching
 public class CookapppApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CookapppApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(CookapppApplication.class, args);
+    }
 
 }

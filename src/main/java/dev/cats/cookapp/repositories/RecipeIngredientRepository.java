@@ -11,10 +11,10 @@ import java.util.List;
 public interface RecipeIngredientRepository extends JpaRepository<RecipeIngredient, Long> {
     @Modifying
     @Query(value = """
-        UPDATE recipe_ingredients
-        SET ingredient_id = :canonicalId
-        WHERE ingredient_id IN (:duplicateIds)
-        """, nativeQuery = true)
+            UPDATE recipe_ingredients
+            SET ingredient_id = :canonicalId
+            WHERE ingredient_id IN (:duplicateIds)
+            """, nativeQuery = true)
     void redirectIngredientIds(@Param("canonicalId") Long canonicalId,
                                @Param("duplicateIds") List<Long> duplicateIds);
 }

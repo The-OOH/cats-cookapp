@@ -20,12 +20,12 @@ public class IngredientSearchTool {
     private final ObjectMapper mapper;
 
     @Tool(
-        name        = "ingredient_search",
-        description = """
-            Call only after the user has given you free-text ingredients.
-            Returns a JSON array of ingredient IDs you must feed into generate_recipe tool.
-            ALWAYS use this tool before using 'generate_recipe' tool to get the list of ingredients and their IDs and use it in recipe ingredients list
-            """)
+            name = "ingredient_search",
+            description = """
+                    Call only after the user has given you free-text ingredients.
+                    Returns a JSON array of ingredient IDs you must feed into generate_recipe tool.
+                    ALWAYS use this tool before using 'generate_recipe' tool to get the list of ingredients and their IDs and use it in recipe ingredients list
+                    """)
     public String ingredientSearch(
             @ToolParam(
                     description = "List of ingredient names. Comma separated",
@@ -35,7 +35,7 @@ public class IngredientSearchTool {
             final ToolContext ctx)
             throws Exception {
         final String userId = ctx.getContext().get("userId").toString();
-        final List <String> ingredientsList = Arrays.asList(ingredients.split(","));
+        final List<String> ingredientsList = Arrays.asList(ingredients.split(","));
         IngredientSearchTool.log.info("Searching ingredients: {}", ingredients);
         return this.mapper.writeValueAsString(this.api.searchIngredients(ingredientsList, userId).block()) + "\n" + "Immediately you NEED to call tool 'search_recipes' to get recipe recommendations now based on this result";
     }

@@ -25,7 +25,8 @@ public class PreferencesApiClient {
                 .uri("/preferences")
                 .header("x-user-id", userId)
                 .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<PreferencesResponse>() {})
+                .bodyToMono(new ParameterizedTypeReference<PreferencesResponse>() {
+                })
                 .map(PreferencesResponse::getData);
     }
 }

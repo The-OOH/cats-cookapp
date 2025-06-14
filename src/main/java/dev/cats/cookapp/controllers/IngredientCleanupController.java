@@ -4,6 +4,7 @@ import dev.cats.cookapp.services.IngredientCleanupService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class IngredientCleanupController {
     IngredientCleanupService ingredientCleanupService;
 
-    @RequestMapping("/collapse-by-name")
+    @GetMapping("/collapse-by-name")
     public void collapseByName(@RequestParam final String name) {
         this.ingredientCleanupService.collapseByName(name);
     }
 
-    @RequestMapping("/collapse-all")
+    @GetMapping("/collapse-all")
     public void collapseAll() {
         this.ingredientCleanupService.collapseAllDuplicates();
     }

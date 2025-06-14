@@ -1,7 +1,6 @@
 package dev.cats.cookapp.utils;
 
-public enum StringConverter {
-    ;
+public class StringConverter {
 
     public static String toKebabCase(final String input) {
         if (null == input) {

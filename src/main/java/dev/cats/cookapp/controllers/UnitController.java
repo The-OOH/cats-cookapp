@@ -22,7 +22,7 @@ public class UnitController {
 
     @GetMapping
     public ResponseEntity<List<UnitResponse>> getUnitsByName(
-            @RequestParam(name = "name") String name) {
-        return ResponseEntity.ok(unitService.getUnitsByName(name));
+            @RequestParam(name = "name") final String name) {
+        return ResponseEntity.ok(this.unitService.getUnitsByName(name));
     }
 }

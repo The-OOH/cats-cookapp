@@ -42,56 +42,56 @@ class RatingServiceImplTest {
     private RatingRepository ratingRepository;
 
     private static class StubEntityManager implements EntityManager {
-        private boolean flushed = false;
-        private boolean refreshed = false;
+        private boolean flushed;
+        private boolean refreshed;
 
         @Override
-        public void persist(Object o) {
+        public void persist(final Object o) {
 
         }
 
         @Override
-        public <T> T merge(T t) {
+        public <T> T merge(final T t) {
             return null;
         }
 
         @Override
-        public void remove(Object o) {
+        public void remove(final Object o) {
 
         }
 
         @Override
-        public <T> T find(Class<T> aClass, Object o) {
+        public <T> T find(final Class<T> aClass, final Object o) {
             return null;
         }
 
         @Override
-        public <T> T find(Class<T> aClass, Object o, Map<String, Object> map) {
+        public <T> T find(final Class<T> aClass, final Object o, final Map<String, Object> map) {
             return null;
         }
 
         @Override
-        public <T> T find(Class<T> aClass, Object o, LockModeType lockModeType) {
+        public <T> T find(final Class<T> aClass, final Object o, final LockModeType lockModeType) {
             return null;
         }
 
         @Override
-        public <T> T find(Class<T> aClass, Object o, LockModeType lockModeType, Map<String, Object> map) {
+        public <T> T find(final Class<T> aClass, final Object o, final LockModeType lockModeType, final Map<String, Object> map) {
             return null;
         }
 
         @Override
-        public <T> T getReference(Class<T> aClass, Object o) {
+        public <T> T getReference(final Class<T> aClass, final Object o) {
             return null;
         }
 
         @Override
         public void flush() {
-            flushed = true;
+            this.flushed = true;
         }
 
         @Override
-        public void setFlushMode(FlushModeType flushModeType) {
+        public void setFlushMode(final FlushModeType flushModeType) {
 
         }
 
@@ -101,32 +101,32 @@ class RatingServiceImplTest {
         }
 
         @Override
-        public void lock(Object o, LockModeType lockModeType) {
+        public void lock(final Object o, final LockModeType lockModeType) {
 
         }
 
         @Override
-        public void lock(Object o, LockModeType lockModeType, Map<String, Object> map) {
+        public void lock(final Object o, final LockModeType lockModeType, final Map<String, Object> map) {
 
         }
 
         @Override
-        public void refresh(Object entity) {
-            refreshed = true;
+        public void refresh(final Object entity) {
+            this.refreshed = true;
         }
 
         @Override
-        public void refresh(Object o, Map<String, Object> map) {
-
-        }
-
-        @Override
-        public void refresh(Object o, LockModeType lockModeType) {
+        public void refresh(final Object o, final Map<String, Object> map) {
 
         }
 
         @Override
-        public void refresh(Object o, LockModeType lockModeType, Map<String, Object> map) {
+        public void refresh(final Object o, final LockModeType lockModeType) {
+
+        }
+
+        @Override
+        public void refresh(final Object o, final LockModeType lockModeType, final Map<String, Object> map) {
 
         }
 
@@ -136,22 +136,22 @@ class RatingServiceImplTest {
         }
 
         @Override
-        public void detach(Object o) {
+        public void detach(final Object o) {
 
         }
 
         @Override
-        public boolean contains(Object o) {
+        public boolean contains(final Object o) {
             return false;
         }
 
         @Override
-        public LockModeType getLockMode(Object o) {
+        public LockModeType getLockMode(final Object o) {
             return null;
         }
 
         @Override
-        public void setProperty(String s, Object o) {
+        public void setProperty(final String s, final Object o) {
 
         }
 
@@ -161,72 +161,72 @@ class RatingServiceImplTest {
         }
 
         @Override
-        public Query createQuery(String s) {
+        public Query createQuery(final String s) {
             return null;
         }
 
         @Override
-        public <T> TypedQuery<T> createQuery(CriteriaQuery<T> criteriaQuery) {
+        public <T> TypedQuery<T> createQuery(final CriteriaQuery<T> criteriaQuery) {
             return null;
         }
 
         @Override
-        public Query createQuery(CriteriaUpdate criteriaUpdate) {
+        public Query createQuery(final CriteriaUpdate criteriaUpdate) {
             return null;
         }
 
         @Override
-        public Query createQuery(CriteriaDelete criteriaDelete) {
+        public Query createQuery(final CriteriaDelete criteriaDelete) {
             return null;
         }
 
         @Override
-        public <T> TypedQuery<T> createQuery(String s, Class<T> aClass) {
+        public <T> TypedQuery<T> createQuery(final String s, final Class<T> aClass) {
             return null;
         }
 
         @Override
-        public Query createNamedQuery(String s) {
+        public Query createNamedQuery(final String s) {
             return null;
         }
 
         @Override
-        public <T> TypedQuery<T> createNamedQuery(String s, Class<T> aClass) {
+        public <T> TypedQuery<T> createNamedQuery(final String s, final Class<T> aClass) {
             return null;
         }
 
         @Override
-        public Query createNativeQuery(String s) {
+        public Query createNativeQuery(final String s) {
             return null;
         }
 
         @Override
-        public Query createNativeQuery(String s, Class aClass) {
+        public Query createNativeQuery(final String s, final Class aClass) {
             return null;
         }
 
         @Override
-        public Query createNativeQuery(String s, String s1) {
+        public Query createNativeQuery(final String s, final String s1) {
             return null;
         }
 
         @Override
-        public StoredProcedureQuery createNamedStoredProcedureQuery(String s) {
+        public StoredProcedureQuery createNamedStoredProcedureQuery(final String s) {
             return null;
         }
 
         @Override
-        public StoredProcedureQuery createStoredProcedureQuery(String s) {
+        public StoredProcedureQuery createStoredProcedureQuery(final String s) {
             return null;
         }
 
         @Override
-        public StoredProcedureQuery createStoredProcedureQuery(String s, Class... classes) {
+        public StoredProcedureQuery createStoredProcedureQuery(final String s, final Class... classes) {
             return null;
         }
 
         @Override
-        public StoredProcedureQuery createStoredProcedureQuery(String s, String... strings) {
+        public StoredProcedureQuery createStoredProcedureQuery(final String s, final String... strings) {
             return null;
         }
 
@@ -241,7 +241,7 @@ class RatingServiceImplTest {
         }
 
         @Override
-        public <T> T unwrap(Class<T> aClass) {
+        public <T> T unwrap(final Class<T> aClass) {
             return null;
         }
 
@@ -281,32 +281,32 @@ class RatingServiceImplTest {
         }
 
         @Override
-        public <T> EntityGraph<T> createEntityGraph(Class<T> aClass) {
+        public <T> EntityGraph<T> createEntityGraph(final Class<T> aClass) {
             return null;
         }
 
         @Override
-        public EntityGraph<?> createEntityGraph(String s) {
+        public EntityGraph<?> createEntityGraph(final String s) {
             return null;
         }
 
         @Override
-        public EntityGraph<?> getEntityGraph(String s) {
+        public EntityGraph<?> getEntityGraph(final String s) {
             return null;
         }
 
         @Override
-        public <T> List<EntityGraph<? super T>> getEntityGraphs(Class<T> aClass) {
+        public <T> List<EntityGraph<? super T>> getEntityGraphs(final Class<T> aClass) {
             return List.of();
         }
 
         // add getters
         public boolean isFlushed() {
-            return flushed;
+            return this.flushed;
         }
 
         public boolean isRefreshed() {
-            return refreshed;
+            return this.refreshed;
         }
 
     }
@@ -316,49 +316,49 @@ class RatingServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        entityManager = new StubEntityManager();
-        ratingService = new RatingServiceImpl(recipeService, recipeApiService, ratingRepository, entityManager);
+        this.entityManager = new StubEntityManager();
+        this.ratingService = new RatingServiceImpl(this.recipeService, this.recipeApiService, this.ratingRepository, this.entityManager);
     }
 
     @Test
     @DisplayName("rateRecipe should save new rating and return updated recipe response when valid and not previously rated")
     void rateRecipe_validInput_savesRatingAndReturnsResponse() {
-        Long recipeId = 1L;
-        Double ratingValue = 0.75;
-        String userId = "user1";
-        Recipe recipe = new Recipe();
-        RecipeResponse response = new RecipeResponse();
+        final Long recipeId = 1L;
+        final Double ratingValue = 0.75;
+        final String userId = "user1";
+        final Recipe recipe = new Recipe();
+        final RecipeResponse response = new RecipeResponse();
 
-        when(recipeService.getRecipe(recipeId)).thenReturn(recipe);
-        when(ratingRepository.findByRecipeIdAndUserId(recipeId, userId)).thenReturn(Optional.empty());
-        when(recipeApiService.getRecipe(recipeId)).thenReturn(response);
+        when(this.recipeService.getRecipe(recipeId)).thenReturn(recipe);
+        when(this.ratingRepository.findByRecipeIdAndUserId(recipeId, userId)).thenReturn(Optional.empty());
+        when(this.recipeApiService.getRecipe(recipeId)).thenReturn(response);
 
-        RecipeResponse result = ratingService.rateRecipe(recipeId, ratingValue, userId);
+        final RecipeResponse result = this.ratingService.rateRecipe(recipeId, ratingValue, userId);
 
-        ArgumentCaptor<RecipeRating> captor = ArgumentCaptor.forClass(RecipeRating.class);
-        org.mockito.Mockito.verify(ratingRepository).save(captor.capture());
-        RecipeRating saved = captor.getValue();
+        final ArgumentCaptor<RecipeRating> captor = ArgumentCaptor.forClass(RecipeRating.class);
+        verify(this.ratingRepository).save(captor.capture());
+        final RecipeRating saved = captor.getValue();
         assertThat(saved.getRecipe()).isSameAs(recipe);
         assertThat(saved.getRating()).isEqualTo(ratingValue);
         assertThat(saved.getUserId()).isEqualTo(userId);
 
-        assertThat(entityManager.isFlushed()).isTrue();
-        assertThat(entityManager.isRefreshed()).isTrue();
+        assertThat(this.entityManager.isFlushed()).isTrue();
+        assertThat(this.entityManager.isRefreshed()).isTrue();
 
-        org.mockito.Mockito.verify(recipeApiService).getRecipe(recipeId);
+        verify(this.recipeApiService).getRecipe(recipeId);
         assertThat(result).isSameAs(response);
     }
 
     @Test
     @DisplayName("rateRecipe should throw when already rated")
     void rateRecipe_alreadyRated_throws() {
-        Long recipeId = 2L;
-        String userId = "user2";
+        final Long recipeId = 2L;
+        final String userId = "user2";
 
-        when(recipeService.getRecipe(recipeId)).thenReturn(new Recipe());
-        when(ratingRepository.findByRecipeIdAndUserId(recipeId, userId)).thenReturn(Optional.of(new RecipeRating()));
+        when(this.recipeService.getRecipe(recipeId)).thenReturn(new Recipe());
+        when(this.ratingRepository.findByRecipeIdAndUserId(recipeId, userId)).thenReturn(Optional.of(new RecipeRating()));
 
-        assertThatThrownBy(() -> ratingService.rateRecipe(recipeId, 0.5, userId))
+        assertThatThrownBy(() -> this.ratingService.rateRecipe(recipeId, 0.5, userId))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("You already rated this recipe");
     }
@@ -366,17 +366,17 @@ class RatingServiceImplTest {
     @Test
     @DisplayName("rateRecipe should throw when rating out of bounds")
     void rateRecipe_invalidRating_throws() {
-        Long recipeId = 3L;
-        String userId = "user3";
+        final Long recipeId = 3L;
+        final String userId = "user3";
 
-        when(recipeService.getRecipe(recipeId)).thenReturn(new Recipe());
-        when(ratingRepository.findByRecipeIdAndUserId(recipeId, userId)).thenReturn(Optional.empty());
+        when(this.recipeService.getRecipe(recipeId)).thenReturn(new Recipe());
+        when(this.ratingRepository.findByRecipeIdAndUserId(recipeId, userId)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> ratingService.rateRecipe(recipeId, 1.2, userId))
+        assertThatThrownBy(() -> this.ratingService.rateRecipe(recipeId, 1.2, userId))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Rating must be between 0 and 1");
 
-        assertThatThrownBy(() -> ratingService.rateRecipe(recipeId, -0.1, userId))
+        assertThatThrownBy(() -> this.ratingService.rateRecipe(recipeId, -0.1, userId))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Rating must be between 0 and 1");
     }
@@ -384,39 +384,39 @@ class RatingServiceImplTest {
     @Test
     @DisplayName("changeRating should update and return response when valid")
     void changeRating_validInput_updatesAndReturns() {
-        Long recipeId = 4L;
-        String userId = "user4";
-        Double newRating = 0.4;
-        Recipe recipe = new Recipe();
-        RecipeRating existing = RecipeRating.builder()
+        final Long recipeId = 4L;
+        final String userId = "user4";
+        final Double newRating = 0.4;
+        final Recipe recipe = new Recipe();
+        final RecipeRating existing = RecipeRating.builder()
                 .id(1L)
                 .recipe(recipe)
                 .userId(userId)
                 .rating(0.8)
                 .build();
-        RecipeResponse response = new RecipeResponse();
+        final RecipeResponse response = new RecipeResponse();
 
-        when(ratingRepository.findByRecipeIdAndUserId(recipeId, userId)).thenReturn(Optional.of(existing));
-        when(recipeApiService.getRecipe(recipeId)).thenReturn(response);
+        when(this.ratingRepository.findByRecipeIdAndUserId(recipeId, userId)).thenReturn(Optional.of(existing));
+        when(this.recipeApiService.getRecipe(recipeId)).thenReturn(response);
 
-        RecipeResponse result = ratingService.changeRating(recipeId, newRating, userId);
+        final RecipeResponse result = this.ratingService.changeRating(recipeId, newRating, userId);
 
         assertThat(existing.getRating()).isEqualTo(newRating);
-        org.mockito.Mockito.verify(ratingRepository).save(existing);
-        assertThat(entityManager.isFlushed()).isTrue();
-        assertThat(entityManager.isRefreshed()).isTrue();
-        org.mockito.Mockito.verify(recipeApiService).getRecipe(recipeId);
+        verify(this.ratingRepository).save(existing);
+        assertThat(this.entityManager.isFlushed()).isTrue();
+        assertThat(this.entityManager.isRefreshed()).isTrue();
+        verify(this.recipeApiService).getRecipe(recipeId);
         assertThat(result).isSameAs(response);
     }
 
     @Test
     @DisplayName("changeRating should throw when out of bounds")
     void changeRating_invalidRating_throws() {
-        assertThatThrownBy(() -> ratingService.changeRating(5L, 1.5, "user5"))
+        assertThatThrownBy(() -> this.ratingService.changeRating(5L, 1.5, "user5"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Rating must be between 0 and 1");
 
-        assertThatThrownBy(() -> ratingService.changeRating(5L, -0.2, "user5"))
+        assertThatThrownBy(() -> this.ratingService.changeRating(5L, -0.2, "user5"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Rating must be between 0 and 1");
     }
@@ -424,12 +424,12 @@ class RatingServiceImplTest {
     @Test
     @DisplayName("changeRating should throw when no existing rating")
     void changeRating_noExisting_throws() {
-        Long recipeId = 6L;
-        String userId = "user6";
+        final Long recipeId = 6L;
+        final String userId = "user6";
 
-        when(ratingRepository.findByRecipeIdAndUserId(recipeId, userId)).thenReturn(Optional.empty());
+        when(this.ratingRepository.findByRecipeIdAndUserId(recipeId, userId)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> ratingService.changeRating(recipeId, 0.6, userId))
+        assertThatThrownBy(() -> this.ratingService.changeRating(recipeId, 0.6, userId))
                 .isInstanceOf(NoSuchElementException.class);
     }
 }

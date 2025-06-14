@@ -22,7 +22,7 @@ public class ClerkController {
 
     @GetMapping("/users")
     public ResponseEntity<List<UserDetails>> getAllUsers() {
-        return ResponseEntity.ok(clerkService.listAllUsers());
+        return ResponseEntity.ok(this.clerkService.listAllUsers());
     }
 
 }

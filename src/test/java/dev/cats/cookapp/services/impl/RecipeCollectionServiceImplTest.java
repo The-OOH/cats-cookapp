@@ -46,26 +46,26 @@ class RecipeCollectionServiceImplTest {
     @Test
     @DisplayName("getCollections returns mapper response for empty list")
     void getCollections_empty_returnsMapperResponse() {
-        String userId = "user1";
-        when(collectionRepository.findAllByUserId(userId)).thenReturn(Collections.emptyList());
-        CollectionListResponse expected = new CollectionListResponse();
-        when(collectionsMapper.toListResponse(Collections.emptyList())).thenReturn(expected);
+        final String userId = "user1";
+        when(this.collectionRepository.findAllByUserId(userId)).thenReturn(Collections.emptyList());
+        final CollectionListResponse expected = new CollectionListResponse();
+        when(this.collectionsMapper.toListResponse(Collections.emptyList())).thenReturn(expected);
 
-        CollectionListResponse actual = service.getCollections(userId);
+        final CollectionListResponse actual = this.service.getCollections(userId);
 
-        verify(collectionRepository).findAllByUserId(userId);
-        verify(collectionsMapper).toListResponse(Collections.emptyList());
+        verify(this.collectionRepository).findAllByUserId(userId);
+        verify(this.collectionsMapper).toListResponse(Collections.emptyList());
         assertThat(actual).isSameAs(expected);
     }
 
     @Test
     @DisplayName("getCollectionById throws when not found")
     void getCollectionById_notFound_throws() {
-        String userId = "userA";
-        Long collId = 10L;
-        when(collectionRepository.findByUserIdAndId(userId, collId)).thenReturn(Optional.empty());
+        final String userId = "userA";
+        final Long collId = 10L;
+        when(this.collectionRepository.findByUserIdAndId(userId, collId)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> service.getCollectionById(userId, collId))
+        assertThatThrownBy(() -> this.service.getCollectionById(userId, collId))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Collection not found");
     }
@@ -73,27 +73,27 @@ class RecipeCollectionServiceImplTest {
     @Test
     @DisplayName("getCollectionById returns mapper response when found")
     void getCollectionById_found_returnsMapperResponse() {
-        String userId = "userB";
-        Long collId = 11L;
-        RecipesCollection coll = new RecipesCollection();
-        when(collectionRepository.findByUserIdAndId(userId, collId)).thenReturn(Optional.of(coll));
-        FullCollectionResponse expected = new FullCollectionResponse();
-        when(collectionsMapper.toFullCollectionResponse(coll)).thenReturn(expected);
+        final String userId = "userB";
+        final Long collId = 11L;
+        final RecipesCollection coll = new RecipesCollection();
+        when(this.collectionRepository.findByUserIdAndId(userId, collId)).thenReturn(Optional.of(coll));
+        final FullCollectionResponse expected = new FullCollectionResponse();
+        when(this.collectionsMapper.toFullCollectionResponse(coll)).thenReturn(expected);
 
-        FullCollectionResponse actual = service.getCollectionById(userId, collId);
+        final FullCollectionResponse actual = this.service.getCollectionById(userId, collId);
 
-        verify(collectionRepository).findByUserIdAndId(userId, collId);
-        verify(collectionsMapper).toFullCollectionResponse(coll);
+        verify(this.collectionRepository).findByUserIdAndId(userId, collId);
+        verify(this.collectionsMapper).toFullCollectionResponse(coll);
         assertThat(actual).isSameAs(expected);
     }
 
     @Test
     @DisplayName("addCollection throws when name missing")
     void addCollection_missingName_throws() {
-        CollectionRequest req = new CollectionRequest();
+        final CollectionRequest req = new CollectionRequest();
         req.setName("");
 
-        assertThatThrownBy(() -> service.addCollection("userX", req))
+        assertThatThrownBy(() -> this.service.addCollection("userX", req))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Collection name must be provided");
     }
@@ -101,12 +101,12 @@ class RecipeCollectionServiceImplTest {
     @Test
     @DisplayName("addCollection throws when recipe IDs invalid")
     void addCollection_invalidRecipeIds_throws() {
-        CollectionRequest req = new CollectionRequest();
+        final CollectionRequest req = new CollectionRequest();
         req.setName("My Coll");
         req.setRecipeIds(List.of(1L, 2L));
-        when(recipeRepository.findAllById(List.of(1L, 2L))).thenReturn(List.of(new Recipe()));
+        when(this.recipeRepository.findAllById(List.of(1L, 2L))).thenReturn(List.of(new Recipe()));
 
-        assertThatThrownBy(() -> service.addCollection("userY", req))
+        assertThatThrownBy(() -> this.service.addCollection("userY", req))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("One or more recipeIds are invalid");
     }
@@ -114,36 +114,36 @@ class RecipeCollectionServiceImplTest {
     @Test
     @DisplayName("addCollection persists and returns mapper response")
     void addCollection_valid_savesAndReturns() {
-        CollectionRequest req = new CollectionRequest();
+        final CollectionRequest req = new CollectionRequest();
         req.setName("Coll");
         req.setDescription("Desc");
         req.setRecipeIds(List.of(3L));
-        Recipe r = new Recipe(); r.setId(3L);
-        when(recipeRepository.findAllById(List.of(3L))).thenReturn(List.of(r));
-        RecipesCollection toSave = new RecipesCollection();
-        FullCollectionResponse expected = new FullCollectionResponse();
-        when(collectionRepository.save(any(RecipesCollection.class))).thenReturn(toSave);
-        when(collectionsMapper.toFullCollectionResponse(toSave)).thenReturn(expected);
+        final Recipe r = new Recipe(); r.setId(3L);
+        when(this.recipeRepository.findAllById(List.of(3L))).thenReturn(List.of(r));
+        final RecipesCollection toSave = new RecipesCollection();
+        final FullCollectionResponse expected = new FullCollectionResponse();
+        when(this.collectionRepository.save(any(RecipesCollection.class))).thenReturn(toSave);
+        when(this.collectionsMapper.toFullCollectionResponse(toSave)).thenReturn(expected);
 
-        FullCollectionResponse actual = service.addCollection("userZ", req);
+        final FullCollectionResponse actual = this.service.addCollection("userZ", req);
 
-        ArgumentCaptor<RecipesCollection> captor = ArgumentCaptor.forClass(RecipesCollection.class);
-        verify(collectionRepository).save(captor.capture());
-        RecipesCollection saved = captor.getValue();
+        final ArgumentCaptor<RecipesCollection> captor = ArgumentCaptor.forClass(RecipesCollection.class);
+        verify(this.collectionRepository).save(captor.capture());
+        final RecipesCollection saved = captor.getValue();
         assertThat(saved.getName()).isEqualTo("Coll");
         assertThat(saved.getDescription()).isEqualTo("Desc");
         assertThat(saved.getUserId()).isEqualTo("userZ");
-        verify(collectionsMapper).toFullCollectionResponse(toSave);
+        verify(this.collectionsMapper).toFullCollectionResponse(toSave);
         assertThat(actual).isSameAs(expected);
     }
 
     @Test
     @DisplayName("updateCollection throws when ID missing")
     void updateCollection_missingId_throws() {
-        CollectionRequest req = new CollectionRequest();
+        final CollectionRequest req = new CollectionRequest();
         req.setId(null);
 
-        assertThatThrownBy(() -> service.updateCollection("u1", req))
+        assertThatThrownBy(() -> this.service.updateCollection("u1", req))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Collection ID must be set");
     }
@@ -151,11 +151,11 @@ class RecipeCollectionServiceImplTest {
     @Test
     @DisplayName("updateCollection throws when not found")
     void updateCollection_notFound_throws() {
-        CollectionRequest req = new CollectionRequest();
+        final CollectionRequest req = new CollectionRequest();
         req.setId(5L);
-        when(collectionRepository.findByUserIdAndId("u2", 5L)).thenReturn(Optional.empty());
+        when(this.collectionRepository.findByUserIdAndId("u2", 5L)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> service.updateCollection("u2", req))
+        assertThatThrownBy(() -> this.service.updateCollection("u2", req))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Collection not found");
     }
@@ -163,16 +163,16 @@ class RecipeCollectionServiceImplTest {
     @Test
     @DisplayName("updateCollection throws when recipe IDs invalid")
     void updateCollection_invalidRecipeIds_throws() {
-        CollectionRequest req = new CollectionRequest();
+        final CollectionRequest req = new CollectionRequest();
         req.setId(6L);
         req.setName("N");
         req.setDescription("D");
         req.setRecipeIds(List.of(7L));
-        RecipesCollection existing = new RecipesCollection();
-        when(collectionRepository.findByUserIdAndId("u3", 6L)).thenReturn(Optional.of(existing));
-        when(recipeRepository.findAllById(List.of(7L))).thenReturn(Collections.emptyList());
+        final RecipesCollection existing = new RecipesCollection();
+        when(this.collectionRepository.findByUserIdAndId("u3", 6L)).thenReturn(Optional.of(existing));
+        when(this.recipeRepository.findAllById(List.of(7L))).thenReturn(Collections.emptyList());
 
-        assertThatThrownBy(() -> service.updateCollection("u3", req))
+        assertThatThrownBy(() -> this.service.updateCollection("u3", req))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("One or more recipeIds are invalid");
     }
@@ -180,33 +180,33 @@ class RecipeCollectionServiceImplTest {
     @Test
     @DisplayName("updateCollection persists and returns mapper response")
     void updateCollection_valid_savesAndReturns() {
-        CollectionRequest req = new CollectionRequest();
+        final CollectionRequest req = new CollectionRequest();
         req.setId(8L);
         req.setName("NM");
         req.setDescription("DM");
         req.setRecipeIds(List.of(9L));
-        RecipesCollection existing = new RecipesCollection(); existing.setUserId("u4"); existing.setId(8L);
-        Recipe r = new Recipe(); r.setId(9L);
-        when(collectionRepository.findByUserIdAndId("u4", 8L)).thenReturn(Optional.of(existing));
-        when(recipeRepository.findAllById(List.of(9L))).thenReturn(List.of(r));
-        RecipesCollection saved = new RecipesCollection();
-        FullCollectionResponse expected = new FullCollectionResponse();
-        when(collectionRepository.save(existing)).thenReturn(saved);
-        when(collectionsMapper.toFullCollectionResponse(saved)).thenReturn(expected);
+        final RecipesCollection existing = new RecipesCollection(); existing.setUserId("u4"); existing.setId(8L);
+        final Recipe r = new Recipe(); r.setId(9L);
+        when(this.collectionRepository.findByUserIdAndId("u4", 8L)).thenReturn(Optional.of(existing));
+        when(this.recipeRepository.findAllById(List.of(9L))).thenReturn(List.of(r));
+        final RecipesCollection saved = new RecipesCollection();
+        final FullCollectionResponse expected = new FullCollectionResponse();
+        when(this.collectionRepository.save(existing)).thenReturn(saved);
+        when(this.collectionsMapper.toFullCollectionResponse(saved)).thenReturn(expected);
 
-        FullCollectionResponse actual = service.updateCollection("u4", req);
+        final FullCollectionResponse actual = this.service.updateCollection("u4", req);
 
-        verify(collectionRepository).save(existing);
-        verify(collectionsMapper).toFullCollectionResponse(saved);
+        verify(this.collectionRepository).save(existing);
+        verify(this.collectionsMapper).toFullCollectionResponse(saved);
         assertThat(actual).isSameAs(expected);
     }
 
     @Test
     @DisplayName("deleteCollection throws when not found")
     void deleteCollection_notFound_throws() {
-        when(collectionRepository.findByUserIdAndId("u5", 10L)).thenReturn(Optional.empty());
+        when(this.collectionRepository.findByUserIdAndId("u5", 10L)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> service.deleteCollection("u5", 10L))
+        assertThatThrownBy(() -> this.service.deleteCollection("u5", 10L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Collection not found");
     }
@@ -214,20 +214,20 @@ class RecipeCollectionServiceImplTest {
     @Test
     @DisplayName("deleteCollection delegates when found")
     void deleteCollection_found_delegates() {
-        RecipesCollection coll = new RecipesCollection();
-        when(collectionRepository.findByUserIdAndId("u6", 11L)).thenReturn(Optional.of(coll));
+        final RecipesCollection coll = new RecipesCollection();
+        when(this.collectionRepository.findByUserIdAndId("u6", 11L)).thenReturn(Optional.of(coll));
 
-        service.deleteCollection("u6", 11L);
+        this.service.deleteCollection("u6", 11L);
 
-        verify(collectionRepository).delete(coll);
+        verify(this.collectionRepository).delete(coll);
     }
 
     @Test
     @DisplayName("addRecipeToCollection throws when collection not found")
     void addRecipeToCollection_noCollection_throws() {
-        when(collectionRepository.findByUserIdAndId("u7", 12L)).thenReturn(Optional.empty());
+        when(this.collectionRepository.findByUserIdAndId("u7", 12L)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> service.addRecipeToCollection("u7", 12L, 20L))
+        assertThatThrownBy(() -> this.service.addRecipeToCollection("u7", 12L, 20L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Collection not found");
     }
@@ -235,11 +235,11 @@ class RecipeCollectionServiceImplTest {
     @Test
     @DisplayName("addRecipeToCollection throws when recipe not found")
     void addRecipeToCollection_noRecipe_throws() {
-        RecipesCollection coll = new RecipesCollection();
-        when(collectionRepository.findByUserIdAndId("u8", 13L)).thenReturn(Optional.of(coll));
-        when(recipeRepository.findById(30L)).thenReturn(Optional.empty());
+        final RecipesCollection coll = new RecipesCollection();
+        when(this.collectionRepository.findByUserIdAndId("u8", 13L)).thenReturn(Optional.of(coll));
+        when(this.recipeRepository.findById(30L)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> service.addRecipeToCollection("u8", 13L, 30L))
+        assertThatThrownBy(() -> this.service.addRecipeToCollection("u8", 13L, 30L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Recipe not found");
     }
@@ -247,28 +247,28 @@ class RecipeCollectionServiceImplTest {
     @Test
     @DisplayName("addRecipeToCollection persists and returns mapper response")
     void addRecipeToCollection_valid_savesAndReturns() {
-        RecipesCollection coll = new RecipesCollection(); coll.setUserId("u9"); coll.setId(14L);
-        Recipe r = new Recipe(); r.setId(40L);
-        when(collectionRepository.findByUserIdAndId("u9", 14L)).thenReturn(Optional.of(coll));
-        when(recipeRepository.findById(40L)).thenReturn(Optional.of(r));
-        RecipesCollection saved = new RecipesCollection();
-        FullCollectionResponse expected = new FullCollectionResponse();
-        when(collectionRepository.save(coll)).thenReturn(saved);
-        when(collectionsMapper.toFullCollectionResponse(saved)).thenReturn(expected);
+        final RecipesCollection coll = new RecipesCollection(); coll.setUserId("u9"); coll.setId(14L);
+        final Recipe r = new Recipe(); r.setId(40L);
+        when(this.collectionRepository.findByUserIdAndId("u9", 14L)).thenReturn(Optional.of(coll));
+        when(this.recipeRepository.findById(40L)).thenReturn(Optional.of(r));
+        final RecipesCollection saved = new RecipesCollection();
+        final FullCollectionResponse expected = new FullCollectionResponse();
+        when(this.collectionRepository.save(coll)).thenReturn(saved);
+        when(this.collectionsMapper.toFullCollectionResponse(saved)).thenReturn(expected);
 
-        FullCollectionResponse actual = service.addRecipeToCollection("u9", 14L, 40L);
+        final FullCollectionResponse actual = this.service.addRecipeToCollection("u9", 14L, 40L);
 
-        verify(collectionRepository).save(coll);
-        verify(collectionsMapper).toFullCollectionResponse(saved);
+        verify(this.collectionRepository).save(coll);
+        verify(this.collectionsMapper).toFullCollectionResponse(saved);
         assertThat(actual).isSameAs(expected);
     }
 
     @Test
     @DisplayName("removeRecipeFromCollection throws when collection not found")
     void removeRecipeFromCollection_noCollection_throws() {
-        when(collectionRepository.findByUserIdAndId("u11", 15L)).thenReturn(Optional.empty());
+        when(this.collectionRepository.findByUserIdAndId("u11", 15L)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> service.removeRecipeFromCollection("u11", 15L, 50L))
+        assertThatThrownBy(() -> this.service.removeRecipeFromCollection("u11", 15L, 50L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Collection not found");
     }
@@ -276,20 +276,20 @@ class RecipeCollectionServiceImplTest {
     @Test
     @DisplayName("removeRecipeFromCollection persists and returns mapper response")
     void removeRecipeFromCollection_valid_savesAndReturns() {
-        RecipesCollection coll = new RecipesCollection(); coll.setUserId("u10"); coll.setId(16L);
-        Recipe r = new Recipe(); r.setId(50L);
+        final RecipesCollection coll = new RecipesCollection(); coll.setUserId("u10"); coll.setId(16L);
+        final Recipe r = new Recipe(); r.setId(50L);
         coll.addRecipe(r);
-        when(collectionRepository.findByUserIdAndId("u10", 16L)).thenReturn(Optional.of(coll));
-        when(recipeRepository.getReferenceById(50L)).thenReturn(r);
-        RecipesCollection saved = new RecipesCollection();
-        FullCollectionResponse expected = new FullCollectionResponse();
-        when(collectionRepository.save(coll)).thenReturn(saved);
-        when(collectionsMapper.toFullCollectionResponse(saved)).thenReturn(expected);
+        when(this.collectionRepository.findByUserIdAndId("u10", 16L)).thenReturn(Optional.of(coll));
+        when(this.recipeRepository.getReferenceById(50L)).thenReturn(r);
+        final RecipesCollection saved = new RecipesCollection();
+        final FullCollectionResponse expected = new FullCollectionResponse();
+        when(this.collectionRepository.save(coll)).thenReturn(saved);
+        when(this.collectionsMapper.toFullCollectionResponse(saved)).thenReturn(expected);
 
-        FullCollectionResponse actual = service.removeRecipeFromCollection("u10", 16L, 50L);
+        final FullCollectionResponse actual = this.service.removeRecipeFromCollection("u10", 16L, 50L);
 
-        verify(collectionRepository).save(coll);
-        verify(collectionsMapper).toFullCollectionResponse(saved);
+        verify(this.collectionRepository).save(coll);
+        verify(this.collectionsMapper).toFullCollectionResponse(saved);
         assertThat(actual).isSameAs(expected);
     }
 }

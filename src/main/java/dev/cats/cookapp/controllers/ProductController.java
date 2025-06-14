@@ -24,6 +24,6 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<ProductSuggestionResponse>> getIngredientsByName(
             @RequestParam(name = "name") String name) {
-        return ResponseEntity.ok(productService.getProductSuggestions(name));
+        return ResponseEntity.ok(this.productService.getProductSuggestions(name));
     }
 }

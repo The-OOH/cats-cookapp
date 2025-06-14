@@ -19,10 +19,10 @@ public class ProductServiceImpl implements ProductService {
     private final ProductMapper productMapper;
 
     @Override
-    public List<ProductSuggestionResponse> getProductSuggestions(String name) {
-        return productRepository.findTop10ByNameIgnoreCaseContaining(name)
+    public List<ProductSuggestionResponse> getProductSuggestions(final String name) {
+        return this.productRepository.findTop10ByNameIgnoreCaseContaining(name)
                 .stream()
-                .map(productMapper::toSuggestion)
+                .map(this.productMapper::toSuggestion)
                 .toList();
     }
 }

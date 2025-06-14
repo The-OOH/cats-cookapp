@@ -1,5 +1,6 @@
 package dev.cats.cookapp.mappers;
 
+import dev.cats.cookapp.dtos.request.recipe.RecipeAIRequest;
 import dev.cats.cookapp.dtos.response.recipe.RecipeCollectionResponse;
 import dev.cats.cookapp.dtos.response.recipe.RecipeInListResponse;
 import dev.cats.cookapp.models.recipe.Recipe;
@@ -25,6 +26,8 @@ public interface RecipeMapper {
     @Mapping(target = "ingredients", ignore = true)
     @Mapping(target = "categories", ignore = true)
     Recipe toEntity(RecipeRequest recipeRequest);
+
+    RecipeRequest fromAIRequest(RecipeAIRequest recipeAIRequest);
 
     RecipeCollectionResponse toCollectionResponse(Recipe recipe);
 

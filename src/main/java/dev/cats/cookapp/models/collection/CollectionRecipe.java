@@ -34,9 +34,9 @@ public class CollectionRecipe {
     @CreationTimestamp
     private Timestamp addedAt;
 
-    public CollectionRecipe(RecipesCollection coll, Recipe rec) {
-        this.collection = coll;
-        this.recipe = rec;
-        this.id = new CollectionRecipeKey(coll.getId(), rec.getId());
+    public CollectionRecipe(final RecipesCollection coll, final Recipe rec) {
+        collection = coll;
+        recipe = rec;
+        id = new CollectionRecipeKey(coll.getId(), rec.getId());
     }
 }

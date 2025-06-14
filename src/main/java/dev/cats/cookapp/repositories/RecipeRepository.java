@@ -13,6 +13,6 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     @EntityGraph(attributePaths = {"categories", "steps", "ingredients", "nutrition"}, type = EntityGraph.EntityGraphType.LOAD)
     Optional<Recipe> findById(@NotNull Long id);
 
-    @EntityGraph(attributePaths = {"categories"}, type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(attributePaths = "categories", type = EntityGraph.EntityGraphType.LOAD)
     Page<Recipe> findAllByAuthorId(String userId, Pageable pageable);
 }

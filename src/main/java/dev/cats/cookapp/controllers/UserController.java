@@ -17,9 +17,9 @@ public class UserController {
     UserPushTokenService userPushTokenService;
 
     @PutMapping("/push-token")
-    public ResponseEntity<SavePushTokenResponse> savePushToken(@RequestHeader("x-user-id") String userId,
-                                                               @RequestBody PushTokenRequest request) {
-        return ResponseEntity.ok(userPushTokenService.savePushToken(userId, request));
+    public ResponseEntity<SavePushTokenResponse> savePushToken(@RequestHeader("x-user-id") final String userId,
+                                                               @RequestBody final PushTokenRequest request) {
+        return ResponseEntity.ok(this.userPushTokenService.savePushToken(userId, request));
     }
 
 }

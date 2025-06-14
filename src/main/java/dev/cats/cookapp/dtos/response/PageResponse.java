@@ -8,7 +8,7 @@ public record PageResponse<T>(List<T> data, Meta meta) {
 
     public record Meta(int page, int totalPages, long totalItems) { }
 
-    public static <T> PageResponse<T> from(Page<T> page) {
+    public static <T> PageResponse<T> from(final Page<T> page) {
         return new PageResponse<>(
                 page.getContent(),
                 new Meta(

@@ -29,60 +29,60 @@ class RecipeServiceImplTest {
     @DisplayName("getRecipe should return recipe when found")
     void getRecipe_found_returnsRecipe() {
         // Arrange
-        Long id = 123L;
-        Recipe expected = new Recipe();
+        final Long id = 123L;
+        final Recipe expected = new Recipe();
         expected.setId(id);
-        when(recipeRepository.findById(id)).thenReturn(Optional.of(expected));
+        when(this.recipeRepository.findById(id)).thenReturn(Optional.of(expected));
 
         // Act
-        Recipe actual = recipeService.getRecipe(id);
+        final Recipe actual = this.recipeService.getRecipe(id);
 
         // Assert
         assertThat(actual).isSameAs(expected);
-        verify(recipeRepository).findById(id);
+        verify(this.recipeRepository).findById(id);
     }
 
     @Test
     @DisplayName("getRecipe should throw NoSuchElementException when not found")
     void getRecipe_notFound_throws() {
         // Arrange
-        Long id = 999L;
-        when(recipeRepository.findById(id)).thenReturn(Optional.empty());
+        final Long id = 999L;
+        when(this.recipeRepository.findById(id)).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThatThrownBy(() -> recipeService.getRecipe(id))
+        assertThatThrownBy(() -> this.recipeService.getRecipe(id))
                 .isInstanceOf(NoSuchElementException.class);
-        verify(recipeRepository).findById(id);
+        verify(this.recipeRepository).findById(id);
     }
 
     @Test
     @DisplayName("saveRecipe should delegate to repository and return saved entity")
     void saveRecipe_delegatesToRepository() {
         // Arrange
-        Recipe input = new Recipe();
+        final Recipe input = new Recipe();
         input.setTitle("Test");
-        Recipe saved = new Recipe();
+        final Recipe saved = new Recipe();
         saved.setTitle("Test");
-        when(recipeRepository.save(input)).thenReturn(saved);
+        when(this.recipeRepository.save(input)).thenReturn(saved);
 
         // Act
-        Recipe result = recipeService.saveRecipe(input);
+        final Recipe result = this.recipeService.saveRecipe(input);
 
         // Assert
         assertThat(result).isSameAs(saved);
-        verify(recipeRepository).save(input);
+        verify(this.recipeRepository).save(input);
     }
 
     @Test
     @DisplayName("deleteRecipe should delegate to repository")
     void deleteRecipe_delegatesToRepository() {
         // Arrange
-        Long id = 55L;
+        final Long id = 55L;
 
         // Act
-        recipeService.deleteRecipe(id);
+        this.recipeService.deleteRecipe(id);
 
         // Assert
-        verify(recipeRepository).deleteById(id);
+        verify(this.recipeRepository).deleteById(id);
     }
 }

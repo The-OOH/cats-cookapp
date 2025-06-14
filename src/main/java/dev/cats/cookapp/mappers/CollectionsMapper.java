@@ -23,8 +23,8 @@ public interface CollectionsMapper {
     @Mapping(target = "recipeCount", expression = "java(collection.getRecipes().size())")
     FullCollectionResponse toFullCollectionResponse(RecipesCollection collection);
 
-    default CollectionListResponse toListResponse(List<CollectionResponse> list) {
-        CollectionListResponse dto = new CollectionListResponse();
+    default CollectionListResponse toListResponse(final List<CollectionResponse> list) {
+        final CollectionListResponse dto = new CollectionListResponse();
         dto.setCollections(list);
         return dto;
     }

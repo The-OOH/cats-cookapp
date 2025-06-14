@@ -18,15 +18,15 @@ public class CloudflareR2Service {
     S3Presigner presigner;
     R2Properties props;
 
-    public ImageSaveResponse getPresignedUrl(String key, Duration expiry) {
-        PutObjectPresignRequest preq = PutObjectPresignRequest.builder()
+    public ImageSaveResponse getPresignedUrl(final String key, final Duration expiry) {
+        final PutObjectPresignRequest preq = PutObjectPresignRequest.builder()
                 .signatureDuration(expiry)
-                .putObjectRequest(r -> r.bucket(props.getBucketName()).key(key).build())
+                .putObjectRequest(r -> r.bucket(this.props.getBucketName()).key(key).build())
                 .build();
 
         return ImageSaveResponse.builder()
-                .putPreSignedUrl(presigner.presignPutObject(preq).url().toString())
-                .publicUrl(props.getPublicUrl() + "/" + key)
+                .putPreSignedUrl(this.presigner.presignPutObject(preq).url().toString())
+                .publicUrl(this.props.getPublicUrl() + "/" + key)
                 .build();
     }
 }

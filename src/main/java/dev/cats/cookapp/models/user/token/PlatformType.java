@@ -9,18 +9,18 @@ public enum PlatformType {
 
     private final String value;
 
-    PlatformType(String value) {
+    PlatformType(final String value) {
         this.value = value;
     }
 
     @JsonValue
     public String getValue() {
-        return value;
+        return this.value;
     }
 
     @JsonCreator
-    public static PlatformType fromValue(String v) {
-        for (PlatformType pt : values()) {
+    public static PlatformType fromValue(final String v) {
+        for (final PlatformType pt : PlatformType.values()) {
             if (pt.value.equalsIgnoreCase(v)) {
                 return pt;
             }

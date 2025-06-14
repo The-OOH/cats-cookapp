@@ -24,14 +24,14 @@ public class RecipeCollectionController {
     public ResponseEntity<CollectionListResponse> getCollections(
             @RequestHeader("x-user-id") String userId
     ) {
-        return ResponseEntity.ok(recipeCollectionService.getCollections(userId));
+        return ResponseEntity.ok(this.recipeCollectionService.getCollections(userId));
     }
 
     @GetMapping("/preview")
     public ResponseEntity<CollectionListPreviewResponse> getCollectionsPreview(
             @RequestHeader("x-user-id") String userId
     ) {
-        return ResponseEntity.ok(recipeCollectionService.getCollectionsPreview(userId));
+        return ResponseEntity.ok(this.recipeCollectionService.getCollectionsPreview(userId));
     }
 
     @PostMapping
@@ -39,7 +39,7 @@ public class RecipeCollectionController {
             @RequestHeader("x-user-id") String userId,
             @Valid @RequestBody CollectionRequest request
     ) {
-        var created = recipeCollectionService.addCollection(userId, request);
+        var created = this.recipeCollectionService.addCollection(userId, request);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(created);
@@ -50,7 +50,7 @@ public class RecipeCollectionController {
             @RequestHeader("x-user-id") String userId,
             @PathVariable Long collectionId
     ) {
-        var resp = recipeCollectionService.getCollectionById(userId, collectionId);
+        var resp = this.recipeCollectionService.getCollectionById(userId, collectionId);
         return ResponseEntity.ok(resp);
     }
 
@@ -61,36 +61,36 @@ public class RecipeCollectionController {
             @Valid @RequestBody CollectionRequest request
     ) {
         request.setId(collectionId);
-        var updated = recipeCollectionService.updateCollection(userId, request);
+        final var updated = this.recipeCollectionService.updateCollection(userId, request);
         return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{collectionId}")
     public ResponseEntity<Void> deleteCollection(
-            @RequestHeader("x-user-id") String userId,
-            @PathVariable Long collectionId
+            @RequestHeader("x-user-id") final String userId,
+            @PathVariable final Long collectionId
     ) {
-        recipeCollectionService.deleteCollection(userId, collectionId);
+        this.recipeCollectionService.deleteCollection(userId, collectionId);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{collectionId}/recipe")
     public ResponseEntity<FullCollectionResponse> addRecipeToCollection(
-            @RequestHeader("x-user-id") String userId,
-            @PathVariable Long collectionId,
-            @RequestParam("recipeId") Long recipeId
+            @RequestHeader("x-user-id") final String userId,
+            @PathVariable final Long collectionId,
+            @RequestParam("recipeId") final Long recipeId
     ) {
-        var resp = recipeCollectionService.addRecipeToCollection(userId, collectionId, recipeId);
+        final var resp = this.recipeCollectionService.addRecipeToCollection(userId, collectionId, recipeId);
         return ResponseEntity.ok(resp);
     }
 
     @DeleteMapping("/{collectionId}/recipe/{recipeId}")
     public ResponseEntity<FullCollectionResponse> removeRecipeFromCollection(
-            @RequestHeader("x-user-id") String userId,
-            @PathVariable Long collectionId,
-            @PathVariable Long recipeId
+            @RequestHeader("x-user-id") final String userId,
+            @PathVariable final Long collectionId,
+            @PathVariable final Long recipeId
     ) {
-        var resp = recipeCollectionService.removeRecipeFromCollection(userId, collectionId, recipeId);
+        final var resp = this.recipeCollectionService.removeRecipeFromCollection(userId, collectionId, recipeId);
         return ResponseEntity.ok(resp);
     }
 }

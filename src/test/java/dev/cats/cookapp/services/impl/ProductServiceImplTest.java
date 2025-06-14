@@ -33,29 +33,29 @@ class ProductServiceImplTest {
     @DisplayName("getProductSuggestions should return mapped suggestions when products are found")
     void givenExistingProducts_whenGetProductSuggestions_thenReturnMappedResponses() {
         // Arrange
-        String query = "apple";
-        Product product1 = new Product();
+        final String query = "apple";
+        final Product product1 = new Product();
         product1.setId(1L);
         product1.setName("Green Apple");
-        Product product2 = new Product();
+        final Product product2 = new Product();
         product2.setId(2L);
         product2.setName("Red Apple");
 
-        List<Product> products = List.of(product1, product2);
-        when(productRepository.findTop10ByNameIgnoreCaseContaining(query)).thenReturn(products);
+        final List<Product> products = List.of(product1, product2);
+        when(this.productRepository.findTop10ByNameIgnoreCaseContaining(query)).thenReturn(products);
 
-        ProductSuggestionResponse response1 = new ProductSuggestionResponse(1L, "Green Apple");
-        ProductSuggestionResponse response2 = new ProductSuggestionResponse(2L, "Red Apple");
-        when(productMapper.toSuggestion(product1)).thenReturn(response1);
-        when(productMapper.toSuggestion(product2)).thenReturn(response2);
+        final ProductSuggestionResponse response1 = new ProductSuggestionResponse(1L, "Green Apple");
+        final ProductSuggestionResponse response2 = new ProductSuggestionResponse(2L, "Red Apple");
+        when(this.productMapper.toSuggestion(product1)).thenReturn(response1);
+        when(this.productMapper.toSuggestion(product2)).thenReturn(response2);
 
         // Act
-        List<ProductSuggestionResponse> result = productService.getProductSuggestions(query);
+        final List<ProductSuggestionResponse> result = this.productService.getProductSuggestions(query);
 
         // Assert
-        verify(productRepository).findTop10ByNameIgnoreCaseContaining(query);
-        verify(productMapper).toSuggestion(product1);
-        verify(productMapper).toSuggestion(product2);
+        verify(this.productRepository).findTop10ByNameIgnoreCaseContaining(query);
+        verify(this.productMapper).toSuggestion(product1);
+        verify(this.productMapper).toSuggestion(product2);
         assertThat(result).containsExactly(response1, response2);
     }
 
@@ -63,15 +63,15 @@ class ProductServiceImplTest {
     @DisplayName("getProductSuggestions should return empty list when no products are found")
     void givenNoProducts_whenGetProductSuggestions_thenReturnEmptyList() {
         // Arrange
-        String query = "banana";
-        when(productRepository.findTop10ByNameIgnoreCaseContaining(query)).thenReturn(Collections.emptyList());
+        final String query = "banana";
+        when(this.productRepository.findTop10ByNameIgnoreCaseContaining(query)).thenReturn(Collections.emptyList());
 
         // Act
-        List<ProductSuggestionResponse> result = productService.getProductSuggestions(query);
+        final List<ProductSuggestionResponse> result = this.productService.getProductSuggestions(query);
 
         // Assert
-        verify(productRepository).findTop10ByNameIgnoreCaseContaining(query);
+        verify(this.productRepository).findTop10ByNameIgnoreCaseContaining(query);
         assertThat(result).isEmpty();
-        verifyNoInteractions(productMapper);
+        verifyNoInteractions(this.productMapper);
     }
 }

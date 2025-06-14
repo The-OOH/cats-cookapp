@@ -18,14 +18,14 @@ public class RatingController {
     @PostMapping
     public ResponseEntity<RecipeResponse> rateRecipe(@PathVariable("recipeId") Long recipeId,
                                                      @RequestHeader("x-user-id") String userId,
-                                                     @RequestParam("rating") Double rating) {
-        return ResponseEntity.ok(ratingService.rateRecipe(recipeId, rating, userId));
+                                                     @RequestParam("rating") final Double rating) {
+        return ResponseEntity.ok(this.ratingService.rateRecipe(recipeId, rating, userId));
     }
 
     @PutMapping
-    public ResponseEntity<RecipeResponse> changeRating(@PathVariable("recipeId") Long recipeId,
-                                                       @RequestHeader("x-user-id") String userId,
-                                                      @RequestParam("rating") Double rating) {
-        return ResponseEntity.ok(ratingService.changeRating(recipeId, rating, userId));
+    public ResponseEntity<RecipeResponse> changeRating(@PathVariable("recipeId") final Long recipeId,
+                                                       @RequestHeader("x-user-id") final String userId,
+                                                      @RequestParam("rating") final Double rating) {
+        return ResponseEntity.ok(this.ratingService.changeRating(recipeId, rating, userId));
     }
 }

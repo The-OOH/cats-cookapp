@@ -1,8 +1,10 @@
 package dev.cats.cookapp.utils;
 
-public class StringConverter {
-    public static String toKebabCase(String input) {
-        if (input == null) {
+public enum StringConverter {
+    ;
+
+    public static String toKebabCase(final String input) {
+        if (null == input) {
             return null;
         }
         String s = input.trim().toLowerCase();

@@ -13,4 +13,5 @@
     <include file="/db/changelog/add-push-tokens-changelog.xml"/>
     <include file="/db/changelog/short-embeddings-changelog.xml"/>
     <include file="/db/changelog/not-null-constrains.xml"/>
+    <include file="/db/changelog/spring-ai-chat-history.xml"/>
 </databaseChangeLog>

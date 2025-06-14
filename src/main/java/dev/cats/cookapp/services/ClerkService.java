@@ -23,28 +23,28 @@ public class ClerkService {
 
     @PostConstruct
     public void init() {
-        this.sdk = Clerk.builder()
-                .bearerAuth(clerkSecretKey)
+        sdk = Clerk.builder()
+                .bearerAuth(this.clerkSecretKey)
                 .build();
     }
 
-    public Optional<UserDetails> getUserDetailsById(String id) {
-        if (id == null) {
+    public Optional<UserDetails> getUserDetailsById(final String id) {
+        if (null == id) {
             return Optional.empty();
         }
         try {
-            GetUserResponse res = sdk.users()
+            final GetUserResponse res = this.sdk.users()
                     .get()
                     .userId(id)
                     .call();
             if (res.user().isPresent() && res.user().get().username().isPresent()) {
-                return Optional.of(getUserDetails(res.user().get()));
+                return Optional.of(this.getUserDetails(res.user().get()));
             } else {
                 return Optional.empty();
             }
-        } catch (ClerkErrors e) {
+        } catch (final ClerkErrors e) {
             return Optional.empty();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new RuntimeException("Error while getting user name by id: "
                     + e.getMessage(), e);
         }
@@ -52,7 +52,7 @@ public class ClerkService {
 
     public List<UserDetails> listAllUsers() {
         try {
-            var res = sdk.users()
+            final var res = this.sdk.users()
                     .list()
                     .call();
             return res.userList()
@@ -61,26 +61,26 @@ public class ClerkService {
                     .map(this::getUserDetails
                     )
                     .collect(Collectors.toList());
-        } catch (ClerkErrors e) {
+        } catch (final ClerkErrors e) {
             throw new RuntimeException("Clerk API error: "
                     + e.getMessage(), e);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new RuntimeException("Error while getting users: "
                     + e.getMessage(), e);
         }
     }
 
-    private UserDetails getUserDetails(User u) {
-        String first = u.firstName().isPresent() ? u.firstName().get() : "";
-        String last = u.lastName().isPresent() ? u.lastName().get() : "";
-        String username = u.username().isPresent() ? u.username().get() : "";
+    private UserDetails getUserDetails(final User u) {
+        final String first = u.firstName().isPresent() ? u.firstName().get() : "";
+        final String last = u.lastName().isPresent() ? u.lastName().get() : "";
+        final String username = u.username().isPresent() ? u.username().get() : "";
 
         String fullName = Stream.of(first, last)
-                .filter(s -> s != null && !s.isEmpty())
+                .filter(s -> null != s && !s.isEmpty())
                 .collect(Collectors.joining(" "));
 
         if (fullName.isEmpty()) {
-            fullName = username != null && !username.isEmpty() ? username : null;
+            fullName = null != username && !username.isEmpty() ? username : null;
         }
 
         return UserDetails.builder()

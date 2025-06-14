@@ -14,7 +14,7 @@ public interface CategoryMapper {
     CategoryResponse toResponse(RecipeCategory recipeCategory);
 
     @Named("toKebabCase")
-    default String toKebabCase(String str) {
+    default String toKebabCase(final String str) {
         return StringConverter.toKebabCase(str);
     }
 }

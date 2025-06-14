@@ -19,11 +19,16 @@ public class UnitServiceImpl implements UnitService {
     UnitMapper unitMapper;
 
     @Override
-    public List<UnitResponse> getUnitsByName(String name) {
-        var matches = unitRepository.findTop10ByNameIgnoreCaseContaining(name);
+    public List<UnitResponse> findAll() {
+        return this.unitRepository.findAll().stream().map(this.unitMapper::toResponse).toList();
+    }
+
+    @Override
+    public List<UnitResponse> getUnitsByName(final String name) {
+        var matches = this.unitRepository.findTop10ByNameIgnoreCaseContaining(name);
         if (matches.isEmpty()) {
-            matches = unitRepository.findAll();
+            matches = this.unitRepository.findAll();
         }
-        return matches.stream().map(unitMapper::toResponse).toList();
+        return matches.stream().map(this.unitMapper::toResponse).toList();
     }
 }

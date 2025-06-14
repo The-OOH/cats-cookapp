@@ -15,11 +15,11 @@ import java.time.Duration;
 @RequestMapping("/images")
 @RequiredArgsConstructor
 public class ImageSaveController {
-    private final CloudflareR2Service service;
+    private CloudflareR2Service service;
 
     @GetMapping("/pre-signed-url")
     public ResponseEntity<ImageSaveResponse> getPreSignedUrl(@RequestParam("key") String key,
                                                              @RequestParam(name = "duration", defaultValue = "5") Integer duration) {
-        return ResponseEntity.ok(service.getPresignedUrl(key, Duration.ofMinutes(duration)));
+        return ResponseEntity.ok(this.service.getPresignedUrl(key, Duration.ofMinutes(duration)));
     }
 }

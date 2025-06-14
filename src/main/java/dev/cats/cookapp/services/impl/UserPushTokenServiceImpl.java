@@ -18,12 +18,12 @@ public class UserPushTokenServiceImpl implements UserPushTokenService {
     ClerkService clerkService;
 
     @Override
-    public SavePushTokenResponse savePushToken(String userId, PushTokenRequest request) {
-        if(clerkService.getUserDetailsById(userId).isEmpty()) {
+    public SavePushTokenResponse savePushToken(final String userId, final PushTokenRequest request) {
+        if(this.clerkService.getUserDetailsById(userId).isEmpty()) {
             return new SavePushTokenResponse(false, "User not found");
         }
 
-        userPushTokenRepository.upsert(userId,
+        this.userPushTokenRepository.upsert(userId,
                 request.getToken(),
                 request.getType().name(),
                 request.getPlatform().name());

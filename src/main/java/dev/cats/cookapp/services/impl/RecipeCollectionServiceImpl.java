@@ -35,16 +35,16 @@ public class RecipeCollectionServiceImpl implements RecipeCollectionService {
     RecipeMapper recipeMapper;
 
     @Override
-    public CollectionListResponse getCollections(String userId) {
-        List<RecipesCollection> collections = collectionRepository.findAllByUserId(userId);
+    public CollectionListResponse getCollections(final String userId) {
+        final List<RecipesCollection> collections = this.collectionRepository.findAllByUserId(userId);
 
-        List<CollectionResponse> dtos = collections.stream()
+        final List<CollectionResponse> dtos = collections.stream()
                 .map(coll -> {
-                    List<RecipeCollectionResponse> top3 = coll.getRecipes().stream()
+                    final List<RecipeCollectionResponse> top3 = coll.getRecipes().stream()
                             .sorted(Comparator.comparing(Recipe::getFinalRating,
                                     Comparator.nullsLast(Comparator.reverseOrder())))
                             .limit(3)
-                            .map(recipeMapper::toCollectionResponse)
+                            .map(this.recipeMapper::toCollectionResponse)
                             .toList();
 
                     return new CollectionResponse(
@@ -57,14 +57,14 @@ public class RecipeCollectionServiceImpl implements RecipeCollectionService {
                 })
                 .toList();
 
-        return collectionsMapper.toListResponse(dtos);
+        return this.collectionsMapper.toListResponse(dtos);
     }
 
 
     @Override
-    public CollectionListPreviewResponse getCollectionsPreview(String userId) {
-        List<RecipesCollection> collections = collectionRepository.findAllByUserId(userId);
-        List<CollectionListPreviewResponse.CollectionPreviewResponse> dtos = collections.stream()
+    public CollectionListPreviewResponse getCollectionsPreview(final String userId) {
+        final List<RecipesCollection> collections = this.collectionRepository.findAllByUserId(userId);
+        final List<CollectionListPreviewResponse.CollectionPreviewResponse> dtos = collections.stream()
                 .map(coll -> new CollectionListPreviewResponse.CollectionPreviewResponse(
                         coll.getId(),
                         coll.getName()
@@ -74,21 +74,21 @@ public class RecipeCollectionServiceImpl implements RecipeCollectionService {
     }
 
     @Override
-    public FullCollectionResponse getCollectionById(String userId, Long collectionId) {
-        RecipesCollection coll = collectionRepository.findByUserIdAndId(userId, collectionId)
+    public FullCollectionResponse getCollectionById(final String userId, final Long collectionId) {
+        final RecipesCollection coll = this.collectionRepository.findByUserIdAndId(userId, collectionId)
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Collection not found for user=" + userId + " id=" + collectionId
                 ));
-        return collectionsMapper.toFullCollectionResponse(coll);
+        return this.collectionsMapper.toFullCollectionResponse(coll);
     }
 
     @Override
-    public FullCollectionResponse addCollection(String userId, CollectionRequest req) {
+    public FullCollectionResponse addCollection(final String userId, final CollectionRequest req) {
         Assert.hasText(req.getName(), "Collection name must be provided");
 
-        RecipesCollection coll = toEntity(req, userId);
-        if (req.getRecipeIds() != null && !req.getRecipeIds().isEmpty()) {
-            List<Recipe> recipes = recipeRepository.findAllById(req.getRecipeIds());
+        final RecipesCollection coll = this.toEntity(req, userId);
+        if (null != req.getRecipeIds() && !req.getRecipeIds().isEmpty()) {
+            final List<Recipe> recipes = this.recipeRepository.findAllById(req.getRecipeIds());
             Assert.isTrue(
                     recipes.size() == req.getRecipeIds().size(),
                     "One or more recipeIds are invalid"
@@ -96,14 +96,14 @@ public class RecipeCollectionServiceImpl implements RecipeCollectionService {
             recipes.forEach(coll::addRecipe);
         }
 
-        RecipesCollection saved = collectionRepository.save(coll);
-        return collectionsMapper.toFullCollectionResponse(saved);
+        final RecipesCollection saved = this.collectionRepository.save(coll);
+        return this.collectionsMapper.toFullCollectionResponse(saved);
     }
 
     @Override
-    public FullCollectionResponse updateCollection(String userId, CollectionRequest req) {
+    public FullCollectionResponse updateCollection(final String userId, final CollectionRequest req) {
         Assert.notNull(req.getId(), "Collection ID must be set for update");
-        RecipesCollection coll = collectionRepository.findByUserIdAndId(userId, req.getId())
+        final RecipesCollection coll = this.collectionRepository.findByUserIdAndId(userId, req.getId())
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Collection not found for user=" + userId + " id=" + req.getId()
                 ));
@@ -111,9 +111,9 @@ public class RecipeCollectionServiceImpl implements RecipeCollectionService {
         coll.setName(req.getName());
         coll.setDescription(req.getDescription());
 
-        if (req.getRecipeIds() != null) {
+        if (null != req.getRecipeIds()) {
             coll.getCollectionRecipes().clear();
-            List<Recipe> recipes = recipeRepository.findAllById(req.getRecipeIds());
+            final List<Recipe> recipes = this.recipeRepository.findAllById(req.getRecipeIds());
             Assert.isTrue(
                     recipes.size() == req.getRecipeIds().size(),
                     "One or more recipeIds are invalid"
@@ -121,46 +121,46 @@ public class RecipeCollectionServiceImpl implements RecipeCollectionService {
             recipes.forEach(coll::addRecipe);
         }
 
-        RecipesCollection saved = collectionRepository.save(coll);
-        return collectionsMapper.toFullCollectionResponse(saved);
+        final RecipesCollection saved = this.collectionRepository.save(coll);
+        return this.collectionsMapper.toFullCollectionResponse(saved);
     }
 
     @Override
-    public void deleteCollection(String userId, Long collectionId) {
-        RecipesCollection coll = collectionRepository.findByUserIdAndId(userId, collectionId)
+    public void deleteCollection(final String userId, final Long collectionId) {
+        final RecipesCollection coll = this.collectionRepository.findByUserIdAndId(userId, collectionId)
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Collection not found for user=" + userId + " id=" + collectionId
                 ));
-        collectionRepository.delete(coll);
+        this.collectionRepository.delete(coll);
     }
 
     @Override
-    public FullCollectionResponse addRecipeToCollection(String userId, Long collectionId, Long recipeId) {
-        RecipesCollection coll = collectionRepository.findByUserIdAndId(userId, collectionId)
+    public FullCollectionResponse addRecipeToCollection(final String userId, final Long collectionId, final Long recipeId) {
+        final RecipesCollection coll = this.collectionRepository.findByUserIdAndId(userId, collectionId)
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Collection not found for user=" + userId + " id=" + collectionId
                 ));
-        Recipe recipe = recipeRepository.findById(recipeId)
+        final Recipe recipe = this.recipeRepository.findById(recipeId)
                 .orElseThrow(() -> new IllegalArgumentException("Recipe not found id=" + recipeId));
         coll.addRecipe(recipe);
-        RecipesCollection saved = collectionRepository.save(coll);
-        return collectionsMapper.toFullCollectionResponse(saved);
+        final RecipesCollection saved = this.collectionRepository.save(coll);
+        return this.collectionsMapper.toFullCollectionResponse(saved);
     }
 
     @Override
-    public FullCollectionResponse removeRecipeFromCollection(String userId, Long collectionId, Long recipeId) {
-        RecipesCollection coll = collectionRepository.findByUserIdAndId(userId, collectionId)
+    public FullCollectionResponse removeRecipeFromCollection(final String userId, final Long collectionId, final Long recipeId) {
+        final RecipesCollection coll = this.collectionRepository.findByUserIdAndId(userId, collectionId)
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Collection not found for user=" + userId + " id=" + collectionId
                 ));
-        Recipe recipe = recipeRepository.getReferenceById(recipeId);
+        final Recipe recipe = this.recipeRepository.getReferenceById(recipeId);
         coll.removeRecipe(recipe);
-        RecipesCollection saved = collectionRepository.save(coll);
-        return collectionsMapper.toFullCollectionResponse(saved);
+        final RecipesCollection saved = this.collectionRepository.save(coll);
+        return this.collectionsMapper.toFullCollectionResponse(saved);
     }
 
-    private RecipesCollection toEntity(CollectionRequest req, String userId) {
-        RecipesCollection coll = new RecipesCollection();
+    private RecipesCollection toEntity(final CollectionRequest req, final String userId) {
+        final RecipesCollection coll = new RecipesCollection();
         coll.setUserId(userId);
         coll.setName(req.getName());
         coll.setDescription(req.getDescription());

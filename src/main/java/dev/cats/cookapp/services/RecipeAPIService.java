@@ -1,5 +1,6 @@
 package dev.cats.cookapp.services;
 
+import dev.cats.cookapp.dtos.request.recipe.RecipeAIRequest;
 import dev.cats.cookapp.dtos.request.recipe.RecipeRequest;
 import dev.cats.cookapp.dtos.response.PageResponse;
 import dev.cats.cookapp.dtos.response.recipe.RecipeInListResponse;
@@ -12,6 +13,8 @@ public interface RecipeAPIService {
     PageResponse<RecipeInListResponse> getRecipesByUserId(String userId, Pageable pageable);
 
     RecipeResponse saveRecipe(RecipeRequest recipeRequest, String userId);
+
+    RecipeResponse saveAiRecipe(RecipeAIRequest recipeRequest, String userId);
 
     void deleteRecipe(Long id, String userId);
 }

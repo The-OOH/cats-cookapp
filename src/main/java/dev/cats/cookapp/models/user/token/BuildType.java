@@ -10,18 +10,18 @@ public enum BuildType {
 
     private final String value;
 
-    BuildType(String value) {
+    BuildType(final String value) {
         this.value = value;
     }
 
     @JsonValue
     public String getValue() {
-        return value;
+        return this.value;
     }
 
     @JsonCreator
-    public static BuildType fromValue(String v) {
-        for (BuildType pt : values()) {
+    public static BuildType fromValue(final String v) {
+        for (final BuildType pt : BuildType.values()) {
             if (pt.value.equalsIgnoreCase(v)) {
                 return pt;
             }

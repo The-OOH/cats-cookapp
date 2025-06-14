@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.21.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1749461728-1" author="Oleksandr Martsin">
+        <createTable tableName="SPRING_AI_CHAT_MEMORY">
+            <column name="conversation_id" type="varchar(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="timestamp" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="metadata" type="text">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <createIndex
+                indexName="SPRING_AI_CM_CONV_TS_IDX"
+                tableName="SPRING_AI_CHAT_MEMORY">
+            <column name="conversation_id"/>
+            <column name="timestamp"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1749461730-2" author="Oleksandr Martsin">
+        <createTable tableName="chats">
+            <column name="conversation_id" type="varchar(36)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="user_id" type="varchar(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

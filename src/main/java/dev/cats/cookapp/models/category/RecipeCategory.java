@@ -27,16 +27,16 @@ public class RecipeCategory {
     private RecipeCategoryType recipeCategoryType;
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RecipeCategory that = (RecipeCategory) o;
-        return Objects.equals(id, that.id);
+        if (null == o || this.getClass() != o.getClass()) return false;
+        final RecipeCategory that = (RecipeCategory) o;
+        return Objects.equals(this.id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(this.id);
     }
 
 }

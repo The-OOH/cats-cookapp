@@ -22,7 +22,7 @@ public class RecipeRequest {
     @NotNull
     private String description;
 
-    private RecipeSource source  = RecipeSource.MANUALLY_CREATED;
+    private RecipeSource source;
 
     @NotNull
     private Integer duration;

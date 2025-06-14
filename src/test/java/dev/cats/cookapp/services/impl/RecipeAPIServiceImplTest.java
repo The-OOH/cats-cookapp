@@ -42,50 +42,50 @@ class RecipeAPIServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        clerkService = new StubClerkService();
-        apiService = new RecipeAPIServiceImpl(
-                recipeService,
-                categoryRepository,
-                unitRepository,
-                productRepository,
-                recipeMapper,
-                clerkService
+        this.clerkService = new StubClerkService();
+        this.apiService = new RecipeAPIServiceImpl(
+                this.recipeService,
+                this.categoryRepository,
+                this.unitRepository,
+                this.productRepository,
+                this.recipeMapper,
+                this.clerkService
         );
     }
 
     @Test
     @DisplayName("getRecipe should map and attach author details")
     void getRecipe_mapsAndAttachesAuthor() {
-        Long id = 10L;
-        Recipe entity = new Recipe();
+        final Long id = 10L;
+        final Recipe entity = new Recipe();
         entity.setAuthorId("usr123");
-        RecipeResponse mapped = new RecipeResponse();
-        UserDetails details = UserDetails.builder().id("usr123").name("Alice").build();
+        final RecipeResponse mapped = new RecipeResponse();
+        final UserDetails details = UserDetails.builder().id("usr123").name("Alice").build();
 
-        when(recipeService.getRecipe(id)).thenReturn(entity);
-        when(recipeMapper.toResponse(entity)).thenReturn(mapped);
-        clerkService.setDetails(Optional.of(details));
+        when(this.recipeService.getRecipe(id)).thenReturn(entity);
+        when(this.recipeMapper.toResponse(entity)).thenReturn(mapped);
+        this.clerkService.setDetails(Optional.of(details));
 
-        RecipeResponse result = apiService.getRecipe(id);
+        final RecipeResponse result = this.apiService.getRecipe(id);
 
         assertThat(result).isSameAs(mapped);
         assertThat(result.getAuthor()).isEqualTo(details);
-        verify(recipeService).getRecipe(id);
-        verify(recipeMapper).toResponse(entity);
+        verify(this.recipeService).getRecipe(id);
+        verify(this.recipeMapper).toResponse(entity);
     }
 
     @Test
     @DisplayName("saveRecipe should throw when product IDs invalid")
     void saveRecipe_invalidProducts_throws() {
-        RecipeRequest dto = new RecipeRequest();
+        final RecipeRequest dto = new RecipeRequest();
         dto.setIngredients(Collections.singletonList(
                 new RecipeIngredientRequest(1L, 5L, new MeasurementRequest(7L, 2.0))
         ));
         dto.setCategories(Collections.singletonList(1L));
 
-        when(productRepository.findAllById(List.of(5L))).thenReturn(Collections.emptyList());
+        when(this.productRepository.findAllById(List.of(5L))).thenReturn(Collections.emptyList());
 
-        assertThatThrownBy(() -> apiService.saveRecipe(dto, "userA"))
+        assertThatThrownBy(() -> this.apiService.saveRecipe(dto, "userA"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("One or more product IDs are invalid");
     }
@@ -93,15 +93,15 @@ class RecipeAPIServiceImplTest {
     @Test
     @DisplayName("saveRecipe should throw when unit IDs invalid")
     void saveRecipe_invalidUnits_throws() {
-        RecipeIngredientRequest req = new RecipeIngredientRequest(1L, 5L, new MeasurementRequest(7L, 2.0));
-        RecipeRequest dto = new RecipeRequest();
+        final RecipeIngredientRequest req = new RecipeIngredientRequest(1L, 5L, new MeasurementRequest(7L, 2.0));
+        final RecipeRequest dto = new RecipeRequest();
         dto.setIngredients(Collections.singletonList(req));
         dto.setCategories(Collections.singletonList(1L));
 
-        when(productRepository.findAllById(List.of(5L))).thenReturn(List.of(new Product()));
-        when(unitRepository.findAllById(List.of(7L))).thenReturn(Collections.emptyList());
+        when(this.productRepository.findAllById(List.of(5L))).thenReturn(List.of(new Product()));
+        when(this.unitRepository.findAllById(List.of(7L))).thenReturn(Collections.emptyList());
 
-        assertThatThrownBy(() -> apiService.saveRecipe(dto, "userB"))
+        assertThatThrownBy(() -> this.apiService.saveRecipe(dto, "userB"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("One or more unit IDs are invalid");
     }
@@ -109,21 +109,21 @@ class RecipeAPIServiceImplTest {
     @Test
     @DisplayName("saveRecipe should throw when category IDs invalid")
     void saveRecipe_invalidCategories_throws() {
-        RecipeRequest dto = new RecipeRequest();
+        final RecipeRequest dto = new RecipeRequest();
         dto.setIngredients(Collections.singletonList(
                 new RecipeIngredientRequest(1L, 1L, new MeasurementRequest(1L, 1.0))
         ));
         dto.setCategories(Arrays.asList(2L, 3L));
 
-        Recipe recipeEntity = new Recipe();
-        when(recipeMapper.toEntity(dto)).thenReturn(recipeEntity);
+        final Recipe recipeEntity = new Recipe();
+        when(this.recipeMapper.toEntity(dto)).thenReturn(recipeEntity);
 
-        when(productRepository.findAllById(any())).thenReturn(List.of(new Product()));
-        when(unitRepository.findAllById(any())).thenReturn(List.of(new Unit()));
-        when(categoryRepository.findAllById(Arrays.asList(2L, 3L)))
+        when(this.productRepository.findAllById(any())).thenReturn(List.of(new Product()));
+        when(this.unitRepository.findAllById(any())).thenReturn(List.of(new Unit()));
+        when(this.categoryRepository.findAllById(Arrays.asList(2L, 3L)))
                 .thenReturn(Collections.singletonList(new RecipeCategory()));
 
-        assertThatThrownBy(() -> apiService.saveRecipe(dto, "userC"))
+        assertThatThrownBy(() -> this.apiService.saveRecipe(dto, "userC"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("One or more category IDs are invalid");
     }
@@ -131,48 +131,48 @@ class RecipeAPIServiceImplTest {
     @Test
     @DisplayName("saveRecipe should persist and return response when valid")
     void saveRecipe_valid_persistsAndReturns() {
-        RecipeRequest dto = new RecipeRequest();
-        RecipeIngredientRequest ir = new RecipeIngredientRequest(1L, 1L, new MeasurementRequest(1L, 3.0));
+        final RecipeRequest dto = new RecipeRequest();
+        final RecipeIngredientRequest ir = new RecipeIngredientRequest(1L, 1L, new MeasurementRequest(1L, 3.0));
         dto.setIngredients(Collections.singletonList(ir));
         dto.setCategories(Collections.singletonList(1L));
         dto.setSteps(Collections.emptyList());
 
-        Product p = new Product(); p.setId(1L);
-        Unit u = new Unit(); u.setId(1L);
-        RecipeCategory cat = new RecipeCategory(); cat.setId(1L);
-        Recipe entity = new Recipe(); entity.setSteps(Collections.emptySet());
-        Recipe savedEntity = new Recipe(); savedEntity.setSteps(Collections.emptySet());
-        RecipeResponse mapped = new RecipeResponse();
-        UserDetails details = UserDetails.builder().id("userX").name("Bob").build();
+        final Product p = new Product(); p.setId(1L);
+        final Unit u = new Unit(); u.setId(1L);
+        final RecipeCategory cat = new RecipeCategory(); cat.setId(1L);
+        final Recipe entity = new Recipe(); entity.setSteps(Collections.emptySet());
+        final Recipe savedEntity = new Recipe(); savedEntity.setSteps(Collections.emptySet());
+        final RecipeResponse mapped = new RecipeResponse();
+        final UserDetails details = UserDetails.builder().id("userX").name("Bob").build();
 
-        when(productRepository.findAllById(List.of(1L))).thenReturn(List.of(p));
-        when(unitRepository.findAllById(List.of(1L))).thenReturn(List.of(u));
-        when(categoryRepository.findAllById(List.of(1L))).thenReturn(List.of(cat));
-        when(recipeMapper.toEntity(dto)).thenReturn(entity);
-        when(recipeService.saveRecipe(entity)).thenReturn(savedEntity);
-        when(recipeService.saveRecipe(savedEntity)).thenReturn(savedEntity);
-        when(recipeMapper.toResponse(savedEntity)).thenReturn(mapped);
-        clerkService.setDetails(Optional.of(details));
+        when(this.productRepository.findAllById(List.of(1L))).thenReturn(List.of(p));
+        when(this.unitRepository.findAllById(List.of(1L))).thenReturn(List.of(u));
+        when(this.categoryRepository.findAllById(List.of(1L))).thenReturn(List.of(cat));
+        when(this.recipeMapper.toEntity(dto)).thenReturn(entity);
+        when(this.recipeService.saveRecipe(entity)).thenReturn(savedEntity);
+        when(this.recipeService.saveRecipe(savedEntity)).thenReturn(savedEntity);
+        when(this.recipeMapper.toResponse(savedEntity)).thenReturn(mapped);
+        this.clerkService.setDetails(Optional.of(details));
 
-        RecipeResponse result = apiService.saveRecipe(dto, "userX");
+        final RecipeResponse result = this.apiService.saveRecipe(dto, "userX");
 
         assertThat(result).isSameAs(mapped);
         assertThat(result.getAuthor()).isEqualTo(details);
-        verify(productRepository).findAllById(List.of(1L));
-        verify(unitRepository).findAllById(List.of(1L));
-        verify(categoryRepository).findAllById(List.of(1L));
-        verify(recipeService, times(2)).saveRecipe(any(Recipe.class));
-        verify(recipeMapper).toResponse(savedEntity);
+        verify(this.productRepository).findAllById(List.of(1L));
+        verify(this.unitRepository).findAllById(List.of(1L));
+        verify(this.categoryRepository).findAllById(List.of(1L));
+        verify(this.recipeService, times(2)).saveRecipe(any(Recipe.class));
+        verify(this.recipeMapper).toResponse(savedEntity);
     }
 
     @Test
     @DisplayName("deleteRecipe should throw when user not author")
     void deleteRecipe_nonAuthor_throws() {
-        Recipe r = new Recipe();
+        final Recipe r = new Recipe();
         r.setAuthorId("owner");
-        when(recipeService.getRecipe(9L)).thenReturn(r);
+        when(this.recipeService.getRecipe(9L)).thenReturn(r);
 
-        assertThatThrownBy(() -> apiService.deleteRecipe(9L, "other"))
+        assertThatThrownBy(() -> this.apiService.deleteRecipe(9L, "other"))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("You can't delete this recipe");
     }
@@ -180,11 +180,11 @@ class RecipeAPIServiceImplTest {
     @Test
     @DisplayName("deleteRecipe should delegate when user is author")
     void deleteRecipe_author_delegates() {
-        Recipe r = new Recipe(); r.setAuthorId("me");
-        when(recipeService.getRecipe(8L)).thenReturn(r);
+        final Recipe r = new Recipe(); r.setAuthorId("me");
+        when(this.recipeService.getRecipe(8L)).thenReturn(r);
 
-        apiService.deleteRecipe(8L, "me");
-        verify(recipeService).deleteRecipe(8L);
+        this.apiService.deleteRecipe(8L, "me");
+        verify(this.recipeService).deleteRecipe(8L);
     }
 
     /**
@@ -192,10 +192,10 @@ class RecipeAPIServiceImplTest {
      */
     private static class StubClerkService extends ClerkService {
         private Optional<UserDetails> details = Optional.empty();
-        @Override public Optional<UserDetails> getUserDetailsById(String id) {
-            return details;
+        @Override public Optional<UserDetails> getUserDetailsById(final String id) {
+            return this.details;
         }
-        public void setDetails(Optional<UserDetails> details) {
+        public void setDetails(final Optional<UserDetails> details) {
             this.details = details;
         }
     }

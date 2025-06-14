@@ -23,37 +23,37 @@ public class RatingServiceImpl implements RatingService {
     EntityManager entityManager;
 
     @Transactional
-    public RecipeResponse rateRecipe(Long recipeId, Double rating, String userId) {
-        var recipe = recipeService.getRecipe(recipeId);
-        if (ratingRepository.findByRecipeIdAndUserId(recipeId, userId).isPresent()) {
+    public RecipeResponse rateRecipe(final Long recipeId, final Double rating, final String userId) {
+        final var recipe = this.recipeService.getRecipe(recipeId);
+        if (this.ratingRepository.findByRecipeIdAndUserId(recipeId, userId).isPresent()) {
             throw new IllegalArgumentException("You already rated this recipe");
         }
-        if (rating > 1 || rating < 0) {
+        if (1 < rating || 0 > rating) {
             throw new IllegalArgumentException("Rating must be between 0 and 1");
         }
-        ratingRepository.save(RecipeRating.builder()
+        this.ratingRepository.save(RecipeRating.builder()
                 .recipe(recipe)
                 .userId(userId)
                 .rating(rating).build());
 
-        entityManager.flush(); // To update the recipe rating by formula
-        entityManager.refresh(recipe);
+        this.entityManager.flush(); // To update the recipe rating by formula
+        this.entityManager.refresh(recipe);
 
-        return recipeApiService.getRecipe(recipeId);
+        return this.recipeApiService.getRecipe(recipeId);
     }
 
     @Transactional
-    public RecipeResponse changeRating(Long recipeId, Double rating, String userId) {
-        if (rating > 1 || rating < 0) {
+    public RecipeResponse changeRating(final Long recipeId, final Double rating, final String userId) {
+        if (1 < rating || 0 > rating) {
             throw new IllegalArgumentException("Rating must be between 0 and 1");
         }
-        var oldRating = ratingRepository.findByRecipeIdAndUserId(recipeId, userId).orElseThrow();
+        final var oldRating = this.ratingRepository.findByRecipeIdAndUserId(recipeId, userId).orElseThrow();
         oldRating.setRating(rating);
-        ratingRepository.save(oldRating);
+        this.ratingRepository.save(oldRating);
 
-        entityManager.flush();
-        entityManager.refresh(oldRating.getRecipe());
+        this.entityManager.flush();
+        this.entityManager.refresh(oldRating.getRecipe());
 
-        return recipeApiService.getRecipe(recipeId);
+        return this.recipeApiService.getRecipe(recipeId);
     }
 }

@@ -74,8 +74,11 @@ public class ChatHistoryServiceImpl implements ChatHistoryService {
 
         try {
             var content = Map.of("message", DEFAULT_ASSISTANT_MESSAGE, "messageType", "TEXT");
-            memoryRepository.saveAll(chat.getConversationId(),
-                    List.of(new AssistantMessage(this.mapper.writeValueAsString(content))));
+            var message = new AssistantMessage(this.mapper.writeValueAsString(content));
+            var history = memoryRepository.findByConversationId(chat.getConversationId());
+            if (history.isEmpty()) {
+                memoryRepository.saveAll(chat.getConversationId(), List.of(message));
+            }
         }
         catch (final JsonProcessingException e) {
             throw new RuntimeException(e);

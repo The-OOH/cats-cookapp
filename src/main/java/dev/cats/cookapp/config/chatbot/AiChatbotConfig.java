@@ -129,7 +129,10 @@ public class AiChatbotConfig {
               "messageType": "RECIPE_DETAILS",
               "message": "Here is a vegan stir-fry recipe generated for you.",
               "recipe": {
+                "id": 2,
                 "title": "Vegan Vegetable Stir-Fry",
+                "slug": "vegan-vegetable-stir-fry",
+                "mainImageUrl": URL,
                 "description": "A quick and easy stir-fry recipe for vegetables.",
                 "ingredients": {
                   "broccoli": {"amount": 200, "unit": "g"},
@@ -144,7 +147,8 @@ public class AiChatbotConfig {
                   "Add soy sauce, cook for 2 more minutes, and serve."
                 ],
                 "difficulty": "Easy",
-                "duration": 30
+                "duration": 30,
+                "servings": 2
               }
             }
             

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.memory.repository.jdbc.JdbcChatMemoryRepository;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.Message;
+import org.springframework.ai.chat.messages.ToolResponseMessage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,7 +91,11 @@ public class ChatHistoryServiceImpl implements ChatHistoryService {
     private ChatMessage toChatMessage(final Message message) {
         Object content;
         try {
-            content = this.mapper.readValue(message.getText(), Object.class);
+            if (message instanceof AssistantMessage || message instanceof ToolResponseMessage) {
+                content = this.mapper.readValue(message.getText(), Object.class);
+            } else {
+                content = message.getText();
+            }
         } catch (final IOException ex) {
             content = message.getText();
         }

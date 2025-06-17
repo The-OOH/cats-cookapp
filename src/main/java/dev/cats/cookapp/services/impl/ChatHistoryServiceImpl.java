@@ -12,6 +12,7 @@ import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
@@ -100,6 +101,7 @@ public class ChatHistoryServiceImpl implements ChatHistoryService {
     }
 
     @Override
+    @Transactional
     public void delete(final String userId, final String chatId) throws AccessDeniedException {
         var conversation = this.chatsRepository.findByUserIdAndConversationId(userId, chatId);
         if (conversation.isEmpty()) {

@@ -10,4 +10,6 @@ public interface ChatsRepository extends JpaRepository<Chat, Long> {
     List<Chat> findByUserId(String userId);
 
     Optional<Chat> findByUserIdAndConversationId(String userId, String conversationId);
+
+    void deleteByConversationId(String conversationId);
 }

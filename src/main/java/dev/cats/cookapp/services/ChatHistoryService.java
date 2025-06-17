@@ -15,4 +15,6 @@ public interface ChatHistoryService {
     ChatCompletionResponse getInitialChat(String userId) throws AccessDeniedException;
 
     Chat createInitialChat(String userId, String chatId);
+
+    void delete(String userId, String chatId) throws AccessDeniedException;
 }

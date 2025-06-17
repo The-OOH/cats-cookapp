@@ -32,4 +32,10 @@ public class ChatHistoryController {
     public ChatCompletionResponse initial(@RequestHeader("x-user-id") final String userId) throws AccessDeniedException {
         return this.chatHistoryService.getInitialChat(userId);
     }
+
+    @DeleteMapping("/{chatId}")
+    public void delete(@RequestHeader("x-user-id") final String userId,
+                       @PathVariable final String chatId) throws AccessDeniedException {
+        this.chatHistoryService.delete(userId, chatId);
+    }
 }

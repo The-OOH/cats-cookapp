@@ -98,4 +98,15 @@ public class ChatHistoryServiceImpl implements ChatHistoryService {
                 .content(content)
                 .build();
     }
+
+    @Override
+    public void delete(final String userId, final String chatId) throws AccessDeniedException {
+        var conversation = this.chatsRepository.findByUserIdAndConversationId(userId, chatId);
+        if (conversation.isEmpty()) {
+            throw new AccessDeniedException("Chat not found or belongs to another user");
+        }
+        var conversationId = conversation.get().getConversationId();
+        this.chatsRepository.deleteByConversationId(conversationId);
+        this.memoryRepository.deleteByConversationId(conversationId);
+    }
 }

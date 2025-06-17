@@ -29,7 +29,7 @@ public class RecipeDetailsTool {
             Long recipeId)
             throws Exception {
         final var recipe = this.recipeAPIService.getRecipe(recipeId);
-        RecipeDetailsTool.log.info("Get recipe details: {}", recipe);
+        RecipeDetailsTool.log.info("Get recipe details: {}", recipeId);
         return this.mapper.writeValueAsString(recipe) + "\n" + "Based on this result provide user message with type 'RECIPE_DETAILS'";
     }
 }

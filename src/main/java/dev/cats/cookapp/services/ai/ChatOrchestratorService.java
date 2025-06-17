@@ -204,6 +204,7 @@ public class ChatOrchestratorService {
     private ChatMemory memory() {
         return MessageWindowChatMemory.builder()
                 .chatMemoryRepository(this.memoryRepo)
+                .maxMessages(Integer.MAX_VALUE)
                 .build();
     }
 

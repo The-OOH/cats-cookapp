@@ -37,6 +37,7 @@ public class RecipeSearchTool {
                 null,
                 new RecipeSearchRequest.IngredientIds(null, excludeIngredientIds)
         );
+        log.info("Searching recipes(search_recipes tool): {}", rq);
 
         try {
             return this.api.search(rq, userId)

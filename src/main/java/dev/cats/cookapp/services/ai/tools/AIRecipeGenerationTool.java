@@ -9,6 +9,7 @@ import dev.cats.cookapp.dtos.request.recipe.RecipeAIRequest;
 import dev.cats.cookapp.dtos.response.recipe.CategoryResponse;
 import dev.cats.cookapp.dtos.response.recipe.RecipeResponse;
 import dev.cats.cookapp.dtos.response.recipe.ingredient.UnitResponse;
+import dev.cats.cookapp.models.recipe.RecipeSource;
 import dev.cats.cookapp.services.CategoryService;
 import dev.cats.cookapp.services.RecipeAPIService;
 import dev.cats.cookapp.services.UnitService;
@@ -43,7 +44,7 @@ public class AIRecipeGenerationTool {
             name = "generate_recipe",
             description = """
                     Use when you need to create a **new recipe** given dish name(name, description or both), \
-                    cooking time, difficulty, ingredient list and user preferences. NEVER use this tool when user want to extract recipe from IMAGE(imageUrl) or VIDEO(videoUrl).
+                    cooking time, difficulty, ingredient list and/or user preferences. NEVER use this tool when user want to extract recipe from IMAGE(imageUrl) or VIDEO(videoUrl).
                     Also use this tool when user want to structure their text recipe.
                     Returns a recipe JSON object.
                     """
@@ -58,7 +59,7 @@ public class AIRecipeGenerationTool {
                     "text for recipe as dish name or description, please add ALL text as the value for this parameter", required = true) final
             String dish,
 
-            @ToolParam(description = "Cooking time in minutes", required = true) final
+            @ToolParam(description = "Cooking time in minutes. If not provided by user use 120", required = false) final
             Integer cookingTime,
 
             @ToolParam(description = "Difficulty: easy | medium | hard", required = true) final
@@ -99,11 +100,13 @@ public class AIRecipeGenerationTool {
 
         final ChatClient client = this.chatBuilder.build();
         RecipeResponse savedRecipe = null;
+        String lastErrorMessage = "";
+        RecipeAIRequest prevRequest = null;
 
-        for (int attempt = 1; 3 >= attempt; attempt++) {
+        for (int attempt = 1; true; attempt++) {
             final String prompt = this.formPrompt(
                     dish, cookingTime, difficulty,
-                    ingredientsDetails, prefs, catsGrouped, unitList
+                    ingredientsDetails, prefs, catsGrouped, unitList, prevRequest, lastErrorMessage
             );
 
             try {
@@ -111,6 +114,8 @@ public class AIRecipeGenerationTool {
                 final String json = resp.getResult().getOutput().getText();
 
                 final RecipeAIRequest req = this.mapper.readValue(json, RecipeAIRequest.class);
+                req.setSource(RecipeSource.AI);
+                prevRequest = req;
 
                 final Set<ConstraintViolation<RecipeAIRequest>> violations =
                         this.validator.validate(req);
@@ -122,7 +127,8 @@ public class AIRecipeGenerationTool {
                 break;
 
             } catch (final Exception ex) {
-                AIRecipeGenerationTool.log.warn("generate_recipe attempt {}/3 failed: {}", attempt, ex.getMessage());
+                log.warn("generate_recipe attempt {}/3 failed: {}", attempt, ex.getMessage());
+                lastErrorMessage = ex.getMessage();
                 if (3 == attempt) throw ex;
             }
         }
@@ -141,13 +147,26 @@ public class AIRecipeGenerationTool {
             final List<IngredientSearchResponse.Result> ingDetails,
             final PreferencesPayload prefs,
             final Map<String, List<CategoryResponse>> categories,
-            final List<UnitResponse> unitIds
+            final List<UnitResponse> unitIds,
+            final RecipeAIRequest prevRequest,
+            final String lastErrorMessage
     ) throws Exception {
 
         final String ingJson = this.mapper.writeValueAsString(ingDetails);
         final String prefJson = this.mapper.writeValueAsString(prefs);
         final String catJson = this.mapper.writeValueAsString(categories);
         final String unitJson = this.mapper.writeValueAsString(unitIds);
+
+        final String prevRequestJson = prevRequest == null ? "null" : this.mapper.writeValueAsString(prevRequest);
+
+        final String errorMessage;
+
+        if (!lastErrorMessage.isBlank()) {
+            errorMessage = String.format("IMPOPTANT: Last error message: %s. Previous request: %s. Based on this, try to generate correct recipe.", lastErrorMessage, prevRequestJson);
+        }
+        else {
+            errorMessage = "";
+        }
 
         return """
                 ## Core Instructions
@@ -210,9 +229,11 @@ public class AIRecipeGenerationTool {
                 - Structure content clearly with logical flow
                 - Focus on maximizing flavor while respecting dietary constraints
                 - Provide precise measurements and timing guidance
+                
+                %s
                 """.formatted(
-                dish, cookingTime, difficulty,
-                ingJson, prefJson, catJson, unitJson
+                dish, cookingTime, difficulty, ingJson,
+                prefJson, catJson, unitJson, errorMessage
         );
     }
 }

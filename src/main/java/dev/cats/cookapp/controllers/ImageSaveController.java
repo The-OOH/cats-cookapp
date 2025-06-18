@@ -15,7 +15,7 @@ import java.time.Duration;
 @RequestMapping("/images")
 @RequiredArgsConstructor
 public class ImageSaveController {
-    private CloudflareR2Service service;
+    private final CloudflareR2Service service;
 
     @GetMapping("/pre-signed-url")
     public ResponseEntity<ImageSaveResponse> getPreSignedUrl(@RequestParam("key") String key,

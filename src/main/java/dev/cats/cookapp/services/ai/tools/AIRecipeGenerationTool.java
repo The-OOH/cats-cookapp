@@ -50,9 +50,8 @@ public class AIRecipeGenerationTool {
                     """
     )
     public String generateRecipe(
-            @ToolParam(description = "Comma-separated ingredient names. This list should contain all the ingredients " +
-                    "that need for the recipe. NOT only the ingredients that user wants to add. ALL the ingredients " +
-                    "that are needed for the recipe should be included in this list.", required = true) final
+            @ToolParam(description = "Comma-separated ingredient names. This list should contain ALL the ingredients " +
+                    "that need for the recipe.", required = true) final
             String ingredients,
 
             @ToolParam(description = "Dish name or description of the dish. Provided by the user. If user provides unstructured " +

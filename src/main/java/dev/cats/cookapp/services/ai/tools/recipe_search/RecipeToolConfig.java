@@ -53,9 +53,10 @@ public class RecipeToolConfig {
                 .toolDefinition(ToolDefinition.builder()
                         .name("search_recipes")
                         .description("You need to use this tool when the user wants to get recipe recommendations based on user's request. Not generate a recipe or extract recipe from a web page or any other source." +
-                                "To call this tool, you need to ask for the max cooking time and max difficulty one by one" +
+                                "To call this tool, you need to ask whay user wants to search for(name or description) and for other fields use default values." +
                                 "If user want to create a recipe based on ingredients, ask for ingredients list, that will be used to search recipe" +
                                 "Never ask user about dietary needs, preferred categories. That information is generated based on user's preferences(if it isnt provided than leave field empty)." +
+                                "If user not satisfied with the result, ask for cooking time, difficulty and what user wants to cook(ingredients or recipe). Ask parameter one by one." +
                                 "ALWAYS BEFORE this tool call use the 'search_ingredients' tool to get the list of ingredients and their IDs and use it to create excludeIngredientIds list, if excludeIngredientIds exist. If not, use empty list. NEVER TELL user about this step or that you cannot find ids for ingredients.")
                         .inputSchema(this.mapper.writeValueAsString(schema))
                         .build())

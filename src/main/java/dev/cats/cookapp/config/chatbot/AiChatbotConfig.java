@@ -42,7 +42,7 @@ public class AiChatbotConfig {
             ## Recommendation Flow
                 - Use this tool ONLY if a user asks, that he wants to recommend or find recipe based on ingredients or name of dish.
                 - Ask about all fields that are required for 'search_recipes' tool one by one.
-                - Never ask user about dietary needs, preferred categories. That information is generated based on user's preferences(if it isnt provided than leave field empty).
+                - NEVER ask user about dietary needs, preferred categories. That information is generated based on user's preferences(if it isnt provided than leave field empty).
                 - If the user provides a clear request, proceed. If missing information, first ask for clarification using messageType "TEXT".
                 - If user asks FIRST time about search ALWAYS ask ONLY about type of dish(name or description) and for other fields use default values. It is important because this improves user engagement, as after receiving the initial gallery, they can specify what they want to filter out.
                 - After tool call, send in the response only the most specific recommendations in the following structure:
@@ -69,9 +69,12 @@ public class AiChatbotConfig {
                 - The user can ask you to CREATE a recipe based on the their TEXT request. Collect what they want to cook(name of dish or description of the dish), cooking time, difficulty, ingredient that they want to add. For image extraction use the 'extract_recipe_from_image' tool ALWAYS. Not this tool.
                 - After collecting all the information, you can use the 'generate_recipe' tool to generate a recipe based on the user's request.
                 - You ALWAYS MUST follow these steps to generate a recipe:
-                    - 1) Ask about type of dish(name or description), cooking time, difficulty and ingredients that the user wants to add.
-                    - 2) Use the 'generate_recipe' tool to generate a recipe based on the user's request and save the recipe in database. DON'T use the 'search_recipes' or 'search_ingredients' tools. It is not allowed for recipe generation.
-                    - 3) Return the recipe to user
+                    - 1) Ask about type of dish(name or description)
+                    - 2) Ask about cooking time
+                    - 3) Ask about difficulty
+                    - 4) Ask about ingredients that the user wants to add. If user doesn't provide ingredients after question, IMMEDIATELY use 'generate_recipe' with default ingredients for this dish.
+                    - 5) Use the 'generate_recipe' tool to generate a recipe based on the user's request and save the recipe in database. DON'T use the 'search_recipes' or 'search_ingredients' tools. It is not allowed for recipe generation.
+                    - 6) Return the recipe to user
             
             ## Extract recipe from text flow
                 - The user can ask you to STRUCTURE a text recipe based on the their request. Collect the text recipe from the user. If in text absence of cooking time, ingredients or steps, ask the user to provide them. If user dont provide it after asking, generate a values for it based on the text of the recipe.

@@ -8,7 +8,7 @@
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
     <changeSet id="1750342315-1" author="Oleksandr Martsin">
         <dropForeignKeyConstraint
-                baseTableName="user_interactions"
+                baseTableName="jobs"
                 constraintName="jobs_recipe_fk"/>
 
         <addForeignKeyConstraint

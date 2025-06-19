@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class IngredientResponse {
     private Long id;
+    private Long productId;
     private String name;
     private MeasurementResponse measurements;
 }

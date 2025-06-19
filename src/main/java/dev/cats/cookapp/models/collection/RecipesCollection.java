@@ -38,7 +38,7 @@ public class RecipesCollection {
 
     @Column(name = "created_at", updatable = false, nullable = false)
     @CreationTimestamp
-    private Timestamp createdAt;
+    private Timestamp createdAt = new Timestamp(System.currentTimeMillis());
 
     @Basic(optional = false)
     @Column(nullable = false)

@@ -36,7 +36,7 @@ public class RecipeCollectionServiceImpl implements RecipeCollectionService {
 
     @Override
     public CollectionListResponse getCollections(final String userId) {
-        final List<RecipesCollection> collections = this.collectionRepository.findAllByUserId(userId);
+        final List<RecipesCollection> collections = getCollectionList(userId);
 
         final List<CollectionResponse> dtos = collections.stream()
                 .map(coll -> {
@@ -63,7 +63,7 @@ public class RecipeCollectionServiceImpl implements RecipeCollectionService {
 
     @Override
     public CollectionListPreviewResponse getCollectionsPreview(final String userId) {
-        final List<RecipesCollection> collections = this.collectionRepository.findAllByUserId(userId);
+        final List<RecipesCollection> collections = getCollectionList(userId);
         final List<CollectionListPreviewResponse.CollectionPreviewResponse> dtos = collections.stream()
                 .map(coll -> new CollectionListPreviewResponse.CollectionPreviewResponse(
                         coll.getId(),
@@ -166,5 +166,19 @@ public class RecipeCollectionServiceImpl implements RecipeCollectionService {
         coll.setDescription(req.getDescription());
         coll.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         return coll;
+    }
+
+    private List<RecipesCollection> getCollectionList(final String userId) {
+        final List<RecipesCollection> collections = this.collectionRepository.findAllByUserId(userId);
+
+        if (collections.isEmpty()) {
+            var recipeCollection = new RecipesCollection();
+            recipeCollection.setUserId(userId);
+            recipeCollection.setName("My");
+            recipeCollection.setDescription("My default collection");
+            collectionRepository.save(recipeCollection);
+            return List.of(recipeCollection);
+        }
+        return collections;
     }
 }

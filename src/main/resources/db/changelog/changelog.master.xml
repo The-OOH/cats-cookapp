@@ -15,4 +15,5 @@
     <include file="/db/changelog/not-null-constrains.xml"/>
     <include file="/db/changelog/spring-ai-chat-history.xml"/>
     <include file="/db/changelog/add-jobs-table-and-category-vector.xml"/>
+    <include file="/db/changelog/on-delete-cascade-fix.xml"/>
 </databaseChangeLog>

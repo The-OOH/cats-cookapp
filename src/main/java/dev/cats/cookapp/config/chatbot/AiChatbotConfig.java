@@ -190,19 +190,20 @@ public class AiChatbotConfig {
             if (Objects.isNull(prefs)) {
                 return "";
             }
-            return String.format(
-                    """
-                            IMPORTANT: Here are this user's preferences. Please use them to generate or recommend recipes.
-                            - Allergic to ingredients: %s
-                            - Unfavourite ingredients: %s
-                            
-                            - Dietary restrictions: %s
-                            - Cuisine preferences: %s""",
-                    this.mapper.writeValueAsString(prefs.getAllergies()),
-                    this.mapper.writeValueAsString(prefs.getUnfavoriteIngredients()),
-                    this.mapper.writeValueAsString(prefs.getDiets()),
-                    this.mapper.writeValueAsString(prefs.getCuisinePreferences())
-            );
+            return "";
+//            return String.format(
+//                    """
+//                            IMPORTANT: Here are this user's preferences. Please use them to generate or recommend recipes.
+//                            - Allergic to ingredients: %s
+//                            - Unfavourite ingredients: %s
+//
+//                            - Dietary restrictions: %s
+//                            - Cuisine preferences: %s""",
+//                    this.mapper.writeValueAsString(prefs.getAllergies()),
+//                    this.mapper.writeValueAsString(prefs.getUnfavoriteIngredients()),
+//                    this.mapper.writeValueAsString(prefs.getDiets()),
+//                    this.mapper.writeValueAsString(prefs.getCuisinePreferences())
+//            );
         } catch (final Exception ex) {
             return "";
         }

@@ -33,8 +33,8 @@ public class RecipeToolConfig {
                         "excludeIngredientIds", Map.of("type", "array",
                                 "items", Map.of("type", "integer", "description", "Ingredient IDs to exclude from the search. Use this field ONLY for exclusions by user allergic to ingredients. Based on result of 'search_ingredients' tool")),
                         "difficulties", Map.of("type", "array", "items", Map.of("type", "string", "enum", f.data().difficulties(), "description", "Difficulty levels to include in the search. Based on user's request and ONLY in range of available difficulties. If not provided, use all available difficulties. If provided 'medium' for example, it will return recipes with 'easy' and 'medium' difficulties")),
-                        "maxCookingTime", Map.of("type", "integer", "description", "Maximum cooking time in minutes. If not provided, use 1 as default value", "minimum", 1),
-                        "minCookingTime", Map.of("type", "integer", "description", "Minimum cooking time in minutes. If not provided, use 120 as default value", "minimum", 1)
+                        "maxCookingTime", Map.of("type", "integer", "description", "Maximum cooking time in minutes. If not provided, use 120 as default value", "minimum", 1),
+                        "minCookingTime", Map.of("type", "integer", "description", "Minimum cooking time in minutes. If not provided, use 1 as default value", "minimum", 1)
                 ),
                 "required", List.of("searchQuery", "maxCookingTime", "difficulties")
         );

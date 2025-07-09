@@ -10,7 +10,7 @@ the following tasks:
 - **Save and return user information**: The project provides an API that allows mobile applications to save and retrieve
   user information.
 - **Save and return user preferences**: The project provides an API that allows mobile applications to save and retrieve
-  user preferences.
+  user preferences. 
 
 ## Prerequisites
 
